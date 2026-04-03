@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800;900&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-secondary-container": "#e8fbff",
+            "outline-variant": "#484847",
+            "on-primary-container": "#280072",
+            "on-error-container": "#ffb2b9",
+            "surface-variant": "#262626",
+            "inverse-on-surface": "#565555",
+            "surface-tint": "#b6a0ff",
+            "secondary": "#00e3fd",
+            "surface": "#0e0e0e",
+            "surface-container-low": "#131313",
+            "on-surface-variant": "#adaaaa",
+            "on-primary-fixed": "#000000",
+            "error-dim": "#d73357",
+            "background": "#0e0e0e",
+            "error": "#ff6e84",
+            "tertiary-dim": "#ee77a3",
+            "surface-container-high": "#201f1f",
+            "surface-container-highest": "#262626",
+            "on-tertiary-fixed-variant": "#70103e",
+            "surface-dim": "#0e0e0e",
+            "outline": "#767575",
+            "on-tertiary-fixed": "#37001a",
+            "secondary-fixed-dim": "#00d7f0",
+            "secondary-fixed": "#26e6ff",
+            "primary-container": "#a98fff",
+            "on-surface": "#ffffff",
+            "on-tertiary-container": "#59002e",
+            "on-background": "#ffffff",
+            "tertiary-fixed": "#ff8db6",
+            "surface-bright": "#2c2c2c",
+            "on-error": "#490013",
+            "primary-fixed-dim": "#9c7eff",
+            "surface-container": "#1a1919",
+            "on-secondary-fixed-variant": "#005964",
+            "on-primary": "#340090",
+            "inverse-primary": "#6834eb",
+            "secondary-dim": "#00d4ec",
+            "primary-fixed": "#a98fff",
+            "primary": "#b6a0ff",
+            "surface-container-lowest": "#000000",
+            "on-secondary": "#004d57",
+            "primary-dim": "#7e51ff",
+            "tertiary-container": "#fb81ae",
+            "secondary-container": "#006875",
+            "error-container": "#a70138",
+            "tertiary": "#ff96bb",
+            "on-secondary-fixed": "#003a42",
+            "on-primary-fixed-variant": "#32008a",
+            "inverse-surface": "#fcf9f8",
+            "tertiary-fixed-dim": "#f57ca9",
+            "on-tertiary": "#690939"
+          },
+          fontFamily: {
+            "headline": ["Epilogue"],
+            "body": ["Manrope"],
+            "label": ["Manrope"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-panel {
+      background: rgba(44, 44, 44, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .neon-glow-primary {
+      box-shadow: 0 0 20px rgba(182, 160, 255, 0.3);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body min-h-screen flex flex-col selection:bg-secondary selection:text-surface">
+<!-- Header Section (Suppressed Shell as per Transactional Rule, but using TopAppBar styles for the Back action) -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#0e0e0e]/80 backdrop-blur-xl">
+<button class="flex items-center gap-2 group transition-all active:scale-95">
+<span class="material-symbols-outlined text-[#b6a0ff] group-hover:text-[#00e3fd]" data-icon="arrow_back">arrow_back</span>
+<span class="font-label text-xs font-bold uppercase tracking-widest text-[#adaaaa] group-hover:text-white">Back</span>
+</button>
+<div class="text-2xl font-black tracking-tighter text-white font-headline">NOCTURNAL</div>
+<div class="w-10"></div> <!-- Spacer for balance -->
+</header>
+<main class="relative flex-grow flex items-center justify-center pt-16 pb-12 overflow-hidden">
+<!-- Cinematic Background -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40 scale-105" data-alt="Cinematic nightlife scene with blurred purple and blue neon lights, crowded dancefloor atmosphere, and dramatic shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnOj9whl8uXXuXTzpa1Wvn6g9ey8I84cQr_cJP75jQ4SPrutlyBUYXBwhKyY1ozJohO381GnLdQX9J7YDAaC_3JCc4CWoLy4Lfzns8m4wE0Lg6uz9WRqadBS_BGDVHI2M-wK9fK6SYRArLN1RFdtcT_ZPut3tZwSRiEisBORclRrVHZzjjhiOp_nufUFqnFhRd4NIZXIZYiqM3WV2-2BnjjPrp1xsNxugoIV0AgJt2K9kO492Luj9xWoG0_aNApPv1ARyDQyCm3M6z"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent"></div>
+</div>
+<!-- Sign Up Form Container -->
+<section class="relative z-10 w-full max-w-md px-6">
+<div class="glass-panel p-8 md:p-10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-outline-variant/10">
+<!-- Welcome Content -->
+<div class="mb-10">
+<h1 class="font-headline text-4xl font-extrabold tracking-tighter text-white leading-none mb-3">
+            Join the <span class="text-primary italic">Pulse.</span>
+</h1>
+<p class="font-body text-on-surface-variant text-sm leading-relaxed">
+            Create an account to access exclusive nightlife events and curated club lists.
+          </p>
+</div>
+<!-- Form -->
+<form class="space-y-6">
+<!-- Name Field -->
+<div class="space-y-2">
+<label class="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-[#adaaaa] ml-1">Full Name</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg group-focus-within:text-secondary transition-colors" data-icon="person">person</span>
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-4 pl-12 pr-4 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all font-body" placeholder="John Doe" type="text"/>
+</div>
+</div>
+<!-- Email Field -->
+<div class="space-y-2">
+<label class="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-[#adaaaa] ml-1">Email Address</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg group-focus-within:text-secondary transition-colors" data-icon="alternate_email">alternate_email</span>
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-4 pl-12 pr-4 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all font-body" placeholder="name@domain.com" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<label class="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-[#adaaaa] ml-1">Password</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg group-focus-within:text-secondary transition-colors" data-icon="lock">lock</span>
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-4 pl-12 pr-4 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all font-body" placeholder="••••••••" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-white transition-colors" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<!-- CTA Button -->
+<button class="w-full py-4 bg-gradient-to-br from-primary to-primary-dim rounded-full font-headline font-bold text-on-primary-fixed uppercase tracking-wider text-sm neon-glow-primary active:scale-95 transition-all mt-4" type="submit">
+            Create Account
+          </button>
+</form>
+<!-- Social Divider -->
+<div class="flex items-center gap-4 my-8">
+<div class="h-[1px] flex-grow bg-outline-variant/20"></div>
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">Or join with</span>
+<div class="h-[1px] flex-grow bg-outline-variant/20"></div>
+</div>
+<!-- Social Buttons -->
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-2 py-3 bg-surface-container rounded-xl border border-outline-variant/10 hover:bg-surface-container-high transition-colors active:scale-95">
+<img alt="Google Logo" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTsF9g-pf0deBw79Pkp-2G-eOP41YZiLlJvtPHvibhf9pIlkk94k1NO_1-MOAkWNgQ3M2i1Sl6EUfwPuZWzrvPK2uMrBC3WmkzuyGmjVEp8ct2juuS2vLfNUz8zZFAOH9rcd0pmo_V1VtSjq-V3KOIiL56KcdI_WyjDXZCdBnYKYOQ-DRSMIw3qrXpvcZO2VIxXp0z0bz-Z6xhNgTiOk36_wZ9_HeXuVGpWpj3Pb2H1U870hXdqkUKB-qHIYoRtvPb9LvWtDL2O-rJ"/>
+<span class="font-label text-xs font-bold text-white">Google</span>
+</button>
+<button class="flex items-center justify-center gap-2 py-3 bg-surface-container rounded-xl border border-outline-variant/10 hover:bg-surface-container-high transition-colors active:scale-95">
+<span class="material-symbols-outlined text-white text-xl" data-icon="apple" data-weight="fill" style="font-variation-settings: 'FILL' 1;">ios</span>
+<span class="font-label text-xs font-bold text-white">Apple</span>
+</button>
+</div>
+<!-- Footer Link -->
+<p class="mt-10 text-center font-body text-sm text-on-surface-variant">
+          Already a member? 
+          <a class="text-secondary font-bold hover:underline transition-all" href="#">Sign In</a>
+</p>
+</div>
+<!-- Legal Context -->
+<div class="mt-8 text-center">
+<p class="font-label text-[10px] text-[#adaaaa] tracking-tight uppercase px-4 leading-relaxed">
+          By signing up, you agree to our <span class="text-white">Terms of Service</span> and <span class="text-white">Privacy Policy</span>. Must be 21+ to view certain events.
+        </p>
+</div>
+</section>
+</main>
+<!-- Navigation Suppressed for Login/Transactional Flow -->
+<!-- No BottomNavBar or SideNav rendered here per Conflict Resolution Protocol -->
+</body></html>

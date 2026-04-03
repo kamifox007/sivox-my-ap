@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nocturnal - Afterdark Velvet</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800;900&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#0e0e0e",
+              "surface-container-high": "#201f1f",
+              "surface-tint": "#b6a0ff",
+              "error": "#ff6e84",
+              "on-tertiary-container": "#59002e",
+              "surface-variant": "#262626",
+              "surface-container-low": "#131313",
+              "inverse-surface": "#fcf9f8",
+              "secondary": "#00e3fd",
+              "on-background": "#ffffff",
+              "on-error": "#490013",
+              "primary": "#b6a0ff",
+              "on-tertiary": "#690939",
+              "on-secondary-container": "#e8fbff",
+              "primary-fixed-dim": "#9c7eff",
+              "tertiary-fixed": "#ff8db6",
+              "on-primary": "#340090",
+              "secondary-fixed": "#26e6ff",
+              "primary-container": "#a98fff",
+              "tertiary-dim": "#ee77a3",
+              "tertiary-container": "#fb81ae",
+              "inverse-primary": "#6834eb",
+              "error-dim": "#d73357",
+              "on-error-container": "#ffb2b9",
+              "on-primary-fixed-variant": "#32008a",
+              "surface": "#0e0e0e",
+              "secondary-dim": "#00d4ec",
+              "on-surface-variant": "#adaaaa",
+              "surface-container": "#1a1919",
+              "on-secondary-fixed": "#003a42",
+              "secondary-fixed-dim": "#00d7f0",
+              "outline-variant": "#484847",
+              "surface-container-lowest": "#000000",
+              "surface-dim": "#0e0e0e",
+              "on-tertiary-fixed": "#37001a",
+              "tertiary-fixed-dim": "#f57ca9",
+              "secondary-container": "#006875",
+              "on-secondary": "#004d57",
+              "tertiary": "#ff96bb",
+              "on-primary-fixed": "#000000",
+              "on-tertiary-fixed-variant": "#70103e",
+              "error-container": "#a70138",
+              "on-surface": "#ffffff",
+              "primary-fixed": "#a98fff",
+              "outline": "#767575",
+              "inverse-on-surface": "#565555",
+              "on-secondary-fixed-variant": "#005964",
+              "primary-dim": "#7e51ff",
+              "on-primary-container": "#280072",
+              "surface-bright": "#2c2c2c",
+              "surface-container-highest": "#262626"
+            },
+            fontFamily: {
+              "headline": ["Epilogue"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(44, 44, 44, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body select-none">
+<!-- TopAppBar -->
+<header class="bg-[#0e0e0e]/80 backdrop-blur-xl fixed top-0 w-full z-50 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+<div class="flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#b6a0ff] cursor-pointer">menu</span>
+<h1 class="text-2xl font-black italic tracking-tighter text-[#b6a0ff] drop-shadow-[0_0_8px_rgba(182,160,255,0.5)] font-headline uppercase">AFTERDARK</h1>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-primary/30 overflow-hidden">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="Close up portrait of a stylish man with neon lighting reflections on his face and sharp focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpbN6x4EZzIyyWHXH3wvEIP4W9HUjUZhUo7TpxQJwcTX5LEqRhFiOmZ2PxpBpAdn1SRpH-Y2ISVpRdA01fZMJFrCo6wy6QaFFwWvXXkzTmJaBO-k1kyXWqxA03TPbh-sGkikRUWf3iGaPV4Bz8hOkhdd7fvqoUW08hMtQ6erQxJMtxhvzByon7FOTH0M7bYelGNmmAgaoFkhDdUheNb-k4kMFsL9b_m2Np8gP8jN5RBHqDVvBTHTk3YUQ_2ApEVQu7h9KMFYXTadsS"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 space-y-12">
+<!-- Tonight Section: High Impact Bento -->
+<section class="px-6 space-y-6">
+<div class="flex items-end justify-between">
+<div class="space-y-1">
+<span class="font-label text-secondary text-[10px] uppercase tracking-[0.2em] font-bold">Live Now</span>
+<h2 class="font-headline text-4xl font-extrabold tracking-tighter">Tonight</h2>
+</div>
+<button class="text-on-surface-variant font-label text-xs uppercase tracking-widest hover:text-white transition-colors">See all</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+<!-- Featured Main Card -->
+<div class="group relative aspect-[4/5] rounded-xl overflow-hidden bg-surface-container-highest">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Vibrant night club scene with purple laser beams, smoke, and a silhouette of a crowd dancing under neon lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwaGXczn-1Mfpn4hBMFcEYwZdy4SIoZrLX8WDqs5mkPzlve0lme-m7fUKW42FkAW7il0Wa_RmUXGp1zircqydvlfU4Xw3ewxe89GxnhSywzXWBy-kJOBxYOCa55B_5EUAu-RgNQGOeBVLDPutCz24R0Q55cMgSTp_6t6n1_6zJn3DTaPiBJKxuW6MEfxStOHnc7OoezTYzmgc1LTHgMaPTJ7Be99L7_zBaXe9KHLn0A4OnQxYIty50avWZWl9g7qTwGJ0m2nAxJAaq"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8 w-full space-y-4">
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-primary/20 backdrop-blur-md rounded-full text-[10px] font-bold text-primary uppercase border border-primary/30">Secret Warehouse</span>
+</div>
+<h3 class="font-headline text-3xl font-bold leading-tight">NEON VOID: <br/>Vol. 4</h3>
+<div class="flex items-center gap-4 text-on-surface-variant text-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-secondary">schedule</span> 22:00 - Late</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-secondary">location_on</span> Soho, NYC</span>
+</div>
+<button class="w-full py-4 bg-gradient-to-r from-primary to-primary-dim rounded-full font-headline text-sm font-bold uppercase tracking-widest shadow-[0_10px_20px_rgba(182,160,255,0.3)] group-active:scale-95 transition-all">
+                            View Details
+                        </button>
+</div>
+</div>
+<!-- Secondary Split Bento -->
+<div class="grid grid-rows-2 gap-5">
+<div class="group relative rounded-xl overflow-hidden bg-surface-container-highest">
+<img class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="DJ hands mixing on a professional console in a dark room with blue and pink ambient light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSmtfVfpJCC75RSut36rUKY0Cm0_uxCORhdw-3tEIQrNXdLFD55LtDUW6NYE7Nt6z0MKC_nUaBW3Cwzu4sckUUf8qjiVrJKoMwDfbjKakA44SdYPPX0MkElf9UeX7ZCIbAxplGqk9-KY3GSKYwCFAlfwD4rOFE2h2d_44uSU3aAtTuyFZJ9Cw3-aiRHP__FzLd8nXizdrv8iawB6t4Jcz-lPMe1KCFsq0vW9uW-lLXd4Cai9TdAbvLgSFMJ4PQJPtkHDilPk7bpMrw"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest/80 to-transparent"></div>
+<div class="absolute inset-0 p-6 flex flex-col justify-center max-w-[60%]">
+<span class="text-secondary font-label text-[10px] uppercase font-bold tracking-widest mb-1">Rooftop Lounge</span>
+<h4 class="font-headline text-xl font-bold mb-3">Velvet Sky Sessions</h4>
+<button class="text-primary text-xs font-bold uppercase tracking-tighter flex items-center gap-2 group-hover:gap-3 transition-all">
+                                View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="group relative rounded-xl overflow-hidden bg-surface-container-highest">
+<img class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Atmospheric bar scene with glowing liquor bottles and cozy leather seating in a dim, upscale lounge" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCovc7MKG7i74BlHnE2wiQjqQOuUfdZqLzAz5k59bRCO4Io5Pc_z7sf0hGd3T3hj0jMsMJtg4EFxpekkep0QPRO3PyhahJ7OBCOdZ4x5Fr5zsE3B1iD_MAK9ayYEpDhaUi5ngbBMm87OEwxBBaqFyS145M0SpyXC6TbVm12w50PnxjU-_vskCOMBVT0l0S0WWX2vhDFq3DvCAu3-Ced9gm2ANkSnLd3UEi6spOHTb8WXwPWR_NKjpnng3nAntad_tCZ6OCXi0Y0N_Ao"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest/80 to-transparent"></div>
+<div class="absolute inset-0 p-6 flex flex-col justify-center max-w-[60%]">
+<span class="text-tertiary font-label text-[10px] uppercase font-bold tracking-widest mb-1">Speakeasy</span>
+<h4 class="font-headline text-xl font-bold mb-3">The Gilded Cage</h4>
+<button class="text-primary text-xs font-bold uppercase tracking-tighter flex items-center gap-2 group-hover:gap-3 transition-all">
+                                View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Near You Section: Editorial Scroller -->
+<section class="space-y-6">
+<div class="px-6 flex items-end justify-between">
+<div class="space-y-1">
+<span class="font-label text-secondary text-[10px] uppercase tracking-[0.2em] font-bold">Local Access</span>
+<h2 class="font-headline text-4xl font-extrabold tracking-tighter">Near You</h2>
+</div>
+<div class="flex gap-2">
+<div class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</div>
+<div class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center bg-white text-black">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</div>
+</div>
+</div>
+<div class="flex overflow-x-auto no-scrollbar gap-5 px-6 pb-4">
+<!-- Event Card 1 -->
+<div class="flex-none w-72 space-y-4">
+<div class="relative aspect-[3/4] rounded-xl overflow-hidden group">
+<img class="w-full h-full object-cover" data-alt="Abstract vibrant paint swirl in blue, pink and purple mimicking motion and energy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlQih0kKe1ziZ7eUYSSwBmfkvn8_BXrrCzRP5ohIdN-WDPrzUt8wBpdI8ZYb72YO7KehebU7ZRFTF1MBHtkJlbbYeBxHvzJe_FCYj7rJ-ElKuDSEfjLZL-dg-pZUjp93G6I2TK51Y0g9ziUgxS-A62_zywca8cYXBTy5q8iBvZaCivmZfgK2KNGm0Ip0uX6VTmxhGAp2QW0wy21DRbfIDksfd7NAsawaSp8VQh-DLTipzqh91i7OTjMCXFY8U4CvEiN03p9Ak_pzj1"/>
+<div class="absolute top-4 right-4 glass-panel p-2 rounded-lg">
+<span class="material-symbols-outlined text-white text-lg" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="px-6 py-2 bg-white text-black font-headline font-bold text-xs rounded-full uppercase">View Event</button>
+</div>
+</div>
+<div class="space-y-1 px-1">
+<h4 class="font-headline text-lg font-bold">Synapse: Art &amp; Bass</h4>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-xs">Tomorrow • 20:00</span>
+<span class="text-secondary font-bold text-xs">$25.00</span>
+</div>
+</div>
+</div>
+<!-- Event Card 2 -->
+<div class="flex-none w-72 space-y-4">
+<div class="relative aspect-[3/4] rounded-xl overflow-hidden group">
+<img class="w-full h-full object-cover" data-alt="Close up of people dancing in a crowd at a concert with bright stage lights flare" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdZxJQsqSntI24fhUpNVMycU0sBcd18o2jq6tjbsYKWcacNUDP6ft6XgJKL874NzRgQgQECLz0zFuq9vmFFbwASAwTpFXayT-3R7as_EqrWyleXjrgayxw60VSb6AEtJ_g7Zp19jKZnQt_2EbwCczhYpU6CYIe0oLF6-9p3Xk_xjX69EDiSFQMusP0vaPsA-0Pa3lUUPI-v3xwgEWyBi7F34FVxyrEb6xrzeWAQ3VWZq1EywXGcziDWxm0KiB9RaeRMlaGOHYEs0sc"/>
+<div class="absolute top-4 right-4 glass-panel p-2 rounded-lg">
+<span class="material-symbols-outlined text-white text-lg">favorite</span>
+</div>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="px-6 py-2 bg-white text-black font-headline font-bold text-xs rounded-full uppercase">View Event</button>
+</div>
+</div>
+<div class="space-y-1 px-1">
+<h4 class="font-headline text-lg font-bold">Underground Disco</h4>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-xs">Sat • 23:00</span>
+<span class="text-tertiary font-bold text-xs">Sold Out</span>
+</div>
+</div>
+</div>
+<!-- Event Card 3 -->
+<div class="flex-none w-72 space-y-4">
+<div class="relative aspect-[3/4] rounded-xl overflow-hidden group">
+<img class="w-full h-full object-cover" data-alt="Sparklers burning in a dark night with bokeh lights in the background creating a festive mood" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBObtMgEvOsZi_Od5gzsjEKCTtx03xUlZSebTJnii5ayHTO9FAwDn_ucVOXFJF8K-m3u_EVRWQGGM5Intpj8LoKjBggRpKlJyDWcbSK121_GpEmDFIPdEKAOXw2bDGWTkkogsTypbUxoK2nJBpSAjvHNA7wuZjB3yOZ2YKwwNy9m3z46EClO9Dg_xwC41gynUkIVoMzfMxTPMxrqcLHjvSb5EGR4RytxcKMA3rDVQ90oO028hVNICzQl27u5af9t7HP3Ij5-PQCIEt6"/>
+<div class="absolute top-4 right-4 glass-panel p-2 rounded-lg">
+<span class="material-symbols-outlined text-white text-lg">favorite</span>
+</div>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="px-6 py-2 bg-white text-black font-headline font-bold text-xs rounded-full uppercase">View Event</button>
+</div>
+</div>
+<div class="space-y-1 px-1">
+<h4 class="font-headline text-lg font-bold">Solaris Launch Party</h4>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-xs">Fri • 21:00</span>
+<span class="text-secondary font-bold text-xs">$40.00</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trending Section: Instagram Feed Style -->
+<section class="px-6 space-y-6">
+<div class="space-y-1">
+<span class="font-label text-secondary text-[10px] uppercase tracking-[0.2em] font-bold">World Wide</span>
+<h2 class="font-headline text-4xl font-extrabold tracking-tighter">Trending</h2>
+</div>
+<div class="space-y-8">
+<!-- Feed Item 1 -->
+<div class="bg-surface-container rounded-3xl overflow-hidden">
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-secondary p-[2px]">
+<img class="w-full h-full rounded-full object-cover border-2 border-surface-container" data-alt="Portrait of a young woman in an urban setting with cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsp_b4NzY4NThL5l7iLqLSWzeLjAj6VEK6qKgjVwWIf-87xkM3A1LlIM7HPaPyW4GGE80DrPJreWWKTnNm60qYS2d4jTAy_atRcsytkcjfMkgkoKVPA56UwTNyg-lAahMPAQ2lPTCwgHmQ4gbatsYAPHPcIZ72Kq-nYsCupHK-oSY1VQSnvFPRBpAGtMHoKbVEsA7AZp5sWrS4GVe8fpD-2qmWI3S11vnFd1apK_Oj1VWgAu27cQpfZwaMdlu6RDx6nHoeaJjIGxmD"/>
+</div>
+<div>
+<p class="text-sm font-bold">Electric_Dreams</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Berlin, Germany</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</div>
+<div class="relative aspect-square">
+<img class="w-full h-full object-cover" data-alt="Extreme wide shot of a massive music festival stage with complex digital visuals and lasers over a sea of people" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDVHcEWxWKvHDS-LCFIFPX_b695h2EGOslTBsK7gMwzKC6SnjFHJhUX8OEBL6R3vuT2FZod1dbtmwx887Ec4hoxfq20vi4baY7zPookuRI3SgWRGCooTeKao_q9eTXZQtzJD0pkeJZIpAm_BcrRFfXb5vxqRFOOlotyixYw8-LvhqGWyxt5C05mvxpr38VGRZUQjCJnbsUR9oyYSOhfFGFwbWKZ6uuzCEl5oeqD7aPMTs8yIMIorPmWmXPI6hu5hkcmxmPJ3fiN8-o"/>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex justify-between items-center">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-2xl text-secondary">favorite</span>
+<span class="material-symbols-outlined text-2xl">chat_bubble</span>
+<span class="material-symbols-outlined text-2xl">send</span>
+</div>
+<span class="material-symbols-outlined text-2xl text-primary">bookmark</span>
+</div>
+<div class="space-y-2">
+<p class="font-headline text-2xl font-bold">TRANSCENDENCE 2024</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">The biggest audiovisual experience of the year returns. Witness the convergence of sound and light at the Olympic Stadium.</p>
+<div class="pt-2">
+<button class="w-full py-4 rounded-xl border border-outline-variant font-headline text-xs font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all">
+                                    View Details
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Feed Item 2 -->
+<div class="bg-surface-container rounded-3xl overflow-hidden">
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-secondary p-[2px]">
+<img class="w-full h-full rounded-full object-cover border-2 border-surface-container" data-alt="Portrait of a modern young man with neon accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSzSteopwLxK6tvxJk51DZsG_IG-d-uLIJrrapmJWz1NI6hu_9DJ-pkiVUYvdqTkAdG5Uc--Bbsh_OoJjsMIzPJD3mIAu3SR0jBW0E7H4rE0iMymZQkEi0DfxWTsnzDZnDcIdktEqg9vyP2TlJ9o2zt7KKw8Nzwj164XRPrK9eSFx2-EpVcds2Y3jazIg5sJVS-FZjYf17utxxhZLs2v6lzdmItLKkrwAEBtTGDDI4KkQCgZ8-gL5Jt3ylN6vxvKsYEwEXu0RjfvXK"/>
+</div>
+<div>
+<p class="text-sm font-bold">The_Labyrinth</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">London, UK</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</div>
+<div class="relative aspect-square">
+<img class="w-full h-full object-cover" data-alt="Deep blue neon hallway with light strips along the floor and ceiling creating a tunnel effect" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7iJj5NOKsstdGGhRyiY6M6mhhkz4KQIEEmCLKrmPF8m__EUOmh_FZoU-95rHRqRCMTJgUFv_a-I7ekjOEfZa6K_RrUwMfm13rSHP81uJHQQdDWxAAC70U17GyGI9ZxDCz0z0E7ooba9o0IN575TR7t0QP8JfXf7B_WCWktgz3hWq4ovwP065bQyXlAUIF0E4WtXxOZH7xkJ_WPICdAWLYkPCherTOu4ssqCNRUh7HWMCU2tfHUZl8o_hc02zYVFjq4CMVL54K5cvf"/>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex justify-between items-center">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-2xl text-secondary">favorite</span>
+<span class="material-symbols-outlined text-2xl">chat_bubble</span>
+<span class="material-symbols-outlined text-2xl">send</span>
+</div>
+<span class="material-symbols-outlined text-2xl">bookmark</span>
+</div>
+<div class="space-y-2">
+<p class="font-headline text-2xl font-bold">CYBERPUNK AFTER-HOURS</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">No cameras. No lights. Only the frequency matters. Strictly members only. Access via QR pass in wallet.</p>
+<div class="pt-2">
+<button class="w-full py-4 rounded-xl border border-outline-variant font-headline text-xs font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all">
+                                    View Details
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full px-4 pb-8 flex justify-around items-center h-20 bg-[#2c2c2c]/50 backdrop-blur-2xl z-50 rounded-t-[2rem]">
+<div class="flex flex-col items-center justify-center text-[#ffffff] scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined mb-1">explore</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-semibold">Explore</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#adaaaa] opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined mb-1">confirmation_number</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-semibold">Bookings</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#adaaaa] opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined mb-1">qr_code_2</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-semibold">Passes</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#adaaaa] opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-semibold">Profile</span>
+</div>
+</nav>
+<!-- FAB -->
+<div class="fixed bottom-24 right-6 z-40">
+<button class="w-16 h-16 rounded-full bg-gradient-to-br from-secondary to-primary-dim shadow-[0_0_20px_rgba(0,227,253,0.4)] flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-3xl font-bold">add</span>
+</button>
+</div>
+</body></html>

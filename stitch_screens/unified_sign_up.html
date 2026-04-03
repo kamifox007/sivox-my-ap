@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800;900&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-secondary-container": "#e8fbff",
+            "outline-variant": "#484847",
+            "on-primary-container": "#280072",
+            "on-error-container": "#ffb2b9",
+            "surface-variant": "#262626",
+            "inverse-on-surface": "#565555",
+            "surface-tint": "#7C4DFF",
+            "secondary": "#00e3fd",
+            "surface": "#0e0e0e",
+            "surface-container-low": "#131313",
+            "on-surface-variant": "#adaaaa",
+            "on-primary-fixed": "#000000",
+            "error-dim": "#d73357",
+            "background": "#0e0e0e",
+            "error": "#ff6e84",
+            "tertiary-dim": "#ee77a3",
+            "surface-container-high": "#201f1f",
+            "surface-container-highest": "#262626",
+            "on-tertiary-fixed-variant": "#70103e",
+            "surface-dim": "#0e0e0e",
+            "outline": "#767575",
+            "on-tertiary-fixed": "#37001a",
+            "secondary-fixed-dim": "#00d7f0",
+            "secondary-fixed": "#26e6ff",
+            "primary-container": "#7C4DFF",
+            "on-surface": "#ffffff",
+            "on-tertiary-container": "#59002e",
+            "on-background": "#ffffff",
+            "tertiary-fixed": "#ff8db6",
+            "surface-bright": "#2c2c2c",
+            "on-error": "#490013",
+            "primary-fixed-dim": "#7C4DFF",
+            "surface-container": "#1a1919",
+            "on-secondary-fixed-variant": "#005964",
+            "on-primary": "#ffffff",
+            "inverse-primary": "#7C4DFF",
+            "secondary-dim": "#00d4ec",
+            "primary-fixed": "#7C4DFF",
+            "primary": "#7C4DFF",
+            "surface-container-lowest": "#000000",
+            "on-secondary": "#004d57",
+            "primary-dim": "#5E35B1",
+            "tertiary-container": "#fb81ae",
+            "secondary-container": "#006875",
+            "error-container": "#a70138",
+            "tertiary": "#ff96bb",
+            "on-secondary-fixed": "#003a42",
+            "on-primary-fixed-variant": "#32008a",
+            "inverse-surface": "#fcf9f8",
+            "tertiary-fixed-dim": "#f57ca9",
+            "on-tertiary": "#690939"
+          },
+          fontFamily: {
+            "headline": ["Epilogue"],
+            "body": ["Epilogue"],
+            "label": ["Epilogue"]
+          },
+          borderRadius: {"DEFAULT": "0.5rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-panel {
+      background: rgba(44, 44, 44, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .neon-glow-primary {
+      box-shadow: 0 0 20px rgba(124, 77, 255, 0.4);
+    }
+    .role-card-selected {
+      border-color: #7C4DFF;
+      box-shadow: 0 0 15px rgba(124, 77, 255, 0.3);
+      background: rgba(124, 77, 255, 0.1);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-screen flex flex-col selection:bg-primary selection:text-white">
+<!-- Header Section -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#0e0e0e]/80 backdrop-blur-xl">
+<button class="flex items-center gap-2 group transition-all active:scale-95">
+<span class="material-symbols-outlined text-primary group-hover:text-secondary" data-icon="arrow_back">arrow_back</span>
+<span class="font-label text-xs font-bold uppercase tracking-widest text-[#adaaaa] group-hover:text-white">Back</span>
+</button>
+<div class="text-2xl font-black tracking-tighter text-white font-headline">NOCTURNAL</div>
+<div class="w-10"></div>
+</header>
+<main class="relative flex-grow flex items-center justify-center pt-24 pb-12 overflow-hidden">
+<!-- Cinematic Background -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-30 scale-105" data-alt="Cinematic nightlife scene with blurred purple neon lights and dramatic shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnOj9whl8uXXuXTzpa1Wvn6g9ey8I84cQr_cJP75jQ4SPrutlyBUYXBwhKyY1ozJohO381GnLdQX9J7YDAaC_3JCc4CWoLy4Lfzns8m4wE0Lg6uz9WRqadBS_BGDVHI2M-wK9fK6SYRArLN1RFdtcT_ZPut3tZwSRiEisBORclRrVHZzjjhiOp_nufUFqnFhRd4NIZXIZYiqM3WV2-2BnjjPrp1xsNxugoIV0AgJt2K9kO492Luj9xWoG0_aNApPv1ARyDQyCm3M6z"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/80 to-transparent"></div>
+</div>
+<!-- Sign Up Form Container -->
+<section class="relative z-10 w-full max-w-md px-6">
+<div class="glass-panel p-8 md:p-10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
+<!-- Welcome Content -->
+<div class="mb-8">
+<h1 class="font-headline text-4xl font-extrabold tracking-tighter text-white leading-none mb-3">
+            Join the <span class="text-primary italic">Pulse.</span>
+</h1>
+<p class="font-body text-on-surface-variant text-sm leading-relaxed">
+            Create an account to access exclusive nightlife events and curated club lists.
+          </p>
+</div>
+<!-- Form -->
+<form class="space-y-5">
+<!-- Name Field -->
+<div class="space-y-1.5">
+<label class="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-[#adaaaa] ml-1">Full Name</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg group-focus-within:text-primary transition-colors" data-icon="person">person</span>
+<input class="w-full bg-surface-container-highest/50 border border-white/5 rounded-xl py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline focus:ring-1 focus:ring-primary focus:border-primary transition-all font-body text-sm" placeholder="John Doe" type="text"/>
+</div>
+</div>
+<!-- Email Field -->
+<div class="space-y-1.5">
+<label class="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-[#adaaaa] ml-1">Email Address</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg group-focus-within:text-primary transition-colors" data-icon="alternate_email">alternate_email</span>
+<input class="w-full bg-surface-container-highest/50 border border-white/5 rounded-xl py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline focus:ring-1 focus:ring-primary focus:border-primary transition-all font-body text-sm" placeholder="name@domain.com" type="email"/>
+</div>
+</div>
+<!-- Role Selection Section -->
+<div class="space-y-3 py-2">
+<label class="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-[#adaaaa] ml-1">I am a...</label>
+<div class="grid grid-cols-2 gap-3">
+<!-- Attendee Card -->
+<label class="relative cursor-pointer group">
+<input checked="" class="sr-only peer" name="role" type="radio" value="attendee"/>
+<div class="p-3.5 rounded-xl border border-white/10 bg-surface-container-highest/30 transition-all peer-checked:role-card-selected group-hover:bg-white/5">
+<div class="flex flex-col items-center text-center gap-1">
+<span class="material-symbols-outlined text-primary mb-1" data-icon="confirmation_number">confirmation_number</span>
+<span class="text-xs font-bold text-white block">Attendee</span>
+<p class="text-[10px] text-on-surface-variant leading-tight">I want to attend events</p>
+</div>
+</div>
+</label>
+<!-- Organizer Card -->
+<label class="relative cursor-pointer group">
+<input class="sr-only peer" name="role" type="radio" value="organizer"/>
+<div class="p-3.5 rounded-xl border border-white/10 bg-surface-container-highest/30 transition-all peer-checked:role-card-selected group-hover:bg-white/5">
+<div class="flex flex-col items-center text-center gap-1">
+<span class="material-symbols-outlined text-primary mb-1" data-icon="stadium">stadium</span>
+<span class="text-xs font-bold text-white block">Organizer</span>
+<p class="text-[10px] text-on-surface-variant leading-tight">I want to host events</p>
+</div>
+</div>
+</label>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-1.5">
+<label class="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-[#adaaaa] ml-1">Password</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg group-focus-within:text-primary transition-colors" data-icon="lock">lock</span>
+<input class="w-full bg-surface-container-highest/50 border border-white/5 rounded-xl py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline focus:ring-1 focus:ring-primary focus:border-primary transition-all font-body text-sm" placeholder="••••••••" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-white transition-colors" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<!-- CTA Button -->
+<button class="w-full py-4 bg-primary hover:bg-primary-dim rounded-full font-headline font-black text-white uppercase tracking-widest text-sm neon-glow-primary active:scale-[0.98] transition-all mt-4" type="submit">
+            Create Account
+          </button>
+</form>
+<!-- Social Divider -->
+<div class="flex items-center gap-4 my-6">
+<div class="h-[1px] flex-grow bg-white/10"></div>
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">Or join with</span>
+<div class="h-[1px] flex-grow bg-white/10"></div>
+</div>
+<!-- Social Buttons -->
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-2 py-3 bg-surface-container rounded-xl border border-white/5 hover:bg-white/5 transition-colors active:scale-95">
+<img alt="Google Logo" class="w-4 h-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTsF9g-pf0deBw79Pkp-2G-eOP41YZiLlJvtPHvibhf9pIlkk94k1NO_1-MOAkWNgQ3M2i1Sl6EUfwPuZWzrvPK2uMrBC3WmkzuyGmjVEp8ct2juuS2vLfNUz8zZFAOH9rcd0pmo_V1VtSjq-V3KOIiL56KcdI_WyjDXZCdBnYKYOQ-DRSMIw3qrXpvcZO2VIxXp0z0bz-Z6xhNgTiOk36_wZ9_HeXuVGpWpj3Pb2H1U870hXdqkUKB-qHIYoRtvPb9LvWtDL2O-rJ"/>
+<span class="font-label text-xs font-bold text-white">Google</span>
+</button>
+<button class="flex items-center justify-center gap-2 py-3 bg-surface-container rounded-xl border border-white/5 hover:bg-white/5 transition-colors active:scale-95">
+<span class="material-symbols-outlined text-white text-lg" data-icon="apple" style="font-variation-settings: 'FILL' 1;">ios</span>
+<span class="font-label text-xs font-bold text-white">Apple</span>
+</button>
+</div>
+<!-- Footer Link -->
+<p class="mt-8 text-center font-body text-sm text-on-surface-variant">
+          Already a member? 
+          <a class="text-primary font-bold hover:underline transition-all" href="#">Sign In</a>
+</p>
+</div>
+<!-- Legal Context -->
+<div class="mt-8 text-center pb-8">
+<p class="font-label text-[9px] text-[#adaaaa] tracking-tight uppercase px-8 leading-relaxed">
+          By signing up, you agree to our <span class="text-white">Terms of Service</span> and <span class="text-white">Privacy Policy</span>. Must be 21+ to view certain events.
+        </p>
+</div>
+</section>
+</main>
+</body></html>

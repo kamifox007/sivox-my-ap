@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800;900&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "background": "#0e0e0e",
+            "surface-container-high": "#201f1f",
+            "surface-tint": "#b6a0ff",
+            "error": "#ff6e84",
+            "on-tertiary-container": "#59002e",
+            "surface-variant": "#262626",
+            "surface-container-low": "#131313",
+            "inverse-surface": "#fcf9f8",
+            "secondary": "#00e3fd",
+            "on-background": "#ffffff",
+            "on-error": "#490013",
+            "primary": "#b6a0ff",
+            "on-tertiary": "#690939",
+            "on-secondary-container": "#e8fbff",
+            "primary-fixed-dim": "#9c7eff",
+            "tertiary-fixed": "#ff8db6",
+            "on-primary": "#340090",
+            "secondary-fixed": "#26e6ff",
+            "primary-container": "#a98fff",
+            "tertiary-dim": "#ee77a3",
+            "tertiary-container": "#fb81ae",
+            "inverse-primary": "#6834eb",
+            "error-dim": "#d73357",
+            "on-error-container": "#ffb2b9",
+            "on-primary-fixed-variant": "#32008a",
+            "surface": "#0e0e0e",
+            "secondary-dim": "#00d4ec",
+            "on-surface-variant": "#adaaaa",
+            "surface-container": "#1a1919",
+            "on-secondary-fixed": "#003a42",
+            "secondary-fixed-dim": "#00d7f0",
+            "outline-variant": "#484847",
+            "surface-container-lowest": "#000000",
+            "surface-dim": "#0e0e0e",
+            "on-tertiary-fixed": "#37001a",
+            "tertiary-fixed-dim": "#f57ca9",
+            "secondary-container": "#006875",
+            "on-secondary": "#004d57",
+            "tertiary": "#ff96bb",
+            "on-primary-fixed": "#000000",
+            "on-tertiary-fixed-variant": "#70103e",
+            "error-container": "#a70138",
+            "on-surface": "#ffffff",
+            "primary-fixed": "#a98fff",
+            "outline": "#767575",
+            "inverse-on-surface": "#565555",
+            "on-secondary-fixed-variant": "#005964",
+            "primary-dim": "#7e51ff",
+            "on-primary-container": "#280072",
+            "surface-bright": "#2c2c2c",
+            "surface-container-highest": "#262626"
+          },
+          fontFamily: {
+            "headline": ["Epilogue"],
+            "body": ["Manrope"],
+            "label": ["Manrope"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-card {
+      background: rgba(44, 44, 44, 0.6);
+      backdrop-filter: blur(20px);
+    }
+    .qr-gradient {
+      background: linear-gradient(135deg, #b6a0ff 0%, #00e3fd 100%);
+    }
+    .neon-glow {
+      box-shadow: 0 0 20px rgba(182, 160, 255, 0.3);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body min-h-screen pb-32">
+<!-- Shared Component: TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0e0e0e]/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#b6a0ff]">menu</span>
+<h1 class="text-2xl font-black italic tracking-tighter text-[#b6a0ff] drop-shadow-[0_0_8px_rgba(182,160,255,0.5)] font-['Epilogue'] tracking-tighter uppercase">AFTERDARK</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/30">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="Close-up portrait of a stylish young man in neon lighting with cinematic bokeh background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaPHM7VOdCcEZPFGB1bNMMLGhsN7u-HxzI5d1zS1faiWU08IoWD62LL6vTwSwIw5DUyXfcPKgneVjNpN9wIJINyrdkb8XnwhiTmeOhtYVyFgeWIyspU6e6DOtei77GPfoy0bLzEpYTOEZWMw--DiY24xdMwCMN2PaMuIkkVLsM8J9BEVEDPVIdWq3pTXmpVVwKHzKMaKpL29OdbVMi96hlJE3kI9E92Fc6QfGfnMHcsumWRQb51VI0fWCGHkcDlxr2M-_43Igbfg_c"/>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-lg mx-auto">
+<!-- Confirmation Header Section -->
+<section class="text-center mb-8">
+<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary-container/20 mb-4">
+<span class="material-symbols-outlined text-secondary text-4xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h2 class="font-headline text-4xl font-extrabold tracking-tighter mb-2 uppercase">Booking Confirmed</h2>
+<p class="text-on-surface-variant font-medium">Show this code at the velvet rope.</p>
+</section>
+<!-- The QR Central Card -->
+<div class="relative group">
+<!-- Ambient Glow behind card -->
+<div class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-[2.5rem] blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+<div class="relative glass-card rounded-[2.5rem] p-8 flex flex-col items-center">
+<!-- QR Container -->
+<div class="bg-white p-6 rounded-3xl shadow-2xl mb-8 relative">
+<div class="w-56 h-56 bg-slate-100 relative overflow-hidden rounded-xl">
+<img alt="Booking QR Code" class="w-full h-full mix-blend-multiply opacity-90" data-alt="High contrast black and white QR code on a clean white background with minimal borders" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYjstWW5t1nYB6p0KA1iGvaBpsSk93qepJ-ZkoIpIZ-KhpUymO1VFBpP7ELmjNtQWzazDMu6pV0dFYIImfbDliWPkwzSZGXkUwwc5HIywvJik8bF8Q57-n0BjaX0ZTNEqsUaIQsBTKK5e6fyXMwJ5X9SgFMF6NrdcxbFUxfZqy9p-eQyI_-yudhP72WyPoPaZh7sHPZamMWn7eSczbfWqGUkEG509RHGxC5_lhM8fvtiMBhWvQqJpWaREWLq4zT2WgQl1BRHwMimZx"/>
+<!-- Central Icon Overlay -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-12 h-12 bg-white rounded-xl shadow-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl font-bold">bolt</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Ticket Info Grid -->
+<div class="w-full space-y-6">
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low rounded-2xl p-4">
+<span class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1 block">Guest Name</span>
+<p class="font-headline text-lg font-bold">Julian Vane</p>
+</div>
+<div class="bg-surface-container-low rounded-2xl p-4">
+<span class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1 block">Party Size</span>
+<p class="font-headline text-lg font-bold">04 People</p>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-2xl p-4 flex justify-between items-center">
+<div>
+<span class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1 block">Booking Type</span>
+<p class="font-headline text-lg font-bold text-secondary">Pay at Venue</p>
+</div>
+<div class="bg-secondary/10 px-3 py-1 rounded-full border border-secondary/20">
+<span class="text-[10px] font-bold text-secondary uppercase tracking-tighter">VIP Entry</span>
+</div>
+</div>
+<div class="border-t border-dashed border-outline-variant/30 pt-6 flex flex-col items-center">
+<span class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-2">Reference ID</span>
+<p class="font-mono text-sm tracking-[0.3em] text-on-surface font-semibold">AD-9921-X-2024</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary Action -->
+<div class="mt-8">
+<button class="w-full py-5 rounded-full bg-gradient-to-r from-primary to-primary-dim text-on-primary font-headline font-black text-lg uppercase tracking-wider shadow-lg shadow-primary/20 flex items-center justify-center gap-3 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">share</span>
+        Share QR
+      </button>
+<button class="w-full mt-4 py-4 rounded-full border border-outline-variant/30 text-on-surface font-body font-bold text-sm uppercase tracking-widest hover:bg-surface-variant/50 transition-colors">
+        Add to Apple Wallet
+      </button>
+</div>
+<!-- Mock Toast Notification -->
+<div class="mt-12 flex justify-center opacity-0 animate-pulse pointer-events-none">
+<div class="bg-surface-bright/90 backdrop-blur-md px-6 py-3 rounded-full border border-primary/30 flex items-center gap-2 shadow-2xl">
+<span class="material-symbols-outlined text-secondary text-sm">auto_awesome</span>
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface">QR Shared!</span>
+</div>
+</div>
+</main>
+<!-- Shared Component: BottomNavBar -->
+<!-- Note: Semantic mapping logic - "Bookings" is active -->
+<nav class="fixed bottom-0 w-full px-4 pb-8 flex justify-around items-center h-20 bg-[#2c2c2c]/50 backdrop-blur-2xl rounded-[2rem] z-50 overflow-hidden shadow-[0_20px_50px_rgba(182,160,255,0.15)] mb-6 mx-auto max-w-[calc(100%-2rem)] left-4 right-4">
+<div class="flex flex-col items-center justify-center text-[#adaaaa] opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-semibold mt-1">Explore</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#ffffff] scale-110 transition-transform animate-pulse">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">confirmation_number</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-semibold mt-1">Bookings</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#adaaaa] opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">qr_code_2</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-semibold mt-1">Passes</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#adaaaa] opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-semibold mt-1">Profile</span>
+</div>
+</nav>
+</body></html>

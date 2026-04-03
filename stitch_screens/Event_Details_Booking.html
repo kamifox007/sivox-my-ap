@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800;900&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "background": "#0e0e0e",
+            "surface-container-high": "#201f1f",
+            "surface-tint": "#b6a0ff",
+            "error": "#ff6e84",
+            "on-tertiary-container": "#59002e",
+            "surface-variant": "#262626",
+            "surface-container-low": "#131313",
+            "inverse-surface": "#fcf9f8",
+            "secondary": "#00e3fd",
+            "on-background": "#ffffff",
+            "on-error": "#490013",
+            "primary": "#b6a0ff",
+            "on-tertiary": "#690939",
+            "on-secondary-container": "#e8fbff",
+            "primary-fixed-dim": "#9c7eff",
+            "tertiary-fixed": "#ff8db6",
+            "on-primary": "#340090",
+            "secondary-fixed": "#26e6ff",
+            "primary-container": "#a98fff",
+            "tertiary-dim": "#ee77a3",
+            "tertiary-container": "#fb81ae",
+            "inverse-primary": "#6834eb",
+            "error-dim": "#d73357",
+            "on-error-container": "#ffb2b9",
+            "on-primary-fixed-variant": "#32008a",
+            "surface": "#0e0e0e",
+            "secondary-dim": "#00d4ec",
+            "on-surface-variant": "#adaaaa",
+            "surface-container": "#1a1919",
+            "on-secondary-fixed": "#003a42",
+            "secondary-fixed-dim": "#00d7f0",
+            "outline-variant": "#484847",
+            "surface-container-lowest": "#000000",
+            "surface-dim": "#0e0e0e",
+            "on-tertiary-fixed": "#37001a",
+            "tertiary-fixed-dim": "#f57ca9",
+            "secondary-container": "#006875",
+            "on-secondary": "#004d57",
+            "tertiary": "#ff96bb",
+            "on-primary-fixed": "#000000",
+            "on-tertiary-fixed-variant": "#70103e",
+            "error-container": "#a70138",
+            "on-surface": "#ffffff",
+            "primary-fixed": "#a98fff",
+            "outline": "#767575",
+            "inverse-on-surface": "#565555",
+            "on-secondary-fixed-variant": "#005964",
+            "primary-dim": "#7e51ff",
+            "on-primary-container": "#280072",
+            "surface-bright": "#2c2c2c",
+            "surface-container-highest": "#262626"
+          },
+          fontFamily: {
+            "headline": ["Epilogue"],
+            "body": ["Manrope"],
+            "label": ["Manrope"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body min-h-screen selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar from JSON -->
+<header class="fixed top-0 w-full z-50 bg-[#0e0e0e]/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#b6a0ff] cursor-pointer hover:text-[#ffffff] transition-colors duration-300">menu</span>
+<h1 class="font-['Epilogue'] tracking-tighter font-bold uppercase text-2xl font-black italic tracking-tighter text-[#b6a0ff] drop-shadow-[0_0_8px_rgba(182,160,255,0.5)]">AFTERDARK</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/30">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="portrait of a stylish young person with neon lighting reflections on their skin, cinematic nightlife photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVRC5_zaUAOWnCOtdY5Q_SKG8Fk7hWXYwIR6HS1-wcRdXGsCGPGE3vFPoAhd7-vkixfXAvtFhPtd9k4b1pz9I9QoLKHx-vrNDeXL2P5kPVk8L5Z5wmzOdt9zPZYI2CHvni8MC9BbimlhGHIWuZ7Z4FhFIpjRK1RoWF5uTM5WcpPs9a9cUZjXIE3DGu0gu63G8gRipgkTcMwJxY3tX_A004CqZkQ19Faw9ME4j5HtheHXvyqqUGwucFLatW-nAAxHm0zy932yHwXmEZ"/>
+</div>
+</header>
+<main class="pt-20 pb-32">
+<!-- Hero Image Section -->
+<section class="relative w-full h-[486px] overflow-hidden">
+<img alt="Event Cover" class="w-full h-full object-cover" data-alt="Cinematic high-angle shot of a crowded luxury night club with purple and cyan neon lasers cutting through light haze and smoke" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyBdIOVF2hT9WJwR1aTxcNDl6qnHjSmdgicxGPgRozh_h1uDwIecvo9q5gH7yOKw9wymROf0Y9nj7UaGBhTjB4JxAZ9VkRlwqHmvRb-cF1v1jo3lW_KcOnddfR7FORLlYnoI3g8Hum_zgK6KLWiXm-ov24BqlEm4rTYvHE8g5yuUeATxpzxmnvCbZaKuQcACm_K5nldGnUeQmiRWUkoo0jx21950bImUYm6jTdMbpaa5pvfS6l5Jax0GP7qioSb6zN90GI0-J4B3L7"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<!-- Overlay Header -->
+<div class="absolute bottom-0 left-0 w-full px-6 pb-8">
+<div class="flex flex-col gap-2">
+<span class="inline-flex items-center gap-2 px-3 py-1 bg-secondary/20 text-secondary border border-secondary/30 rounded-full w-fit font-label text-[10px] font-bold tracking-widest uppercase">
+            Exclusive Event
+          </span>
+<h2 class="font-headline text-5xl md:text-7xl font-black tracking-tighter text-on-surface leading-none uppercase">
+            Electric <br/>Pulse
+          </h2>
+</div>
+</div>
+</section>
+<!-- Content Grid -->
+<div class="max-w-6xl mx-auto px-6 mt-8 grid grid-cols-1 md:grid-cols-12 gap-10">
+<!-- Main Details -->
+<div class="md:col-span-7 space-y-10">
+<!-- Location & Time -->
+<section class="flex flex-col gap-6">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">location_on</span>
+</div>
+<div>
+<p class="font-headline text-lg font-bold">Neo-Tokyo Lounge</p>
+<p class="text-on-surface-variant font-body">42 Cyberpunk Blvd, Night City, NC 2077</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="font-headline text-lg font-bold">Starts at 23:00</p>
+<p class="text-on-surface-variant font-body">Friday, June 14th • Doors close at 01:00</p>
+</div>
+</div>
+</section>
+<!-- Description Bento -->
+<section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="p-6 bg-surface-container rounded-3xl space-y-2">
+<h4 class="font-label text-[10px] font-bold uppercase tracking-widest text-primary">Booking Type</h4>
+<p class="text-xl font-bold font-headline">Pay at Venue</p>
+<p class="text-sm text-on-surface-variant">Reserve your spot now, pay the entrance fee upon arrival.</p>
+</div>
+<div class="p-6 bg-surface-container-high rounded-3xl space-y-2">
+<h4 class="font-label text-[10px] font-bold uppercase tracking-widest text-tertiary">Dress Code</h4>
+<p class="text-xl font-bold font-headline">Avant-Garde</p>
+<p class="text-sm text-on-surface-variant">Express your nocturnal identity. No standard sportswear.</p>
+</div>
+</section>
+<!-- Map Section -->
+<div class="w-full h-48 bg-surface-container rounded-3xl overflow-hidden grayscale opacity-80 hover:grayscale-0 transition-all duration-500">
+<img alt="Event Map" class="w-full h-full object-cover" data-alt="abstract stylized dark map showing urban street grid with glowing purple arterial roads and cyan markers" data-location="Tokyo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeB2645RUqFE4oOaMW5llcWmOqv6JgokWdbAW3ODpE0vrm1FEs1DydeOsYQSs2SIETkFtzkN8KFdocNtejefwMfA2QxMmSwr0KewYHMgw5kLxno2z4jIvJh5VgEdThFZj6fy5zsC3-gjgj-RYO5bPRQLI8F_lEfWlV9VWcO5h1KxiScQdA-9_ds6lQdAUag0eWD9EAGNAo453BqldYbY0zVydra053m1BLE7CRLxJRAeWlDxsLDYVcNrzGIeDCvmqKOBqYGy6h94zG"/>
+</div>
+</div>
+<!-- Booking Card (Sticky Sidebar) -->
+<aside class="md:col-span-5">
+<div class="sticky top-28 bg-surface-container-highest/60 backdrop-blur-xl p-8 rounded-[2rem] border border-outline-variant/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+<h3 class="font-headline text-2xl font-black mb-8 uppercase tracking-tight">Reserve Entry</h3>
+<form class="space-y-8">
+<!-- Number of People Input -->
+<div class="space-y-3">
+<label class="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant ml-1">Number of People</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-on-surface-variant">group</span>
+<input class="w-full bg-surface-container-low border-none rounded-2xl py-4 pl-12 pr-4 text-on-surface font-bold focus:ring-2 focus:ring-primary/50 transition-all" max="10" min="1" type="number" value="2"/>
+</div>
+<p class="text-[10px] text-on-surface-variant/60 italic">*Groups of 6+ require table reservation</p>
+</div>
+<!-- Pricing Summary -->
+<div class="space-y-4 pt-4">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Base Entry</span>
+<span class="text-on-surface font-bold">$0.00</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Venue Fee (Pay on Entry)</span>
+<span class="text-on-surface font-bold">$45.00</span>
+</div>
+<div class="h-px bg-outline-variant/10"></div>
+<div class="flex justify-between items-center">
+<span class="font-headline font-bold text-lg">Total Today</span>
+<span class="text-secondary font-headline text-2xl font-black">FREE</span>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full py-5 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary font-headline font-black text-lg uppercase tracking-wider shadow-[0_10px_30px_rgba(182,160,255,0.3)] hover:scale-[1.02] active:scale-95 transition-all" type="submit">
+              Book Now
+            </button>
+<p class="text-center text-[10px] uppercase font-bold tracking-widest text-on-surface-variant opacity-40">
+              Secured via AfterDark Cloud
+            </p>
+</form>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar from JSON (Hidden on Web, visible on Mobile via Shell logic) -->
+<nav class="md:hidden fixed bottom-0 w-full px-4 pb-8 flex justify-around items-center h-20 bg-[#2c2c2c]/50 backdrop-blur-2xl rounded-[2rem] z-50 overflow-hidden m-4 w-[calc(100%-2rem)] shadow-[0_20px_50px_rgba(182,160,255,0.15)]">
+<div class="flex flex-col items-center justify-center text-[#adaaaa] opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-semibold">Explore</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#ffffff] scale-110 transition-transform animate-pulse">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">confirmation_number</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-semibold">Bookings</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#adaaaa] opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">qr_code_2</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-semibold">Passes</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#adaaaa] opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Manrope'] text-[10px] uppercase tracking-widest font-semibold">Profile</span>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AFTERDARK | Role Selection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800;900&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#0e0e0e",
+              "surface-container-high": "#201f1f",
+              "surface-tint": "#b6a0ff",
+              "error": "#ff6e84",
+              "on-tertiary-container": "#59002e",
+              "surface-variant": "#262626",
+              "surface-container-low": "#131313",
+              "inverse-surface": "#fcf9f8",
+              "secondary": "#00e3fd",
+              "on-background": "#ffffff",
+              "on-error": "#490013",
+              "primary": "#b6a0ff",
+              "on-tertiary": "#690939",
+              "on-secondary-container": "#e8fbff",
+              "primary-fixed-dim": "#9c7eff",
+              "tertiary-fixed": "#ff8db6",
+              "on-primary": "#340090",
+              "secondary-fixed": "#26e6ff",
+              "primary-container": "#a98fff",
+              "tertiary-dim": "#ee77a3",
+              "tertiary-container": "#fb81ae",
+              "inverse-primary": "#6834eb",
+              "error-dim": "#d73357",
+              "on-error-container": "#ffb2b9",
+              "on-primary-fixed-variant": "#32008a",
+              "surface": "#0e0e0e",
+              "secondary-dim": "#00d4ec",
+              "on-surface-variant": "#adaaaa",
+              "surface-container": "#1a1919",
+              "on-secondary-fixed": "#003a42",
+              "secondary-fixed-dim": "#00d7f0",
+              "outline-variant": "#484847",
+              "surface-container-lowest": "#000000",
+              "surface-dim": "#0e0e0e",
+              "on-tertiary-fixed": "#37001a",
+              "tertiary-fixed-dim": "#f57ca9",
+              "secondary-container": "#006875",
+              "on-secondary": "#004d57",
+              "tertiary": "#ff96bb",
+              "on-primary-fixed": "#000000",
+              "on-tertiary-fixed-variant": "#70103e",
+              "error-container": "#a70138",
+              "on-surface": "#ffffff",
+              "primary-fixed": "#a98fff",
+              "outline": "#767575",
+              "inverse-on-surface": "#565555",
+              "on-secondary-fixed-variant": "#005964",
+              "primary-dim": "#7e51ff",
+              "on-primary-container": "#280072",
+              "surface-bright": "#2c2c2c",
+              "surface-container-highest": "#262626"
+            },
+            fontFamily: {
+              "headline": ["Epilogue"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(44, 44, 44, 0.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .text-glow {
+        text-shadow: 0 0 10px rgba(182, 160, 255, 0.5);
+      }
+      .cta-gradient {
+        background: linear-gradient(135deg, #b6a0ff 0%, #7e51ff 100%);
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body selection:bg-primary/30 antialiased overflow-hidden">
+<!-- Top Navigation Anchor (Suppressing Navigation for Transactional Focus) -->
+<header class="bg-[#0e0e0e]/80 backdrop-blur-xl fixed top-0 w-full z-50 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+<div class="flex justify-between items-center px-6 py-4 w-full">
+<div class="text-2xl font-black italic tracking-tighter text-[#b6a0ff] drop-shadow-[0_0_8px_rgba(182,160,255,0.5)] font-headline uppercase">
+                AFTERDARK
+            </div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#adaaaa] hover:text-[#ffffff] transition-colors duration-300 cursor-pointer">help_outline</span>
+</div>
+</div>
+</header>
+<main class="relative min-h-screen flex flex-col justify-center items-center px-4 pt-20">
+<!-- Background Ambient Glows -->
+<div class="fixed top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="fixed bottom-1/4 -right-20 w-96 h-96 bg-secondary/10 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="w-full max-w-6xl z-10">
+<!-- Header Editorial Moment -->
+<div class="mb-12 text-center md:text-left">
+<span class="font-label text-secondary uppercase tracking-[0.3em] text-xs font-bold mb-4 block">Select Your Realm</span>
+<h1 class="font-headline text-5xl md:text-7xl font-black tracking-tighter text-on-surface mb-2">HOW DO YOU <br/><span class="text-primary italic">EXPERIENCE</span> THE NIGHT?</h1>
+</div>
+<!-- Bento Role Selection Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-[530px] md:h-[500px]">
+<!-- Visitor Role Button -->
+<button class="group relative overflow-hidden rounded-[2rem] flex flex-col justify-end p-8 text-left transition-all duration-500 hover:scale-[1.02] active:scale-95 bg-surface-container">
+<div class="absolute inset-0">
+<img alt="Cinematic wide shot of a crowd in a neon-lit nightclub with purple and cyan strobe lights" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700 ease-out" data-alt="Cinematic wide shot of a crowd in a neon-lit nightclub with purple and cyan strobe lights and a dreamy bokeh effect" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlauvXu81-kWnHO6gro_9CGqggI1BLhgway8maqsw40AKGRnRlyCxmHxv6IVEOQE_u4ug6TaI1wRPh7_49Cb9McQRblMuFzMxDs0W82JwTot1ikB1hoiWSYIKL775_wnbGkJHjyNHIx9olBnbfqvVpwfzAWQ2H4oSzIf8Cmpzs2okobJ69Y7wGMq95iKhgWDrAcOJHIidcrC9hSPHQZdI5MSUDTBl24OK7sh203NOjSUuQq_tPqRynczVuv1u43vQ5iJA-LeQXcyXD"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/40 to-transparent"></div>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-2">
+<div class="h-px w-12 bg-secondary/50"></div>
+<span class="font-label text-secondary text-xs font-bold tracking-widest uppercase">The Attendee</span>
+</div>
+<h2 class="font-headline text-4xl font-extrabold text-on-surface mb-2">Visitor</h2>
+<p class="font-body text-on-surface-variant max-w-xs leading-relaxed opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                            Discover curated events, secure exclusive entry, and navigate the world's most elite nocturnal experiences.
+                        </p>
+<div class="mt-6 flex items-center gap-2 text-primary font-bold font-label uppercase text-sm tracking-widest">
+                            Enter the night
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</div>
+</div>
+</button>
+<!-- Organizer / Owner Role Button -->
+<button class="group relative overflow-hidden rounded-[2rem] flex flex-col justify-end p-8 text-left transition-all duration-500 hover:scale-[1.02] active:scale-95 bg-surface-container">
+<div class="absolute inset-0">
+<img alt="Close-up of high-end cocktail bar with professional lighting and crystal glasses in a moody dark lounge" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700 ease-out" data-alt="Close-up of high-end cocktail bar with professional lighting and crystal glasses in a moody dark lounge with cinematic depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-mL5EizqPk0o3c5OPyhjBRtxmhaQh1eFgo_Y6kE_a57Y6PNmIUuZgrjfW2FnQoTUNDKTgry0yAaqsrgFfQxNG9GqNPvdtET066vciVIpbqUriS21_4IgOHDLvEEs8fH9N10P7CQekXI6y9aVz9Nz-zCfrF0JinxtPRl-CHe79iPntc5HQ1qTFPcLkWJfewEcUgLFIcZ52EC1Kfl0lOZV-3KbHA97HTWeaSJ5suV_4X7lcRlaYlZ-LrZdwrRGJeeRAljPViOGsismy"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/40 to-transparent"></div>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-2">
+<div class="h-px w-12 bg-primary/50"></div>
+<span class="font-label text-primary text-xs font-bold tracking-widest uppercase">The Architect</span>
+</div>
+<h2 class="font-headline text-4xl font-extrabold text-on-surface mb-2">Organizer / Owner</h2>
+<p class="font-body text-on-surface-variant max-w-xs leading-relaxed opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                            Command your venue, orchestrate high-profile events, and manage guestlists with editorial precision.
+                        </p>
+<div class="mt-6 flex items-center gap-2 text-secondary font-bold font-label uppercase text-sm tracking-widest">
+                            Claim your space
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</div>
+</div>
+</button>
+</div>
+<!-- Minimal Footer Hint -->
+<div class="mt-12 text-center md:flex md:justify-between md:items-center">
+<p class="font-label text-[10px] text-on-surface-variant uppercase tracking-[0.4em]">Membership verification required for premium access.</p>
+<div class="hidden md:flex gap-8">
+<a class="text-[10px] font-bold text-on-surface-variant hover:text-on-surface uppercase tracking-widest transition-colors" href="#">Privacy</a>
+<a class="text-[10px] font-bold text-on-surface-variant hover:text-on-surface uppercase tracking-widest transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+</main>
+<!-- Content-First Minimal Shell (Bottom Navigation Suppressed for Focus) -->
+</body></html>
