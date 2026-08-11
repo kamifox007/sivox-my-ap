@@ -18,18 +18,20 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Sivox - Experience the pulse of the night. Exclusive events, clubs, and cultural experiences.">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="my_app">
+  <meta name="apple-mobile-web-app-title" content="Sivox">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>my_app</title>
+  <meta name="google-signin-client_id" content="1019204925261-6a2f1o20f3bggg4li7dihnff6lg8daeb.apps.googleusercontent.com">
+
+  <title>Sivox - Event Platform</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -41,6 +43,25 @@
     For more details:
     * https://docs.flutter.dev/platform-integration/web/initialization
   -->
+  <div id="loading-indicator" style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #0A0A0B; color: #CCFF00; font-family: sans-serif;">
+    <div style="text-align: center;">
+      <div style="width: 50px; height: 50px; border: 3px solid rgba(204, 255, 0, 0.1); border-top-color: #CCFF00; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+      <div style="font-weight: bold; letter-spacing: 2px;">Sivox</div>
+    </div>
+  </div>
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
   <script src="flutter_bootstrap.js" async></script>
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Clean up loading indicator once Flutter is ready
+      var loading = document.getElementById('loading-indicator');
+      if (loading) {
+        // We can't easily detect Flutter ready here, 
+        // but this script will run after assets are loaded.
+      }
+    });
+  </script>
 </body>
 </html>

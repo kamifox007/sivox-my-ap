@@ -1,0 +1,35 @@
+﻿Analyzing my_app...                                             
+
+   info - 'desiredAccuracy' is deprecated and shouldn't be used. use settings parameter with AndroidSettings, AppleSettings, WebSettings, or LocationSettings - lib\create_event.dart:236:63 - deprecated_member_use
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\event_details.dart:898:15 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\event_details.dart:920:33 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\event_details.dart:921:40 - use_build_context_synchronously
+warning - Unused import: 'package:my_app/services/booking_service.dart' - lib\event_manage_details.dart:6:8 - unused_import
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\home_feed.dart:313:11 - deprecated_member_use
+   info - 'share' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\home_feed.dart:313:17 - deprecated_member_use
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\organizer_dashboard.dart:103:11 - deprecated_member_use
+   info - 'share' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\organizer_dashboard.dart:103:17 - deprecated_member_use
+warning - The value of the local variable 'bookings' isn't used - lib\organizer_dashboard.dart:141:15 - unused_local_variable
+warning - The declaration '_buildActivityStream' isn't referenced - lib\organizer_dashboard.dart:173:10 - unused_element
+warning - The value of the local variable 'isModified' isn't used - lib\organizer_dashboard.dart:182:15 - unused_local_variable
+warning - The declaration '_buildRecentBookings' isn't referenced - lib\organizer_dashboard.dart:618:10 - unused_element
+   info - Don't use 'BuildContext's across async gaps - lib\scan_entry.dart:390:41 - use_build_context_synchronously
+warning - The '!' will have no effect because the receiver can't be null - lib\scan_entry.dart:407:53 - unnecessary_non_null_assertion
+warning - The '!' will have no effect because the receiver can't be null - lib\scan_entry.dart:445:52 - unnecessary_non_null_assertion
+warning - The '!' will have no effect because the receiver can't be null - lib\scan_entry.dart:446:53 - unnecessary_non_null_assertion
+warning - The '!' will have no effect because the receiver can't be null - lib\scan_entry.dart:447:55 - unnecessary_non_null_assertion
+   info - Don't use 'BuildContext's across async gaps - lib\scan_entry.dart:460:43 - use_build_context_synchronously
+warning - The '!' will have no effect because the receiver can't be null - lib\scan_entry.dart:467:49 - unnecessary_non_null_assertion
+warning - The '!' will have no effect because the receiver can't be null - lib\scan_entry.dart:467:107 - unnecessary_non_null_assertion
+warning - The '!' will have no effect because the receiver can't be null - lib\scan_entry.dart:472:32 - unnecessary_non_null_assertion
+warning - The '!' will have no effect because the receiver can't be null - lib\scan_entry.dart:472:127 - unnecessary_non_null_assertion
+warning - The '!' will have no effect because the receiver can't be null - lib\scan_entry.dart:514:72 - unnecessary_non_null_assertion
+warning - The '!' will have no effect because the receiver can't be null - lib\scan_entry.dart:517:92 - unnecessary_non_null_assertion
+warning - The '!' will have no effect because the receiver can't be null - lib\scan_entry.dart:518:54 - unnecessary_non_null_assertion
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\scan_entry.dart:522:52 - use_build_context_synchronously
+warning - The '!' will have no effect because the receiver can't be null - lib\scan_entry.dart:550:59 - unnecessary_non_null_assertion
+   info - Use the null-aware marker '?' rather than a null check via an 'if' - lib\services\booking_service.dart:134:9 - use_null_aware_elements
+   info - The imported package 'path' isn't a dependency of the importing package - lib\services\storage_service.dart:3:8 - depend_on_referenced_packages
+warning - Unused import: 'package:my_app/services/translation_service.dart' - lib\staff_acceptance_screen.dart:4:8 - unused_import
+   info - Unnecessary 'const' keyword - lib\staff_acceptance_screen.dart:179:22 - unnecessary_const
+

@@ -1,0 +1,769 @@
+﻿
+  error - The named parameter 'assignment' is required, but there's no corresponding argument - lib\main.dart:113:35 - 
+missing_required_argument
+  error - The named parameter 'assignmentId' isn't defined - lib\main.dart:113:57 - undefined_named_parameter
+  error - The named parameter 'filter' isn't defined - lib\screens\account_selector.dart:110:223 - 
+undefined_named_parameter
+  error - The property 'paymentStatus' can't be unconditionally accessed because the receiver can be 'null' - 
+lib\screens\archive_ledger_screen.dart:37:28 - unchecked_use_of_nullable_value
+  error - The property 'paymentStatus' can't be unconditionally accessed because the receiver can be 'null' - 
+lib\screens\archive_ledger_screen.dart:37:57 - unchecked_use_of_nullable_value
+  error - The property 'event' can't be unconditionally accessed because the receiver can be 'null' - 
+lib\screens\archive_ledger_screen.dart:38:28 - unchecked_use_of_nullable_value
+  error - The property 'event' can't be unconditionally accessed because the receiver can be 'null' - 
+lib\screens\archive_ledger_screen.dart:38:72 - unchecked_use_of_nullable_value
+  error - 'BoxShadow' isn't a function - lib\screens\auth_screen.dart:175:21 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\auth_screen.dart:175:21 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\auth_screen.dart:186:18 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\auth_screen.dart:186:18 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\auth_screen.dart:206:12 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\auth_screen.dart:206:12 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\auth_screen.dart:234:14 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\auth_screen.dart:234:14 - ambiguous_import
+  error - The method 'cancelBookingWithReason' isn't defined for the type 'BookingService' - 
+lib\screens\booking_management.dart:133:52 - undefined_method
+  error - The named parameter 'appBar' isn't defined - lib\screens\booking_management.dart:170:7 - 
+undefined_named_parameter
+  error - Too many positional arguments: 1 expected, but 2 found - lib\screens\club_dashboard.dart:44:47 - 
+extra_positional_arguments
+  error - The name 'FetchOptions' isn't a class - lib\screens\club_dashboard.dart:44:53 - creation_with_non_type
+  error - Too many positional arguments: 1 expected, but 2 found - lib\screens\club_dashboard.dart:45:59 - 
+extra_positional_arguments
+  error - The name 'FetchOptions' isn't a class - lib\screens\club_dashboard.dart:45:65 - creation_with_non_type
+  error - Too many positional arguments: 1 expected, but 2 found - lib\screens\club_dashboard.dart:46:58 - 
+extra_positional_arguments
+  error - The name 'FetchOptions' isn't a class - lib\screens\club_dashboard.dart:46:64 - creation_with_non_type
+  error - The getter 'count' isn't defined for the type 'PostgrestList' - lib\screens\club_dashboard.dart:49:33 - 
+undefined_getter
+  error - The getter 'count' isn't defined for the type 'PostgrestList' - lib\screens\club_dashboard.dart:50:36 - 
+undefined_getter
+  error - The getter 'count' isn't defined for the type 'PostgrestList' - lib\screens\club_dashboard.dart:51:33 - 
+undefined_getter
+  error - The named parameter 'filter' isn't defined - lib\screens\club_dashboard.dart:66:180 - 
+undefined_named_parameter
+  error - The named parameter 'organizerId' isn't defined - lib\screens\club_dashboard.dart:172:91 - 
+undefined_named_parameter
+  error - The name 'MasterOperationalLedger' isn't a class - lib\screens\club_dashboard.dart:178:75 - 
+creation_with_non_type
+  error - Target of URI doesn't exist: 'package:my_app:services/localization_service.dart' - 
+lib\screens\club_profile.dart:10:8 - uri_does_not_exist
+  error - Couldn't infer type parameter 'E'.
+  error - The argument type 'List<Object>' can't be assigned to the parameter type 'Iterable<Future<dynamic>>'.  - 
+lib\screens\club_profile.dart:64:41 - argument_type_not_assignable
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:125:36 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:126:44 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:128:87 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:131:34 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:141:91 - undefined_getter
+  error - Undefined name 'isOwner' - lib\screens\club_profile.dart:169:53 - undefined_identifier
+  error - The method 'StaffStatsScreen' isn't defined for the type '_ClubProfileScreenState' - 
+lib\screens\club_profile.dart:191:80 - undefined_method
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:248:40 - undefined_getter
+  error - The name 'ClubProfileEditorScreen' isn't a class - lib\screens\club_profile.dart:319:72 - 
+creation_with_non_type
+  error - Undefined name 'OrganizerMainWrapper' - lib\screens\club_profile.dart:321:8 - undefined_identifier
+  error - The method 'StaffStatsScreen' isn't defined for the type '_ClubProfileScreenState' - 
+lib\screens\club_profile.dart:325:66 - undefined_method
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:370:43 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:371:46 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:372:43 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:408:46 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:434:45 - undefined_getter
+  error - Undefined name 'OrganizerMainWrapper' - lib\screens\club_profile.dart:436:34 - undefined_identifier
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:443:40 - undefined_getter
+  error - The name 'CreateEventScreen' isn't a class - lib\screens\club_profile.dart:445:98 - creation_with_non_type
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:453:41 - undefined_getter
+  error - The name 'ClubProfileEditorScreen' isn't a class - lib\screens\club_profile.dart:455:93 - 
+creation_with_non_type
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:464:97 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:479:62 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:479:76 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:530:32 - undefined_getter
+  error - The method 'canLaunch' isn't defined for the type '_ClubProfileScreenState' - 
+lib\screens\club_profile.dart:542:15 - undefined_method
+  error - The method 'launch' isn't defined for the type '_ClubProfileScreenState' - 
+lib\screens\club_profile.dart:544:13 - undefined_method
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:590:35 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:595:66 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:598:80 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:603:95 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:605:32 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:617:40 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:618:41 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:620:80 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:627:98 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:630:33 - undefined_getter
+  error - The name '_buildIGStat' is already defined - lib\screens\club_profile.dart:637:10 - duplicate_definition
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:642:20 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:672:50 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:673:47 - undefined_getter
+  error - The named parameter 'border' isn't defined - lib\screens\club_profile.dart:714:81 - undefined_named_parameter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:717:27 - undefined_getter
+  error - The named parameter 'border' isn't defined - lib\screens\club_profile.dart:727:78 - undefined_named_parameter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:736:34 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:765:32 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:791:44 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:804:94 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:815:104 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:819:118 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:906:88 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:915:96 - undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:971:138 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:972:163 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:1024:37 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:1026:87 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:1027:86 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:1046:88 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:1055:96 - 
+undefined_getter
+  error - Undefined name '_notifications' - lib\screens\club_profile.dart:1069:7 - undefined_identifier
+  error - The method 'trArgs' isn't defined for the type 'String' - lib\screens\club_profile.dart:1071:39 - 
+undefined_method
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:1072:37 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:1078:100 - 
+undefined_getter
+  error - Undefined name 'LocalizationService' - lib\screens\club_profile.dart:1187:28 - undefined_identifier
+  error - The method 'CreateEventScreen' isn't defined for the type '_ClubProfileScreenState' - 
+lib\screens\club_profile.dart:1224:70 - undefined_method
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:1282:46 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\club_profile.dart:1303:40 - 
+undefined_getter
+  error - Undefined name 'Geolocator' - lib\screens\club_profile_editor.dart:310:30 - undefined_identifier
+  error - Undefined name 'LocationAccuracy' - lib\screens\club_profile_editor.dart:310:77 - undefined_identifier
+  error - A value of type 'String?' can't be assigned to a variable of type 'String' - 
+lib\screens\create_event.dart:86:35 - invalid_assignment
+  error - A value of type 'String?' can't be assigned to a variable of type 'String' - 
+lib\screens\create_event.dart:87:28 - invalid_assignment
+  error - The named parameter 'galleryUrls' isn't defined - lib\screens\create_event.dart:298:13 - 
+undefined_named_parameter
+  error - The name 'OrganizerDashboardScreen' isn't a class - lib\screens\create_event.dart:357:88 - 
+creation_with_non_type
+  error - Undefined name '_pickedLat' - lib\screens\create_event.dart:669:22 - undefined_identifier
+  error - Undefined name '_pickedLng' - lib\screens\create_event.dart:669:44 - undefined_identifier
+  error - The method 'sendMockNotification' isn't defined for the type 'NotificationService' - 
+lib\screens\event_details.dart:135:23 - undefined_method
+  error - The method 'sendMockNotification' isn't defined for the type 'NotificationService' - 
+lib\screens\event_details.dart:139:23 - undefined_method
+  error - The name '_buildOrganizerHeader' is already defined - lib\screens\event_details.dart:390:10 - 
+duplicate_definition
+  error - The method 'getSecurityStats' isn't defined for the type 'AuditService' - 
+lib\screens\event_ledger_detail.dart:33:41 - undefined_method
+  error - The method 'NotificationService' isn't defined for the type '_EventManageDetailsScreenState' - 
+lib\screens\event_manage_details.dart:273:26 - undefined_method
+  error - The method 'NotificationService' isn't defined for the type '_EventManageDetailsScreenState' - 
+lib\screens\event_manage_details.dart:545:26 - undefined_method
+  error - The method '_buildOrganizeFAB' isn't defined for the type '_HomeFeedScreenState' - 
+lib\screens\home_feed.dart:200:52 - undefined_method
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:240:28 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:240:28 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:265:32 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:265:32 - ambiguous_import
+  error - 'BoxShadow' isn't a function - lib\screens\home_feed.dart:366:43 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:366:43 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:388:16 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:388:16 - ambiguous_import
+  error - The name 'SupportForm' isn't a class - lib\screens\home_feed.dart:394:141 - creation_with_non_type
+  error - The name 'FavoritesScreen' isn't a class - lib\screens\home_feed.dart:395:135 - creation_with_non_type
+  error - The name 'ArchiveLedgerScreen' isn't a class - lib\screens\home_feed.dart:396:132 - creation_with_non_type
+  error - The name 'AccountSelectorScreen' isn't a class - lib\screens\home_feed.dart:403:139 - creation_with_non_type
+  error - The name 'AuthScreen' isn't a class - lib\screens\home_feed.dart:407:193 - creation_with_non_type
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:430:16 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:430:16 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:461:28 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:461:28 - ambiguous_import
+  error - The method 'ClubProfileScreen' isn't defined for the type '_HomeFeedScreenState' - 
+lib\screens\home_feed.dart:512:78 - undefined_method
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:515:16 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:515:16 - ambiguous_import
+  error - 'BoxShadow' isn't a function - lib\screens\home_feed.dart:526:33 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:526:33 - ambiguous_import
+  error - 'BoxShadow' isn't a function - lib\screens\home_feed.dart:573:21 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:573:21 - ambiguous_import
+  error - 'BoxShadow' isn't a function - lib\screens\home_feed.dart:630:13 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:630:13 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:644:20 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:644:20 - ambiguous_import
+  error - 'BoxShadow' isn't a function - lib\screens\home_feed.dart:654:35 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:654:35 - ambiguous_import
+  error - The named parameter 'backdropFilter' isn't defined - lib\screens\home_feed.dart:698:9 - 
+undefined_named_parameter
+  error - Undefined name 'ImageFilter' - lib\screens\home_feed.dart:698:25 - undefined_identifier
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:700:14 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:700:14 - ambiguous_import
+  error - 'BoxShadow' isn't a function - lib\screens\home_feed.dart:729:11 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:729:11 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:732:14 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:732:14 - ambiguous_import
+  error - 'BoxShadow' isn't a function - lib\screens\home_feed.dart:763:29 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:763:29 - ambiguous_import
+  error - 'BoxShadow' isn't a function - lib\screens\home_feed.dart:791:39 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:791:39 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:809:20 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:809:20 - ambiguous_import
+  error - 'BoxShadow' isn't a function - lib\screens\home_feed.dart:848:11 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:848:11 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:851:14 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:851:14 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:899:26 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:899:26 - ambiguous_import
+  error - 'BoxShadow' isn't a function - lib\screens\home_feed.dart:928:11 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:928:11 - ambiguous_import
+  error - Undefined name 'ImageFilter' - lib\screens\home_feed.dart:934:19 - undefined_identifier
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:958:16 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:958:16 - ambiguous_import
+  error - Expected to find ';' - lib\screens\home_feed.dart:980:11 - expected_token
+  error - Expected an identifier - lib\screens\home_feed.dart:980:12 - missing_identifier
+  error - Unexpected text ';' - lib\screens\home_feed.dart:980:12 - unexpected_token
+  error - Expected to find ';' - lib\screens\home_feed.dart:992:11 - expected_token
+  error - Expected an identifier - lib\screens\home_feed.dart:992:12 - missing_identifier
+  error - Expected to find ';' - lib\screens\home_feed.dart:992:12 - expected_token
+  error - Unexpected text ';' - lib\screens\home_feed.dart:992:12 - unexpected_token
+  error - Expected an identifier - lib\screens\home_feed.dart:993:9 - missing_identifier
+  error - Expected to find ';' - lib\screens\home_feed.dart:993:9 - expected_token
+  error - Unexpected text ';' - lib\screens\home_feed.dart:993:9 - unexpected_token
+  error - Expected an identifier - lib\screens\home_feed.dart:993:10 - missing_identifier
+  error - Expected to find ';' - lib\screens\home_feed.dart:993:10 - expected_token
+  error - Unexpected text ';' - lib\screens\home_feed.dart:993:10 - unexpected_token
+  error - Expected an identifier - lib\screens\home_feed.dart:994:7 - missing_identifier
+  error - Expected to find ';' - lib\screens\home_feed.dart:994:7 - expected_token
+  error - Unexpected text ';' - lib\screens\home_feed.dart:994:7 - unexpected_token
+  error - Expected an identifier - lib\screens\home_feed.dart:994:8 - missing_identifier
+  error - Expected to find ';' - lib\screens\home_feed.dart:994:8 - expected_token
+  error - Unexpected text ';' - lib\screens\home_feed.dart:994:8 - unexpected_token
+  error - Expected an identifier - lib\screens\home_feed.dart:995:5 - missing_identifier
+  error - Unexpected text ';' - lib\screens\home_feed.dart:995:5 - unexpected_token
+  error - 'BoxShadow' isn't a function - lib\screens\home_feed.dart:998:143 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:998:143 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:1003:78 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:1003:78 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\home_feed.dart:1045:14 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\home_feed.dart:1045:14 - ambiguous_import
+  error - The method 'getGlobalCensus' isn't defined for the type 'AuditService' - 
+lib\screens\master_operational_ledger.dart:32:21 - undefined_method
+  error - The named parameter 'expandedHeight' isn't defined - lib\screens\master_operational_ledger.dart:104:7 - 
+undefined_named_parameter
+  error - The method 'getSecurityStats' isn't defined for the type 'AuditService' - 
+lib\screens\operational_ledger_hub.dart:37:48 - undefined_method
+  error - The getter 'scannedAt' isn't defined for the type 'Booking' - lib\screens\organizer_dashboard.dart:88:45 - 
+undefined_getter
+  error - The getter 'scannedAt' isn't defined for the type 'Booking' - lib\screens\organizer_dashboard.dart:88:90 - 
+undefined_getter
+  error - The getter 'scannedAt' isn't defined for the type 'Booking' - lib\screens\organizer_dashboard.dart:88:113 - 
+undefined_getter
+  error - The named parameter 'organizerName' is required, but there's no corresponding argument - 
+lib\screens\organizer_dashboard.dart:240:98 - missing_required_argument
+  error - The getter 'scannedAt' isn't defined for the type 'Booking' - lib\screens\organizer_dashboard.dart:392:28 - 
+undefined_getter
+  error - Undefined name 'data' - lib\screens\organizer_dashboard.dart:409:27 - undefined_identifier
+  error - The named parameter 'mainAxisSize' isn't defined - lib\screens\organizer_dashboard.dart:504:11 - 
+undefined_named_parameter
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - 
+lib\screens\organizer_dashboard.dart:529:26 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - 
+lib\screens\organizer_dashboard.dart:529:26 - obsolete_colon_for_default_value
+  error - Methods can't be invoked in constant expressions - lib\screens\organizer_dashboard.dart:529:28 - 
+const_eval_method_invocation
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - 
+lib\screens\organizer_dashboard.dart:529:81 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - 
+lib\screens\organizer_dashboard.dart:529:81 - obsolete_colon_for_default_value
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - 
+lib\screens\organizer_dashboard.dart:529:99 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - 
+lib\screens\organizer_dashboard.dart:529:99 - obsolete_colon_for_default_value
+  error - A function body must be provided - lib\screens\organizer_dashboard.dart:530:9 - missing_function_body
+  error - Expected a method, getter, setter or operator declaration - lib\screens\organizer_dashboard.dart:530:9 - 
+expected_executable
+  error - Expected a method, getter, setter or operator declaration - lib\screens\organizer_dashboard.dart:530:10 - 
+expected_executable
+  error - Expected a method, getter, setter or operator declaration - lib\screens\organizer_dashboard.dart:531:7 - 
+expected_executable
+  error - Expected a method, getter, setter or operator declaration - lib\screens\organizer_dashboard.dart:531:8 - 
+expected_executable
+  error - Expected to find ';' - lib\screens\organizer_dashboard.dart:532:7 - expected_token
+  error - Variables must be declared using the keywords 'const', 'final', 'var' or a type name - 
+lib\screens\organizer_dashboard.dart:532:7 - missing_const_final_var_or_type
+  error - Expected a method, getter, setter or operator declaration - lib\screens\organizer_dashboard.dart:532:12 - 
+expected_executable
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - 
+lib\screens\organizer_dashboard.dart:533:27 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - 
+lib\screens\organizer_dashboard.dart:533:27 - obsolete_colon_for_default_value
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - 
+lib\screens\organizer_dashboard.dart:534:17 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - 
+lib\screens\organizer_dashboard.dart:534:17 - obsolete_colon_for_default_value
+  error - The default value of an optional parameter must be constant - lib\screens\organizer_dashboard.dart:534:19 - 
+non_constant_default_value
+  error - Undefined name 'data' - lib\screens\organizer_dashboard.dart:584:64 - undefined_identifier
+  error - Undefined name 'data' - lib\screens\organizer_dashboard.dart:588:100 - undefined_identifier
+  error - Undefined name '_userCountryCode' - lib\screens\organizer_dashboard.dart:588:140 - undefined_identifier
+  error - Undefined name 'context' - lib\screens\organizer_dashboard.dart:613:51 - undefined_identifier
+  error - The function '_refresh' isn't defined - lib\screens\organizer_dashboard.dart:613:140 - undefined_function
+  error - A function body must be provided - lib\screens\organizer_dashboard.dart:626:8 - missing_function_body
+  error - Expected a method, getter, setter or operator declaration - lib\screens\organizer_dashboard.dart:626:8 - 
+expected_executable
+  error - Expected a method, getter, setter or operator declaration - lib\screens\organizer_dashboard.dart:627:5 - 
+expected_executable
+  error - Unexpected text ';' - lib\screens\organizer_dashboard.dart:627:6 - unexpected_token
+  error - Expected a method, getter, setter or operator declaration - lib\screens\organizer_dashboard.dart:628:3 - 
+expected_executable
+  error - Undefined name 'context' - lib\screens\organizer_dashboard.dart:632:16 - undefined_identifier
+  error - The named parameter 'mainAxisSize' isn't defined - lib\screens\organizer_dashboard.dart:639:11 - 
+undefined_named_parameter
+  error - Expected a method, getter, setter or operator declaration - lib\screens\organizer_dashboard.dart:718:1 - 
+expected_executable
+  error - The function '_refresh' isn't defined - lib\screens\organizer_dashboard.dart:739:143 - undefined_function
+  error - The named parameter 'mainAxisAlignment' isn't defined - lib\screens\organizer_dashboard.dart:750:31 - 
+undefined_named_parameter
+  error - Expected a method, getter, setter or operator declaration - lib\screens\organizer_dashboard.dart:776:1 - 
+expected_executable
+  error - The method 'getFollowers' isn't defined for the type 'FollowService' - 
+lib\screens\organizer_followers_screen.dart:31:48 - undefined_method
+  error - Target of URI doesn't exist: 'package:my_app/screens/account_selector_screen.dart' - 
+lib\screens\profile.dart:13:8 - uri_does_not_exist
+  error - 'Column' isn't a function - lib\screens\profile.dart:71:26 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - lib\screens\profile.dart:71:26 
+- ambiguous_import
+  error - The name 'AccountSelectorScreen' isn't a class - lib\screens\profile.dart:107:99 - creation_with_non_type
+  error - Undefined name '_staffAssignment' - lib\screens\profile.dart:112:31 - undefined_identifier
+  error - 'Column' isn't a function - lib\screens\profile.dart:154:12 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\profile.dart:154:12 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\profile.dart:168:18 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\profile.dart:168:18 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\profile.dart:186:13 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\profile.dart:186:13 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\profile.dart:256:39 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\profile.dart:256:39 - ambiguous_import
+  error - 'Column' isn't a function - lib\screens\profile.dart:350:16 - invocation_of_non_function
+  error - The name 'Column' is defined in the libraries 'package:flutter/src/widgets/basic.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\profile.dart:350:16 - ambiguous_import
+  error - 'BoxShadow' isn't a function - lib\screens\profile.dart:379:143 - invocation_of_non_function
+  error - The name 'BoxShadow' is defined in the libraries 'package:flutter/src/painting/box_shadow.dart (via 
+package:flutter/material.dart)' and 'package:my_app/screens/organizer_dashboard.dart' - 
+lib\screens\profile.dart:379:143 - ambiguous_import
+  error - Undefined name '_supabase' - lib\screens\scan_entry.dart:603:46 - undefined_identifier
+  error - Undefined name 'OrganizerMainWrapper' - lib\screens\scan_entry.dart:614:26 - undefined_identifier
+  error - Undefined name '_supabase' - lib\screens\scan_entry.dart:623:55 - undefined_identifier
+  error - The named parameter 'opacity' isn't defined - lib\screens\scan_entry.dart:639:13 - undefined_named_parameter
+  error - Undefined name '_eventStartTime' - lib\screens\scan_entry.dart:792:38 - undefined_identifier
+  error - Invalid constant value - lib\screens\scan_entry.dart:792:96 - invalid_constant
+  error - The getter 'secondary' isn't defined for the type 'Colors' - lib\screens\scan_entry.dart:792:103 - 
+undefined_getter
+  error - A value of type 'double' can't be assigned to a variable of type 'int' - lib\screens\scan_entry.dart:979:40 
+- invalid_assignment
+  error - The name 'ScanEntryScreen' isn't a class - lib\screens\staff_acceptance_screen.dart:39:88 - 
+creation_with_non_type
+  error - Undefined name 'OrganizerMainWrapper' - lib\screens\staff_acceptance_screen.dart:42:13 - undefined_identifier
+  error - Classes can only extend other classes - lib\screens\staff_event_selector.dart:6:34 - extends_non_class
+  error - No associated named super constructor parameter - lib\screens\staff_event_selector.dart:11:11 - 
+super_formal_parameter_without_associated_named
+  error - Undefined class 'State' - lib\screens\staff_event_selector.dart:17:3 - undefined_class
+  error - Classes can only extend other classes - lib\screens\staff_event_selector.dart:20:40 - extends_non_class
+  error - The method 'EventService' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:21:25 - undefined_method
+  error - The name 'Event' isn't a type, so it can't be used as a type argument - 
+lib\screens\staff_event_selector.dart:24:8 - non_type_as_type_argument
+  error - Undefined class 'Event' - lib\screens\staff_event_selector.dart:26:32 - undefined_class
+  error - The method 'setState' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:27:5 - undefined_method
+  error - Undefined name 'widget' - lib\screens\staff_event_selector.dart:34:19 - undefined_identifier
+  error - The method 'setState' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:38:5 - undefined_method
+  error - The method 'initState' isn't defined in a superclass of '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:43:11 - undefined_super_member
+  error - The method 'setState' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:48:5 - undefined_method
+  error - Undefined name 'widget' - lib\screens\staff_event_selector.dart:50:74 - undefined_identifier
+  error - The method 'setState' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:51:7 - undefined_method
+  error - The method 'setState' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:56:7 - undefined_method
+  error - Undefined class 'Widget' - lib\screens\staff_event_selector.dart:61:3 - undefined_class
+  error - Undefined class 'BuildContext' - lib\screens\staff_event_selector.dart:61:16 - undefined_class
+  error - The method 'Scaffold' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:62:12 - undefined_method
+  error - Undefined name 'AppTheme' - lib\screens\staff_event_selector.dart:63:24 - undefined_identifier
+  error - The method 'AppBar' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:64:15 - undefined_method
+  error - Undefined name 'Colors' - lib\screens\staff_event_selector.dart:65:26 - undefined_identifier
+  error - The method 'Text' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:67:16 - undefined_method
+  error - Undefined name 'widget' - lib\screens\staff_event_selector.dart:67:21 - undefined_identifier
+  error - Undefined name 'AppTheme' - lib\screens\staff_event_selector.dart:67:64 - undefined_identifier
+  error - The method 'IconButton' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:68:18 - undefined_method
+  error - The name 'Icon' isn't a class - lib\screens\staff_event_selector.dart:69:23 - creation_with_non_type
+  error - Undefined name 'Icons' - lib\screens\staff_event_selector.dart:69:28 - undefined_identifier
+  error - Undefined name 'Colors' - lib\screens\staff_event_selector.dart:69:61 - undefined_identifier
+  error - Undefined name 'Navigator' - lib\screens\staff_event_selector.dart:70:28 - undefined_identifier
+  error - The name 'Center' isn't a class - lib\screens\staff_event_selector.dart:74:17 - creation_with_non_type
+  error - The method 'CircularProgressIndicator' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:74:31 - undefined_method
+  error - Undefined name 'AppTheme' - lib\screens\staff_event_selector.dart:74:64 - undefined_identifier
+  error - The method 'Padding' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:75:11 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\screens\staff_event_selector.dart:76:28 - undefined_identifier
+  error - The method 'Column' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:77:20 - undefined_method
+  error - Undefined name 'CrossAxisAlignment' - lib\screens\staff_event_selector.dart:78:35 - undefined_identifier
+  error - The method 'Text' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:80:17 - undefined_method
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\staff_event_selector.dart:80:37 - 
+undefined_getter
+  error - Undefined name 'AppTheme' - lib\screens\staff_event_selector.dart:80:62 - undefined_identifier
+  error - Undefined name 'AppTheme' - lib\screens\staff_event_selector.dart:80:98 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\screens\staff_event_selector.dart:81:23 - creation_with_non_type
+  error - The method 'Text' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:82:17 - undefined_method
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\staff_event_selector.dart:82:47 - 
+undefined_getter
+  error - Undefined name 'AppTheme' - lib\screens\staff_event_selector.dart:82:58 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\screens\staff_event_selector.dart:83:23 - creation_with_non_type
+  error - The method 'Expanded' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:84:17 - undefined_method
+  error - The method 'Center' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:86:23 - undefined_method
+  error - The method 'Text' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:86:37 - undefined_method
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\staff_event_selector.dart:86:61 - 
+undefined_getter
+  error - The name 'TextStyle' isn't a class - lib\screens\staff_event_selector.dart:86:78 - creation_with_non_type
+  error - Undefined name 'Colors' - lib\screens\staff_event_selector.dart:86:95 - undefined_identifier
+  error - Undefined name 'ListView' - lib\screens\staff_event_selector.dart:87:23 - undefined_identifier
+  error - Undefined class 'Widget' - lib\screens\staff_event_selector.dart:98:3 - undefined_class
+  error - Undefined class 'Event' - lib\screens\staff_event_selector.dart:98:21 - undefined_class
+  error - The method 'GestureDetector' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:99:12 - undefined_method
+  error - Undefined name 'Navigator' - lib\screens\staff_event_selector.dart:100:20 - undefined_identifier
+  error - Undefined name 'context' - lib\screens\staff_event_selector.dart:100:35 - undefined_identifier
+  error - The method 'MaterialPageRoute' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:100:44 - undefined_method
+  error - Undefined name 'widget' - lib\screens\staff_event_selector.dart:101:22 - undefined_identifier
+  error - The method 'Container' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:104:14 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\screens\staff_event_selector.dart:105:23 - undefined_identifier
+  error - Undefined name 'EdgeInsets' - lib\screens\staff_event_selector.dart:106:24 - undefined_identifier
+  error - The method 'BoxDecoration' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:107:21 - undefined_method
+  error - Undefined name 'Colors' - lib\screens\staff_event_selector.dart:108:18 - undefined_identifier
+  error - Undefined name 'BorderRadius' - lib\screens\staff_event_selector.dart:109:25 - undefined_identifier
+  error - Undefined name 'Border' - lib\screens\staff_event_selector.dart:110:19 - undefined_identifier
+  error - Undefined name 'Colors' - lib\screens\staff_event_selector.dart:110:37 - undefined_identifier
+  error - The method 'Row' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:112:16 - undefined_method
+  error - The method 'Container' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:114:13 - undefined_method
+  error - The method 'BoxDecoration' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:116:27 - undefined_method
+  error - Undefined name 'BorderRadius' - lib\screens\staff_event_selector.dart:117:31 - undefined_identifier
+  error - The method 'DecorationImage' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:118:45 - undefined_method
+  error - The method 'NetworkImage' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:118:68 - undefined_method
+  error - Undefined name 'BoxFit' - lib\screens\staff_event_selector.dart:118:100 - undefined_identifier
+  error - Undefined name 'Colors' - lib\screens\staff_event_selector.dart:119:24 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\screens\staff_event_selector.dart:122:19 - creation_with_non_type
+  error - The method 'Expanded' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:123:13 - undefined_method
+  error - The method 'Column' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:124:22 - undefined_method
+  error - Undefined name 'CrossAxisAlignment' - lib\screens\staff_event_selector.dart:125:37 - undefined_identifier
+  error - The method 'Text' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:127:19 - undefined_method
+  error - The name 'TextStyle' isn't a class - lib\screens\staff_event_selector.dart:127:46 - creation_with_non_type
+  error - Undefined name 'Colors' - lib\screens\staff_event_selector.dart:127:63 - undefined_identifier
+  error - Undefined name 'FontWeight' - lib\screens\staff_event_selector.dart:127:89 - undefined_identifier
+  error - The method 'Text' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:128:19 - undefined_method
+  error - The name 'TextStyle' isn't a class - lib\screens\staff_event_selector.dart:128:55 - creation_with_non_type
+  error - Undefined name 'Colors' - lib\screens\staff_event_selector.dart:128:72 - undefined_identifier
+  error - The name 'Icon' isn't a class - lib\screens\staff_event_selector.dart:132:19 - creation_with_non_type
+  error - Undefined name 'Icons' - lib\screens\staff_event_selector.dart:132:24 - undefined_identifier
+  error - Undefined name 'AppTheme' - lib\screens\staff_event_selector.dart:132:52 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\screens\staff_event_selector.dart:133:19 - creation_with_non_type
+  error - The method 'IconButton' isn't defined for the type '_StaffEventSelectorState' - 
+lib\screens\staff_event_selector.dart:134:13 - undefined_method
+  error - The name 'Icon' isn't a class - lib\screens\staff_event_selector.dart:135:27 - creation_with_non_type
+  error - Undefined name 'Icons' - lib\screens\staff_event_selector.dart:135:32 - undefined_identifier
+  error - Undefined name 'Colors' - lib\screens\staff_event_selector.dart:135:70 - undefined_identifier
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\staff_event_selector.dart:137:42 - 
+undefined_getter
+  error - The returned type 'StaffEventSelector' isn't returnable from a 'Widget' function, as required by the 
+closure's context - lib\screens\staff_hub_screen.dart:90:69 - return_of_invalid_type_from_closure
+  error - The returned type 'StaffEventSelector' isn't returnable from a 'Widget' function, as required by the 
+closure's context - lib\screens\staff_hub_screen.dart:99:65 - return_of_invalid_type_from_closure
+  error - The named parameter 'filter' isn't defined - lib\screens\staff_invitations_screen.dart:68:181 - 
+undefined_named_parameter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\staff_logs_screen.dart:61:57 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\staff_logs_screen.dart:61:75 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\staff_logs_screen.dart:236:36 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\screens\staff_logs_screen.dart:237:40 - 
+undefined_getter
+  error - The getter 'broadcast_tower' isn't defined for the type 'Icons' - 
+lib\screens\staff_management_screen.dart:552:48 - undefined_getter
+  error - The method 'getSecurityStats' isn't defined for the type 'AuditService' - 
+lib\screens\staff_stats_screen.dart:95:25 - undefined_method
+  error - A value of type 'num' can't be assigned to a variable of type 'int' - 
+lib\screens\staff_stats_screen.dart:114:34 - invalid_assignment
+  error - A value of type 'num' can't be assigned to a variable of type 'int' - 
+lib\screens\staff_stats_screen.dart:119:42 - invalid_assignment
+  error - The method 'getSecurityStats' isn't defined for the type 'AuditService' - 
+lib\screens\staff_stats_screen.dart:149:44 - undefined_method
+  error - The element type 'DropdownMenuItem<Event?>' can't be assigned to the list type 'DropdownMenuItem<Event>' - 
+lib\screens\staff_stats_screen.dart:270:21 - list_element_type_not_assignable
+  error - The returned type 'DropdownMenuItem<Event?>' isn't returnable from a 'DropdownMenuItem<Event>' function, as 
+required by the closure's context - lib\screens\staff_stats_screen.dart:274:43 - return_of_invalid_type_from_closure
+  error - Expected a class member - lib\screens\staff_stats_screen.dart:475:11 - expected_class_member
+  error - Expected a class member - lib\screens\staff_stats_screen.dart:475:12 - expected_class_member
+  error - Expected a class member - lib\screens\staff_stats_screen.dart:476:9 - expected_class_member
+  error - Expected a class member - lib\screens\staff_stats_screen.dart:476:10 - expected_class_member
+  error - Expected a class member - lib\screens\staff_stats_screen.dart:477:7 - expected_class_member
+  error - Expected a class member - lib\screens\staff_stats_screen.dart:477:8 - expected_class_member
+  error - Expected a class member - lib\screens\staff_stats_screen.dart:478:5 - expected_class_member
+  error - Expected a class member - lib\screens\staff_stats_screen.dart:478:6 - expected_class_member
+  error - Undefined name '_capacity' - lib\screens\staff_stats_screen.dart:482:9 - undefined_identifier
+  error - Undefined name '_arrivedCount' - lib\screens\staff_stats_screen.dart:483:22 - undefined_identifier
+  error - Undefined name '_capacity' - lib\screens\staff_stats_screen.dart:483:38 - undefined_identifier
+  error - Undefined name '_arrivedCount' - lib\screens\staff_stats_screen.dart:518:35 - undefined_identifier
+  error - Undefined name '_capacity' - lib\screens\staff_stats_screen.dart:518:52 - undefined_identifier
+  error - Undefined name '_selectedEvent' - lib\screens\staff_stats_screen.dart:525:21 - undefined_identifier
+  error - Undefined name 'supabase' - lib\screens\staff_stats_screen.dart:528:15 - undefined_identifier
+  error - Undefined name '_recentLogs' - lib\screens\staff_stats_screen.dart:530:40 - undefined_identifier
+  error - Expected a method, getter, setter or operator declaration - lib\screens\staff_stats_screen.dart:611:1 - 
+expected_executable
+  error - Target of URI doesn't exist: 'package:my_app/models/voucher.dart' - lib\screens\ticket.dart:6:8 - 
+uri_does_not_exist
+  error - The name 'Voucher' isn't a type, so it can't be used as a type argument - lib\screens\ticket.dart:22:20 - 
+non_type_as_type_argument
+  error - The method 'sendMockNotification' isn't defined for the type 'NotificationService' - 
+lib\screens\ticket.dart:71:34 - undefined_method
+  error - Undefined name 'LocalizationService' - lib\screens\ticket.dart:376:37 - undefined_identifier
+  error - Undefined name 'LocalizationService' - lib\screens\ticket.dart:387:37 - undefined_identifier
+  error - The method '_buildDetailRow' isn't defined for the type '_TicketScreenState' - 
+lib\screens\ticket.dart:406:20 - undefined_method
+  error - The method '_buildDetailRow' isn't defined for the type '_TicketScreenState' - 
+lib\screens\ticket.dart:408:20 - undefined_method
+  error - Undefined name 'LocalizationService' - lib\screens\ticket.dart:419:28 - undefined_identifier
+  error - Undefined name 'LocalizationService' - lib\screens\ticket.dart:431:35 - undefined_identifier
+  error - Undefined name 'LocalizationService' - lib\screens\ticket.dart:443:28 - undefined_identifier
+  error - Expected to find ')' - lib\screens\ticket.dart:486:6 - expected_token
+  error - Expected to find ';' - lib\screens\tickets_list_screen.dart:193:9 - expected_token
+  error - Expected an identifier - lib\screens\tickets_list_screen.dart:193:10 - missing_identifier
+  error - Unexpected text ';' - lib\screens\tickets_list_screen.dart:193:10 - unexpected_token
+  error - Expected to find '}' - lib\screens\tickets_list_screen.dart:194:7 - expected_token
+  error - Expected a class member - lib\screens\tickets_list_screen.dart:195:6 - expected_class_member
+  error - Expected a class member - lib\screens\tickets_list_screen.dart:196:3 - expected_class_member
+  error - Expected a class member - lib\screens\tickets_list_screen.dart:196:4 - expected_class_member
+  error - Undefined class 'Event' - lib\screens\tickets_list_screen.dart:199:50 - undefined_class
+  error - Expected a method, getter, setter or operator declaration - lib\screens\tickets_list_screen.dart:254:1 - 
+expected_executable
+  error - Expected to find '}' - lib\services\audit_service.dart:166:1 - expected_token
+  error - The name 'Booking' isn't a type, so it can't be used as a type argument - 
+lib\services\booking_service.dart:16:10 - non_type_as_type_argument
+  error - Undefined name 'Booking' - lib\services\booking_service.dart:29:14 - undefined_identifier
+  error - The name 'Booking' isn't a type, so it can't be used as a type argument - 
+lib\services\booking_service.dart:79:10 - non_type_as_type_argument
+  error - Undefined name 'Booking' - lib\services\booking_service.dart:119:22 - undefined_identifier
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:131:35 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:132:61 - 
+undefined_getter
+  error - The name 'Booking' isn't a type, so it can't be used as a type argument - 
+lib\services\booking_service.dart:148:10 - non_type_as_type_argument
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:215:48 - 
+undefined_getter
+  error - Undefined name 'Booking' - lib\services\booking_service.dart:254:22 - undefined_identifier
+  error - The method 'trArgs' isn't defined for the type 'String' - lib\services\booking_service.dart:271:43 - 
+undefined_method
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:272:41 - 
+undefined_getter
+  error - The method 'trArgs' isn't defined for the type 'String' - lib\services\booking_service.dart:280:43 - 
+undefined_method
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:281:41 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:291:33 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:292:77 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:356:45 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:357:36 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:360:43 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:361:68 - 
+undefined_getter
+  error - The method 'trArgs' isn't defined for the type 'String' - lib\services\booking_service.dart:365:43 - 
+undefined_method
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:366:41 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:387:34 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:388:46 - 
+undefined_getter
+  error - The named parameter 'userId' isn't defined - lib\services\booking_service.dart:412:74 - 
+undefined_named_parameter
+  error - The named parameter 'userId' isn't defined - lib\services\booking_service.dart:446:74 - 
+undefined_named_parameter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:494:36 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:495:69 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:529:34 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:530:74 - 
+undefined_getter
+  error - The name 'Booking' isn't a type, so it can't be used as a type argument - 
+lib\services\booking_service.dart:564:15 - non_type_as_type_argument
+  error - Undefined name 'Booking' - lib\services\booking_service.dart:575:44 - undefined_identifier
+  error - The name 'Booking' isn't a type, so it can't be used as a type argument - 
+lib\services\booking_service.dart:583:10 - non_type_as_type_argument
+  error - Undefined name 'Booking' - lib\services\booking_service.dart:597:14 - undefined_identifier
+  error - The name 'Booking' isn't a type, so it can't be used as a type argument - 
+lib\services\booking_service.dart:605:15 - non_type_as_type_argument
+  error - Undefined name 'Booking' - lib\services\booking_service.dart:611:44 - undefined_identifier
+  error - The name 'Booking' isn't a type, so it can't be used as a type argument - 
+lib\services\booking_service.dart:618:15 - non_type_as_type_argument
+  error - Undefined name 'Booking' - lib\services\booking_service.dart:625:44 - undefined_identifier
+  error - The name 'Booking' isn't a type, so it can't be used as a type argument - 
+lib\services\booking_service.dart:633:10 - non_type_as_type_argument
+  error - Undefined name 'Booking' - lib\services\booking_service.dart:644:14 - undefined_identifier
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:746:34 - 
+undefined_getter
+  error - The getter 'tr' isn't defined for the type 'String' - lib\services\booking_service.dart:747:77 - 
+undefined_getter
+  error - The method 'trArgs' isn't defined for the type 'String' - lib\services\event_service.dart:91:34 - 
+undefined_method
+  error - The method 'trArgs' isn't defined for the type 'String' - lib\services\event_service.dart:92:32 - 
+undefined_method
+  error - The named parameter 'settings' is required, but there's no corresponding argument - 
+lib\services\notification_service.dart:59:31 - missing_required_argument
+  error - Too many positional arguments: 0 expected, but 1 found - lib\services\notification_service.dart:59:42 - 
+extra_positional_arguments_could_be_named
+  error - The named parameter 'id' is required, but there's no corresponding argument - 
+lib\services\notification_service.dart:85:31 - missing_required_argument
+  error - The named parameter 'notificationDetails' is required, but there's no corresponding argument - 
+lib\services\notification_service.dart:85:31 - missing_required_argument
+  error - The named parameter 'scheduledDate' is required, but there's no corresponding argument - 
+lib\services\notification_service.dart:85:31 - missing_required_argument
+  error - Too many positional arguments: 0 expected, but 5 found - lib\services\notification_service.dart:86:7 - 
+extra_positional_arguments_could_be_named
+  error - The named parameter 'uiLocalNotificationDateInterpretation' isn't defined - 
+lib\services\notification_service.dart:92:7 - undefined_named_parameter
+  error - Undefined name 'UILocalNotificationDateInterpretation' - lib\services\notification_service.dart:92:46 - 
+undefined_identifier
+  error - The named parameter 'id' is required, but there's no corresponding argument - 
+lib\services\notification_service.dart:105:31 - missing_required_argument
+  error - Too many positional arguments: 0 expected, but 4 found - lib\services\notification_service.dart:105:36 - 
+extra_positional_arguments_could_be_named
+  error - The method 'trArgs' isn't defined for the type 'String' - lib\services\notification_service.dart:151:38 - 
+undefined_method
+  error - The method 'trArgs' isn't defined for the type 'String' - lib\services\notification_service.dart:152:36 - 
+undefined_method
+  error - The method 'FollowService' isn't defined for the type 'NotificationService' - 
+lib\services\notification_service.dart:188:29 - undefined_method
+  error - Target of URI doesn't exist: 'package:my_app/models/voucher.dart' - lib\services\offer_service.dart:4:8 - 
+uri_does_not_exist
+  error - The name 'Voucher' isn't a type, so it can't be used as a type argument - 
+lib\services\offer_service.dart:61:15 - non_type_as_type_argument
+  error - Undefined name 'Voucher' - lib\services\offer_service.dart:72:44 - undefined_identifier
+  error - The name 'Voucher' isn't a type, so it can't be used as a type argument - 
+lib\services\offer_service.dart:79:10 - non_type_as_type_argument
+  error - Undefined name 'Voucher' - lib\services\offer_service.dart:92:36 - undefined_identifier
+  error - Undefined name 'Voucher' - lib\services\offer_service.dart:123:14 - undefined_identifier
+  error - The property 'numGuests' can't be unconditionally accessed because the receiver can be 'null' - 
+lib\services\reporting_service.dart:34:63 - unchecked_use_of_nullable_value
+  error - The property 'paymentStatus' can't be unconditionally accessed because the receiver can be 'null' - 
+lib\services\reporting_service.dart:35:47 - unchecked_use_of_nullable_value
+  error - The property 'numGuests' can't be unconditionally accessed because the receiver can be 'null' - 
+lib\services\reporting_service.dart:35:101 - unchecked_use_of_nullable_value
+  error - The property 'paymentStatus' can't be unconditionally accessed because the receiver can be 'null' - 
+lib\services\reporting_service.dart:36:50 - unchecked_use_of_nullable_value
+  error - The property 'totalPricePaid' can't be unconditionally accessed because the receiver can be 'null' - 
+lib\services\reporting_service.dart:36:106 - unchecked_use_of_nullable_value
+
+

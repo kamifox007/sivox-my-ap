@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIFO Maps | استكشف نبض الليلة</title>
+    
+    <!-- Leaflet Maps CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #FFD700;
+            --secondary: #00F2FF;
+            --background: #0A0A0B;
+            --surface: rgba(255, 255, 255, 0.05);
+            --glass: rgba(0, 0, 0, 0.7);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Outfit', sans-serif;
+            background: var(--background);
+            color: white;
+            overflow: hidden;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+        }
+
+        /* Overlay UI */
+        .header {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            letter-spacing: -1px;
+            pointer-events: auto;
+        }
+
+        .back-btn {
+            background: var(--surface);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            pointer-events: auto;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Event Details Popup Styling */
+        .leaflet-popup-content-wrapper {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            color: white;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0;
+        }
+
+        .leaflet-popup-content {
+            margin: 0;
+            width: 250px !important;
+        }
+
+        .popup-card {
+            padding: 15px;
+            position: relative;
+        }
+
+        .popup-img {
+            width: 100%;
+            height: 120px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .popup-title {
+            font-size: 16px;
+            font-weight: 900;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .popup-venue {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .popup-price {
+            margin-top: 10px;
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .book-btn {
+            display: block;
+            margin-top: 15px;
+            background: var(--primary);
+            color: black;
+            text-align: center;
+            padding: 10px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 12px;
+            transition: 0.3s;
+        }
+
+        .book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Marker Neon Pulse */
+        .neon-marker {
+            width: 15px;
+            height: 15px;
+            background: var(--primary);
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px var(--primary); }
+            50% { transform: scale(1.2); box-shadow: 0 0 35px var(--primary); }
+            100% { transform: scale(1); box-shadow: 0 0 20px var(--primary); }
+        }
+
+        /* Map Dark Mode Overrides */
+        .leaflet-container {
+            background: var(--background) !important;
+        }
+        /* Custom tiles filter for dark mode look */
+        .leaflet-tile-pane {
+            filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">SIFO MAPS</div>
+        <a href="#" onclick="window.close()" class="back-btn">العودة للتطبيق ↩️</a>
+    </div>
+
+    <div id="map"></div>
+
+    <!-- Map Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+    <script>
+        // Supabase Init
+        const supabaseUrl = 'https://jufsecvkztpzugvyrhjo.supabase.co';
+        const supabaseKey = 'sb_publishable_Z37Cm5OShXJIv9ELlzVczQ_OGKV2i07';
+        // Use global supabase object from CDN
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Map Init
+        const map = L.map('map', {
+            zoomControl: false,
+            attributionControl: false
+        }).setView([36.7538, 3.0588], 13); // Default Algiers
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        // Custom Marker Icon
+        const neonIcon = L.divIcon({
+            className: 'neon-marker-container',
+            html: '<div class="neon-marker"></div>',
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
+        });
+
+        async function loadEvents() {
+            const { data, error } = await supabaseClient
+                .from('events')
+                .select('*');
+
+            if (data) {
+                data.forEach(event => {
+                    if (event.latitude && event.longitude) {
+                        const marker = L.marker([event.latitude, event.longitude], { icon: neonIcon }).addTo(map);
+                        
+                        const popupContent = `
+                            <div class="popup-card">
+                                ${event.image_url ? `<img src="${event.image_url}" class="popup-img">` : ''}
+                                <div class="popup-title">${event.title}</div>
+                                <div class="popup-venue">📍 ${event.venue || 'موقع غير محدد'}</div>
+                                <div class="popup-price">${event.price > 0 ? event.price + ' DZD' : 'دخول مجاني'}</div>
+                                <a href="sifo://event/${event.id}" class="book-btn">عرض في التطبيق 🎫</a>
+                            </div>
+                        `;
+                        
+                        marker.bindPopup(popupContent);
+                    }
+                });
+            }
+        }
+
+        // Try to get user location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                map.setView([pos.coords.latitude, pos.coords.longitude], 13);
+            }, () => {
+                // error getting location
+            });
+        }
+
+        loadEvents();
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+﻿Analyzing my_app...                                             
+
+warning - Dead code - lib\screens\club_dashboard.dart:58:39 - dead_code
+warning - The left operand can't be null, so the right operand is never executed - lib\screens\club_dashboard.dart:58:42 - dead_null_aware_expression
+warning - The left operand can't be null, so the right operand is never executed - lib\screens\club_dashboard.dart:59:45 - dead_null_aware_expression
+warning - The left operand can't be null, so the right operand is never executed - lib\screens\club_dashboard.dart:60:42 - dead_null_aware_expression
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\screens\club_profile.dart:410:8 - deprecated_member_use
+   info - 'share' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\screens\club_profile.dart:410:14 - deprecated_member_use
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\screens\club_profile.dart:620:5 - deprecated_member_use
+   info - 'share' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\screens\club_profile.dart:620:11 - deprecated_member_use
+warning - The declaration '_smallAction' isn't referenced - lib\screens\club_profile.dart:1120:10 - unused_element
+   info - The import of 'dart:ui' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\event_ledger_detail.dart:9:8 - unnecessary_import
+warning - The value of the field '_eventService' isn't used - lib\screens\event_manage_details.dart:31:9 - unused_field
+warning - The value of the field '_isLoading' isn't used - lib\screens\event_manage_details.dart:34:8 - unused_field
+warning - The value of the field '_bookingsFuture' isn't used - lib\screens\event_manage_details.dart:35:30 - unused_field
+   info - Statements in an if should be enclosed in a block - lib\screens\marketing_engine_screen.dart:85:21 - curly_braces_in_flow_control_structures
+warning - Dead code - lib\screens\mission_matrix_screen.dart:110:45 - dead_code
+warning - The left operand can't be null, so the right operand is never executed - lib\screens\mission_matrix_screen.dart:110:48 - dead_null_aware_expression
+warning - The declaration '_buildCapacityTracker' isn't referenced - lib\screens\mission_matrix_screen.dart:526:10 - unused_element
+   info - The import of 'dart:ui' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\operational_ledger_hub.dart:9:8 - unnecessary_import
+   info - The private field _tabIndex could be 'final' - lib\screens\organizer_dashboard.dart:38:7 - prefer_final_fields
+warning - The value of the field '_tabIndex' isn't used - lib\screens\organizer_dashboard.dart:38:7 - unused_field
+   info - Use interpolation to compose strings and values - lib\screens\organizer_followers_screen.dart:84:36 - prefer_interpolation_to_compose_strings
+   info - The private field _marketingEnabled could be 'final' - lib\screens\profile.dart:28:8 - prefer_final_fields
+warning - The value of the field '_marketingEnabled' isn't used - lib\screens\profile.dart:28:8 - unused_field
+warning - The value of the field '_staffEntries' isn't used - lib\screens\profile.dart:29:30 - unused_field
+warning - The declaration '_buildSectionTitle' isn't referenced - lib\screens\profile.dart:273:10 - unused_element
+warning - The declaration '_joinAsStaff' isn't referenced - lib\screens\profile.dart:295:16 - unused_element
+   info - 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre - lib\screens\profile.dart:347:50 - deprecated_member_use
+warning - The value of the field '_fetchedAssignment' isn't used - lib\screens\staff_acceptance_screen.dart:21:25 - unused_field
+warning - The value of the local variable 'dayStr' isn't used - lib\screens\staff_logs_screen.dart:289:16 - unused_local_variable
+   info - The private field _hiddenTickets could be 'final' - lib\screens\ticket.dart:32:16 - prefer_final_fields
+warning - The value of the local variable 'organizerId' isn't used - lib\services\booking_service.dart:513:21 - unused_local_variable
+warning - The value of the local variable 'totalRev' isn't used - lib\services\booking_service.dart:682:14 - unused_local_variable
+   info - Don't invoke 'print' in production code - scratch\import_check.dart:2:3 - avoid_print
+warning - The value of the local variable 'res' isn't used - scratch\probe_supabase.dart:5:9 - unused_local_variable
+

@@ -1,0 +1,284 @@
+:root {
+    --bg-dark: #020617;
+    --bg-surface: #0f172a;
+    --bg-sidebar: #020617;
+    --primary: #8b5cf6;
+    --primary-glow: rgba(139, 92, 246, 0.4);
+    --secondary: #3b82f6;
+    --text-main: #f8fafc;
+    --text-dim: #94a3b8;
+    --glass: rgba(30, 41, 59, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --sidebar-width: 260px;
+    --player-height: 100px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow: hidden;
+    height: 100vh;
+}
+
+#app {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;\tgrid-template-rows: 1fr var(--player-height);\theight: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: var(--bg-sidebar);\tpadding: 32px 24px;\tdisplay: flex;\tflex-direction: column;\tgap: 40px;\tborder-right: 1px solid var(--glass-border);\tz-index: 100;
+}
+
+.logo {
+    display: flex;\talign-items: center;\tgap: 12px;\tfont-size: 1.5rem;\tfont-weight: 800;\tcolor: var(--text-main);\tletter-spacing: -0.5px;
+}
+
+.logo i {
+    color: var(--primary);\tfilter: drop-shadow(0 0 8px var(--primary-glow));
+}
+
+.nav-menu {
+    display: flex;\tflex-direction: column;\tgap: 8px;
+}
+
+.nav-item {
+    display: flex;\talign-items: center;\tgap: 16px;\tbackground: none;\tborder: none;\tcolor: var(--text-dim);\tpadding: 14px 16px;\tborder-radius: 12px;\tcursor: pointer;\tfont-size: 1rem;\tfont-weight: 600;\ttransition: var(--transition);\ttext-align: left;
+}
+
+.nav-item:hover {
+    color: var(--text-main);\tbackground: var(--glass);
+}
+
+.nav-item.active {
+    background: var(--primary);\tcolor: var(--text-main);\tbox-shadow: 0 4px 20px var(--primary-glow);
+}
+
+.playlist-section {
+    flex: 1;
+}
+
+.section-label {
+    font-size: 0.75rem;\tfont-weight: 700;\tletter-spacing: 1.5px;\tcolor: var(--text-dim);\tmargin-bottom: 16px;\tdisplay: block;\ttext-transform: uppercase;
+}
+
+.playlist-list {
+    list-style: none;\tdisplay: flex;\tflex-direction: column;\tgap: 8px;
+}
+
+.playlist-list li {
+    font-size: 0.9rem;\tcolor: var(--text-dim);\tcursor: pointer;\tpadding: 4px 0;\ttransition: var(--transition);
+}
+
+.playlist-list li:hover {
+    color: var(--text-main);\ttransform: translateX(4px);
+}
+
+/* Main Content */
+.main-view {
+    background: linear-gradient(180deg, #1e1b4b 0%, var(--bg-dark) 40%);\toverflow-y: auto;\tposition: relative;\tpadding: 0 40px 40px 40px;\tscrollbar-width: thin;\tscrollbar-color: var(--primary) transparent;
+}
+
+.main-view::-webkit-scrollbar {
+    width: 6px;
+}
+
+.main-view::-webkit-scrollbar-thumb {
+    background-color: var(--primary);\tborder-radius: 10px;
+}
+
+.top-bar {
+    height: 80px;\tdisplay: flex;\tjustify-content: space-between;\talign-items: center;\tposition: sticky;\ttop: 0;\tbackground: transparent;\tz-index: 50;\tbackdrop-filter: blur(10px);\tmargin: 0 -40px;\tpadding: 0 40px;
+}
+
+.search-bar {
+    background: var(--glass);\tborder: 1px solid var(--glass-border);\tpadding: 10px 20px;\tborder-radius: 50px;\tdisplay: flex;\talign-items: center;\tgap: 12px;\twidth: 320px;
+}
+
+.search-bar input {
+    background: none;\tborder: none;\tcolor: white;\toutline: none;\twidth: 100%;
+}
+
+.user-actions {
+    display: flex;\talign-items: center;\tgap: 20px;
+}
+
+.avatar {
+    width: 40px;\theight: 40px;\tborder-radius: 50%;\tobject-fit: cover;\tborder: 2px solid var(--primary);
+}
+
+/* Page Containers */
+.page {
+    display: none;\topacity: 0;\ttransform: translateY(20px);\ttransition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.page.active {
+    display: block;\topacity: 1;\ttransform: translateY(0);
+}
+
+/* Hero */
+.hero {
+    margin-top: 24px;\theight: 360px;\tborder-radius: 32px;\toverflow: hidden;\tposition: relative;\tdisplay: flex;\talign-items: center;\tpadding: 60px;\tbox-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.hero-bg {
+    position: absolute;\tinset: 0;\tbackground-size: cover;\tbackground-position: center;\ttransition: transform 10s linear;
+}
+
+.hero:hover .hero-bg {
+    transform: scale(1.1);
+}
+
+.hero-overlay {
+    position: absolute;\tinset: 0;\tbackground: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+}
+
+.hero-content {
+    position: relative;\tz-index: 2;\tmax-width: 500px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;\tfont-weight: 900;\tmargin-bottom: 16px;\tline-height: 1.1;
+}
+
+.hero-content p {
+    font-size: 1.1rem;\tcolor: var(--text-dim);\tmargin-bottom: 24px;
+}
+
+.btn-play {
+    background: var(--primary);\tborder: none;\tpadding: 14px 36px;\tborder-radius: 12px;\tcolor: white;\tfont-weight: 700;\tcursor: pointer;\ttransition: var(--transition);
+}
+
+.btn-play:hover {
+    transform: scale(1.05);\tbox-shadow: 0 10px 20px var(--primary-glow);
+}
+
+/* Content Sections */
+.section {
+    margin-top: 48px;
+}
+
+.section-header-row {
+    display: flex;\tjustify-content: space-between;\talign-items: center;\tmargin-bottom: 24px;
+}
+
+.section-header-row h2 {
+    font-size: 1.5rem;\tfont-weight: 800;
+}
+
+.view-all {
+    color: var(--text-dim);\tfont-size: 0.9rem;\tfont-weight: 600;\ttext-decoration: none;
+}
+
+.card-grid {
+    display: grid;\tgrid-template-columns: repeat(auto-fill, minmax(180px, 1fr));\tgap: 24px;
+}
+
+.card {
+    background: var(--glass);\tpadding: 20px;\tborder-radius: 20px;\tborder: 1px solid var(--glass-border);\ttransition: var(--transition);\tcursor: pointer;\tposition: relative;
+}
+
+.card:hover {
+    background: rgba(255,255,255,0.05);\ttransform: translateY(-8px);\tborder-color: rgba(255,255,255,0.2);
+}
+
+.card-image {
+    width: 100%;\taspect-ratio: 1;\tborder-radius: 12px;\tobject-fit: cover;\tmargin-bottom: 16px;\tbox-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.card h3 {
+    font-size: 1rem;\tfont-weight: 700;\tmargin-bottom: 4px;\twhite-space: nowrap;\toverflow: hidden;\ttext-overflow: ellipsis;
+}
+
+.card p {
+    font-size: 0.85rem;\tcolor: var(--text-dim);
+}
+
+.card-play {
+    position: absolute;\tright: 20px;\tbottom: 80px;\twidth: 48px;\theight: 48px;\tbackground: var(--primary);\tborder-radius: 50%;\tdisplay: flex;\talign-items: center;\tjustify-content: center;\topacity: 0;\ttransform: translateY(10px);\ttransition: var(--transition);\tbox-shadow: 0 8px 16px rgba(0,0,0,0.4);
+}
+
+.card:hover .card-play {
+    opacity: 1;\ttransform: translateY(0);
+}
+
+/* Player */
+.player {
+    background-color: var(--bg-sidebar);\tborder-top: 1px solid var(--glass-border);\tdisplay: flex;\talign-items: center;\tjustify-content: space-between;\tpadding: 0 40px;\tz-index: 150;
+}
+
+.track-info {
+    display: flex;\talign-items: center;\tgap: 16px;\twidth: 300px;
+}
+
+.track-info img {
+    width: 60px;\theight: 60px;\tborder-radius: 10px;\tobject-fit: cover;
+}
+
+.track-details h4 {
+    font-size: 0.95rem;\tfont-weight: 700;
+}
+
+.track-details p {
+    font-size: 0.8rem;\tcolor: var(--text-dim);
+}
+
+.controls {
+    flex: 1;\tmax-width: 600px;\tdisplay: flex;\tflex-direction: column;\talign-items: center;\tgap: 8px;
+}
+
+.control-btns {
+    display: flex;\talign-items: center;\tgap: 24px;
+}
+
+.btn-icon {
+    background: none;\tborder: none;\tcolor: var(--text-dim);\tfont-size: 1.2rem;\tcursor: pointer;\ttransition: var(--transition);
+}
+
+.btn-icon:hover {
+    color: var(--text-main);
+}
+
+.btn-play-circle {
+    width: 40px;\theight: 40px;\tbackground: white;\tcolor: black;\tborder-radius: 50%;\tdisplay: flex;\talign-items: center;\tjustify-content: center;\tfont-size: 1rem;
+}
+
+.btn-play-circle:hover {
+    transform: scale(1.1);
+}
+
+.progress-container {
+    width: 100%;\tdisplay: flex;\talign-items: center;\tgap: 12px;
+}
+
+.time {
+    font-size: 0.75rem;\tcolor: var(--text-dim);\twidth: 40px;
+}
+
+.progress-bar {
+    flex: 1;\theight: 4px;\tbackground: rgba(255,255,255,0.1);\tborder-radius: 2px;\tposition: relative;\tcursor: pointer;
+}
+
+.progress-fill {
+    position: absolute;\tinset: 0;\tbackground: var(--primary);\twidth: 0%;\tborder-radius: 2px;
+}
+
+.volume-container {
+    width: 200px;\tdisplay: flex;\talign-items: center;\tgap: 12px;\tjustify-content: flex-end;
+}
+
+.volume-bar {
+    width: 100px;\theight: 4px;\tbackground: rgba(255,255,255,0.1);\tborder-radius: 2px;\tposition: relative;
+}
+
+.volume-fill {
+    position: absolute;\tinset: 0;\tbackground: white;\twidth: 70%;\tborder-radius: 2px;
+}

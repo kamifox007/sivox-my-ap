@@ -1,0 +1,83 @@
+Analyzing my_app...                                             
+
+   info - Don't use 'BuildContext's across async gaps - lib\screens\club_profile_editor.dart:457:28 - use_build_context_synchronously
+   info - Use interpolation to compose strings and values - lib\screens\club_profile_editor.dart:457:73 - prefer_interpolation_to_compose_strings
+warning - The declaration '_buildIdentityCard' isn't referenced - lib\screens\create_event.dart:586:10 - unused_element
+   info - Use interpolation to compose strings and values - lib\screens\create_event.dart:916:28 - prefer_interpolation_to_compose_strings
+   info - The import of 'dart:ui' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\event_details.dart:21:8 - unnecessary_import
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\screens\event_details.dart:103:5 - deprecated_member_use
+   info - 'share' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\screens\event_details.dart:103:11 - deprecated_member_use
+   info - Use interpolation to compose strings and values - lib\screens\event_details.dart:1580:23 - prefer_interpolation_to_compose_strings
+warning - Unused import: 'package:my_app/screens/create_event.dart' - lib\screens\home_feed.dart:20:8 - unused_import
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\marketing_engine_screen.dart:121:47 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\marketing_engine_screen.dart:229:47 - use_build_context_synchronously
+   info - Unnecessary use of multiple underscores - lib\screens\marketing_engine_screen.dart:370:47 - unnecessary_underscores
+   info - Use interpolation to compose strings and values - lib\screens\organizer_dashboard.dart:93:21 - prefer_interpolation_to_compose_strings
+warning - The declaration '_navigateToCreateEvent' isn't referenced - lib\screens\organizer_dashboard.dart:926:8 - unused_element
+warning - The declaration '_navigateToBranding' isn't referenced - lib\screens\organizer_dashboard.dart:935:8 - unused_element
+  error - The name 'ClubProfileEditorScreen' isn't a class - lib\screens\organizer_dashboard.dart:939:31 - creation_with_non_type
+   info - Use interpolation to compose strings and values - lib\screens\staff_management_screen.dart:620:17 - prefer_interpolation_to_compose_strings
+   info - Use interpolation to compose strings and values - lib\screens\staff_management_screen.dart:626:17 - prefer_interpolation_to_compose_strings
+   info - Use interpolation to compose strings and values - lib\screens\staff_management_screen.dart:632:17 - prefer_interpolation_to_compose_strings
+   info - Use interpolation to compose strings and values - lib\screens\staff_management_screen.dart:638:17 - prefer_interpolation_to_compose_strings
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:195:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:436:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:813:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:814:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:815:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:816:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:817:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:818:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:819:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:820:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:821:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:822:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:823:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:825:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:826:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:827:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:828:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:829:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:830:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1506:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1527:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1528:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1529:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1535:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1542:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1560:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1561:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1592:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1601:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1602:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1603:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1604:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1606:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1607:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1608:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1609:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1610:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1611:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1612:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1613:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1614:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1650:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1651:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1658:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1659:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1661:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1662:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1724:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1725:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1726:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1727:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1728:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1729:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1730:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1731:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1732:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1733:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:1768:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:2390:7 - equal_keys_in_map
+warning - Two keys in a map literal shouldn't be equal - lib\services\translation_service.dart:2473:7 - equal_keys_in_map
+

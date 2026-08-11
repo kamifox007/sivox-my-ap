@@ -1,0 +1,2069 @@
+﻿
+lib\main.dart:78:                    'db_conn_failed'.tr,
+lib\main.dart:83:                    'check_internet'.tr,
+lib\main.dart:92:                      child: Text('retry'.tr.toUpperCase()),
+lib\main.dart:107:          title: 'app_name'.tr,
+lib\screens\account_selector.dart:77:          'bio': status == 'pending' ? 'JOIN_REQUEST'.tr : 'ACTIVE_MISSION'.tr,
+lib\screens\account_selector.dart:162:                          Text('management_console'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: _isAssistantView ? AppTheme.secondary : AppTheme.primary, letterSpacing: 4, 
+fontSize: 10)),
+lib\screens\account_selector.dart:170:                                label: 'YOUR_CLUBS'.tr,
+lib\screens\account_selector.dart:171:                                sub: 'manage_properties'.tr,
+lib\screens\account_selector.dart:180:                                label: 'ASSISTANTS'.tr,
+lib\screens\account_selector.dart:181:                                sub: 'discover_missions'.tr,
+lib\screens\account_selector.dart:195:                              label: 'NEW_CLUB'.tr.toUpperCase(),
+lib\screens\account_selector.dart:202:                             Text((_isAssistantView ? 'ACTIVE_MISSIONS' : 
+'YOUR_CLUBS').tr.toUpperCase(), style: AppTheme.labelStyle.copyWith(color: Colors.white24, letterSpacing: 2, fontSize: 
+10)),
+lib\screens\account_selector.dart:279:      backgroundColor: Colors.transparent,
+lib\screens\account_selector.dart:288:      title: Text('EXIT_TO_CITIZEN'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(fontSize: 9, color: Colors.white24, letterSpacing: 2)),
+lib\screens\account_selector.dart:370:                                (isOwner ? 'OWNER' : 'STAFF').tr.toUpperCase(),
+lib\screens\account_selector.dart:412:      backgroundColor: Colors.transparent,
+lib\screens\account_selector.dart:434:                title: Text(isAbsent ? 'status_return_active'.tr : 
+'REPORT_ABSENCE'.tr, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+lib\screens\account_selector.dart:450:                 title: Text('RESIGN_FROM_CLUB'.tr, style: const 
+TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+lib\screens\account_selector.dart:467:        title: Text('RESIGN'.tr),
+lib\screens\account_selector.dart:468:        content: Text('mission_reject_desc'.trArgs([clubName])),
+lib\screens\account_selector.dart:470:          TextButton(onPressed: () => Navigator.pop(ctx), child: 
+Text('cancel'.tr, style: const TextStyle(color: Colors.white24))),
+lib\screens\account_selector.dart:482:            child: Text('confirm'.tr, style: const TextStyle(color: 
+Colors.redAccent)),
+lib\screens\account_selector.dart:501:                content: Text('ASSIGNMENTS_SYNCED'.tr),
+lib\screens\account_selector.dart:526:                    Text(isScanning ? 'SEARCHING_MISSIONS...'.tr : 
+'identity_discovery_title'.tr.toUpperCase(), style: const TextStyle(color: AppTheme.secondary, fontWeight: 
+FontWeight.bold, fontSize: 10, letterSpacing: 1)),
+lib\screens\account_selector.dart:528:                    Text(isScanning ? 'CHECKING_STAFF_LEDGER'.tr : 
+'did_you_forget_desc'.tr, style: const TextStyle(color: Colors.white24, fontSize: 10)),
+lib\screens\account_selector.dart:560:              color: Colors.transparent,
+lib\screens\account_selector.dart:572:                    Text('NEW_INVITATION'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: AppTheme.secondary, letterSpacing: 4, fontSize: 10)),
+lib\screens\account_selector.dart:576:                    Text('invitation_to_join'.trArgs([invite['role'] ?? 
+'Staff']), style: const TextStyle(color: Colors.white60, fontSize: 14), textAlign: TextAlign.center),
+lib\screens\account_selector.dart:590:                            child: Text('REJECT'.tr, style: const 
+TextStyle(color: Colors.white24, fontWeight: FontWeight.bold)),
+lib\screens\account_selector.dart:613:                            child: Text('ACCEPT'.tr, style: const 
+TextStyle(fontWeight: FontWeight.w900)),
+lib\screens\account_selector.dart:635:           Text((_isAssistantView ? 'no_missions_found' : 'no_clubs_found').tr, 
+style: const TextStyle(color: Colors.white24, fontSize: 12, letterSpacing: 1)),
+lib\screens\archive_ledger_screen.dart:79:        backgroundColor: Colors.transparent,
+lib\screens\archive_ledger_screen.dart:81:        title: Text('ARCHIVE'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 16, letterSpacing: 2)),
+lib\screens\archive_ledger_screen.dart:103:          Text('no_history'.tr, style: const TextStyle(color: 
+Colors.white24)),
+lib\screens\audience_screen.dart:40:              'name': p?['full_name'] ?? 'Visitor'.tr,
+lib\screens\audience_screen.dart:55:             _followers = (simpleRes as List).map((f) => {'id': f['user_id'], 
+'name': 'Anonymous Member'.tr}).toList();
+lib\screens\audience_screen.dart:68:      backgroundColor: Colors.transparent,
+lib\screens\audience_screen.dart:99:            Text('FAN_BASE'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 16)),
+lib\screens\audience_screen.dart:102:              onTap: () => _showHelp('FAN_BASE'.tr, 'HELPER_AUDIENCE_DESC'.tr),
+lib\screens\audience_screen.dart:104:                message: 'MORE_INFO'.tr,
+lib\screens\audience_screen.dart:127:          Text('no_followers_yet'.tr, style: const TextStyle(color: 
+Colors.white24, fontSize: 14)),
+lib\screens\auth_screen.dart:71:          _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:76:          String phone = _phoneC.text.trim();
+lib\screens\auth_screen.dart:102:          _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:107:          String phone = _phoneC.text.trim();
+lib\screens\auth_screen.dart:115:            smsCode: _smsCodeC.text.trim(),
+lib\screens\auth_screen.dart:140:            _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:145:            final success = await _auth.sendOtp(_emailC.text.trim(), isPhone: false);
+lib\screens\auth_screen.dart:161:            _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:166:            final success = await _auth.verifyOtp(_emailC.text.trim(), 
+_smsCodeC.text.trim(), isPhone: false);
+lib\screens\auth_screen.dart:183:          _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:187:          _showError('PASSWORDS_DO_NOT_MATCH'.tr);
+lib\screens\auth_screen.dart:192:          await Supabase.instance.client.auth.updateUser(UserAttributes(password: 
+_passC.text.trim()));
+lib\screens\auth_screen.dart:194:          _showError('password_reset_success'.tr);
+lib\screens\auth_screen.dart:218:      _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:225:        final res = await _auth.signIn(_emailC.text.trim(), _passC.text.trim());
+lib\screens\auth_screen.dart:229:          _emailC.text.trim(),
+lib\screens\auth_screen.dart:230:          _passC.text.trim(),
+lib\screens\auth_screen.dart:231:          _nameC.text.trim(),
+lib\screens\auth_screen.dart:243:              title: Text('VERIFICATION_SENT'.tr, style: const TextStyle(color: 
+Colors.white)),
+lib\screens\auth_screen.dart:244:              content: Text('CHECK_YOUR_EMAIL'.tr, style: const TextStyle(color: 
+Colors.white70)),
+lib\screens\auth_screen.dart:248:                    _auth.resendVerificationEmail(_emailC.text.trim());
+lib\screens\auth_screen.dart:250:                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('RESENT'.tr)));
+lib\screens\auth_screen.dart:252:                  child: Text('RESEND'.tr, style: const TextStyle(color: 
+AppTheme.primary)),
+lib\screens\auth_screen.dart:254:                TextButton(onPressed: () => Navigator.pop(ctx), child: Text('OK'.tr)),
+lib\screens\auth_screen.dart:264:        msg = 'user_already_exists'.tr;
+lib\screens\auth_screen.dart:277:            _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:281:          String phone = _phoneC.text.trim();
+lib\screens\auth_screen.dart:323:            _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:330:              smsCode: _smsCodeC.text.trim(),
+lib\screens\auth_screen.dart:345:          _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:349:          _showError('PASSWORDS_DO_NOT_MATCH'.tr);
+lib\screens\auth_screen.dart:354:          _showError('password_reset_success'.tr);
+lib\screens\auth_screen.dart:372:        _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:376:      String phone = _phoneC.text.trim();
+lib\screens\auth_screen.dart:383:        final res = await _auth.signInWithPhoneAndPassword(phone, _passC.text.trim());
+lib\screens\auth_screen.dart:395:        _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:399:        _showError('PASSWORDS_DO_NOT_MATCH'.tr);
+lib\screens\auth_screen.dart:403:      String phone = _phoneC.text.trim();
+lib\screens\auth_screen.dart:435:      _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:439:      String phone = _phoneC.text.trim();
+lib\screens\auth_screen.dart:448:          smsCode: _smsCodeC.text.trim(),
+lib\screens\auth_screen.dart:450:        fullName: _nameC.text.trim(),
+lib\screens\auth_screen.dart:451:        password: _isLogin ? null : _passC.text.trim(),
+lib\screens\auth_screen.dart:604:          _isLogin ? 'welcome_back'.tr : 'create_account'.tr,
+lib\screens\auth_screen.dart:610:          _isLogin ? 'login_subtitle'.tr : 'signup_subtitle'.tr,
+lib\screens\auth_screen.dart:629:              'LINK_PHONE_NUMBER'.tr,
+lib\screens\auth_screen.dart:634:              'PHONE_REQUIRED_DESC'.tr,
+lib\screens\auth_screen.dart:642:              _input('ENTER_SMS_CODE'.tr, Icons.sms_rounded, _smsCodeC),
+lib\screens\auth_screen.dart:647:                  _input('phone_number'.tr, Icons.phone_android_rounded, _phoneC)
+lib\screens\auth_screen.dart:649:                  _input('email'.tr, Icons.alternate_email_rounded, _emailC),
+lib\screens\auth_screen.dart:651:                _input('ENTER_SMS_CODE'.tr, Icons.sms_rounded, _smsCodeC),
+lib\screens\auth_screen.dart:654:                'new_password'.tr,
+lib\screens\auth_screen.dart:664:                'CONFIRM_PASSWORD'.tr,
+lib\screens\auth_screen.dart:682:                    'password'.tr,
+lib\screens\auth_screen.dart:692:                  _input('ENTER_SMS_CODE'.tr, Icons.sms_rounded, _smsCodeC),
+lib\screens\auth_screen.dart:694:                _input('email'.tr, Icons.alternate_email_rounded, _emailC),
+lib\screens\auth_screen.dart:696:                  'password'.tr,
+lib\screens\auth_screen.dart:716:                  'forgot_password'.tr,
+lib\screens\auth_screen.dart:747:        (_usePhone ? 'DIRECT_EMAIL_LOGIN'.tr : 'USE_PHONE'.tr).toUpperCase(),
+lib\screens\auth_screen.dart:788:      backgroundColor: Colors.transparent,
+lib\screens\auth_screen.dart:810:              'SELECT_COUNTRY'.tr,
+lib\screens\auth_screen.dart:890:                  hintText: 'phone_number'.tr,
+lib\screens\auth_screen.dart:965:                child: Text('back'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.white54)),
+lib\screens\auth_screen.dart:976:                  _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:981:                    _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:985:                    _showError('please_fill_all'.tr);
+lib\screens\auth_screen.dart:1003:                : Text((isLastStep ? (_isLogin ? 'login' : 'signup') : 
+'NEXT').tr.toUpperCase()),
+lib\screens\auth_screen.dart:1016:          _input('full_name'.tr, Icons.person_outline_rounded, _nameC),
+lib\screens\auth_screen.dart:1024:              _input('ENTER_SMS_CODE'.tr, Icons.sms_rounded, _smsCodeC),
+lib\screens\auth_screen.dart:1026:            _input('email'.tr, Icons.alternate_email_rounded, _emailC),
+lib\screens\auth_screen.dart:1029:            'password'.tr,
+lib\screens\auth_screen.dart:1039:            'CONFIRM_PASSWORD'.tr,
+lib\screens\auth_screen.dart:1100:            "OR".tr,
+lib\screens\auth_screen.dart:1120:        label: Text('continue_with_google'.tr),
+lib\screens\auth_screen.dart:1142:          text: _isLogin ? "dont_have_account".tr : "already_have_account".tr,
+lib\screens\auth_screen.dart:1149:              text: "  ${(_isLogin ? 'signup' : 'login').tr}",
+lib\screens\auth_screen.dart:1166:        _smallBottomBtn(Icons.language_rounded, 'language'.tr, _showLanguagePicker),
+lib\screens\auth_screen.dart:1167:        _smallBottomBtn(Icons.help_outline_rounded, 'assistance'.tr, 
+_showHelpDialog),
+lib\screens\auth_screen.dart:1168:        _smallBottomBtn(Icons.info_outline_rounded, 'about_app'.tr, 
+_showAboutDialog),
+lib\screens\auth_screen.dart:1188:      backgroundColor: Colors.transparent,
+lib\screens\auth_screen.dart:1248:      backgroundColor: Colors.transparent,
+lib\screens\auth_screen.dart:1274:              Text('SEND_MESSAGE'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 20)),
+lib\screens\auth_screen.dart:1276:              _input('CONTACT_INFO_HINT'.tr, Icons.alternate_email_rounded, 
+contactC),
+lib\screens\auth_screen.dart:1278:              _input('MESSAGE_HINT'.tr, Icons.message_rounded, messageC),
+lib\screens\auth_screen.dart:1286:                        SnackBar(content: Text('PLEASE_FILL_ALL_FIELDS'.tr)),
+lib\screens\auth_screen.dart:1293:                        'contact': contactC.text.trim(),
+lib\screens\auth_screen.dart:1294:                        'message': messageC.text.trim(),
+lib\screens\auth_screen.dart:1328:      backgroundColor: Colors.transparent,
+lib\screens\auth_screen.dart:1348:            Text('HOW_CAN_WE_HELP'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 20)),
+lib\screens\auth_screen.dart:1350:            _helpTile('DIDNT_RECEIVE_CODE'.tr, 'DIDNT_RECEIVE_CODE_DESC'.tr),
+lib\screens\auth_screen.dart:1351:            _helpTile('CANT_LOGIN'.tr, 'CANT_LOGIN_DESC'.tr),
+lib\screens\auth_screen.dart:1358:                label: Text('CONTACT_SUPPORT'.tr),
+lib\screens\auth_screen.dart:1388:      backgroundColor: Colors.transparent,
+lib\screens\auth_screen.dart:1409:            Text('APP_NAME_LABEL'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 24)),
+lib\screens\auth_screen.dart:1411:            Text('APP_VERSION'.tr, style: AppTheme.bodyStyle.copyWith(color: 
+Colors.white24, fontSize: 12)),
+lib\screens\auth_screen.dart:1414:              'APP_DESC'.tr,
+lib\screens\auth_screen.dart:1420:              'ALL_RIGHTS_RESERVED'.tr,
+lib\screens\blacklist_management_screen.dart:44:        title: Text('PARDON_USER'.tr, style: const TextStyle(color: 
+Colors.white)),
+lib\screens\blacklist_management_screen.dart:45:        content: Text('PARDON_CONFIRM_DESC'.tr, style: const 
+TextStyle(color: Colors.white70)),
+lib\screens\blacklist_management_screen.dart:47:          TextButton(onPressed: () => Navigator.pop(ctx, false), 
+child: Text('CANCEL'.tr)),
+lib\screens\blacklist_management_screen.dart:50:            child: Text('CONFIRM_PARDON'.tr, style: const 
+TextStyle(color: AppTheme.primary)),
+lib\screens\blacklist_management_screen.dart:111:        title: Text('THE_VAULT'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 4, color: Colors.redAccent)),
+lib\screens\blacklist_management_screen.dart:112:        background: ClipRRect(child: BackdropFilter(filter: 
+ImageFilter.blur(sigmaX: 10, sigmaY: 10), child: Container(color: Colors.transparent))),
+lib\screens\blacklist_management_screen.dart:121:    final date = DateTime.tryParse(entry['created_at'] ?? '');
+lib\screens\blacklist_management_screen.dart:149:                  
+Text('BANNED_ON'.trArgs([date.toLocal().toString().substring(0, 10)]), style: const TextStyle(color: Colors.white10, 
+fontSize: 9, fontWeight: FontWeight.bold)),
+lib\screens\blacklist_management_screen.dart:156:            tooltip: 'REMOVE_BAN'.tr,
+lib\screens\blacklist_management_screen.dart:172:            Text('VAULT_EMPTY'.tr, style: const TextStyle(color: 
+Colors.white24, fontSize: 12, letterSpacing: 2)),
+lib\screens\booking_management.dart:84:            content: Text('action_success'.tr),
+lib\screens\booking_management.dart:107:              'select_cancel_reason'.tr,
+lib\screens\booking_management.dart:114:                  reason.tr,
+lib\screens\booking_management.dart:121:                    reason: reason.tr,
+lib\screens\booking_management.dart:128:                          'Cancelled: ${booking.userName} - Reason: 
+${reason.tr}',
+lib\screens\booking_management.dart:150:      backgroundColor: Colors.transparent,
+lib\screens\booking_management.dart:164:            Text('manage_requests'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 18)),
+lib\screens\booking_management.dart:166:            Text('HELPER_BOOKING_MGMT_DESC'.tr, textAlign: TextAlign.center, 
+style: const TextStyle(color: Colors.white60, fontSize: 13, height: 1.5)),
+lib\screens\booking_management.dart:183:        backgroundColor: Colors.transparent,
+lib\screens\booking_management.dart:185:          'manage_requests'.tr.toUpperCase(),
+lib\screens\booking_management.dart:218:                      s.tr.toUpperCase(),
+lib\screens\booking_management.dart:237:                'no_requests'.tr,
+lib\screens\booking_management.dart:272:                '${b.numGuests} ${'guests_label'.tr.toUpperCase()}',
+lib\screens\booking_management.dart:288:              b.event?.title ?? 'event'.tr,
+lib\screens\booking_management.dart:323:                        child: Text('confirm'.tr.toUpperCase()),
+lib\screens\booking_management.dart:334:                        child: Text('reject'.tr.toUpperCase()),
+lib\screens\booking_management.dart:355:                  label: Text('CONFIRM_PAYMENT'.tr.toUpperCase()),
+lib\screens\booking_success.dart:45:    final message = '${'share_event'.tr}\n\n${event.title}\n📍 ${event.venue}\n🔗 
+$shareLink';
+lib\screens\booking_success.dart:133:                          (isPending ? 'request_sent'.tr : 
+'booking_confirmed'.tr).toUpperCase(),
+lib\screens\booking_success.dart:145:                            ? 'call_to_confirm_desc'.tr
+lib\screens\booking_success.dart:146:                            : '${'spot_secured_at'.tr} 
+${widget.booking.event?.title ?? 'the night'}.\n${'get_ready_msg'.tr}',
+lib\screens\booking_success.dart:161:                            label: 'CALL_TO_CONFIRM'.tr.toUpperCase(),
+lib\screens\booking_success.dart:175:                          label: (isPending ? 'view_request_status'.tr : 
+'view_ticket'.tr).toUpperCase(),
+lib\screens\booking_success.dart:186:                                  title: Text('cancel_request_q'.tr, style: const 
+TextStyle(color: Colors.white)),
+lib\screens\booking_success.dart:187:                                  content: Text('cancel_request_desc'.tr, style: 
+const TextStyle(color: Colors.white70)),
+lib\screens\booking_success.dart:189:                                    TextButton(onPressed: () => 
+Navigator.pop(ctx, false), child: Text('no'.tr)),
+lib\screens\booking_success.dart:190:                                    TextButton(onPressed: () => 
+Navigator.pop(ctx, true), child: Text('yes_cancel'.tr, style: const TextStyle(color: Colors.redAccent))),
+lib\screens\booking_success.dart:199:                            label: 'CANCEL_REQUEST'.tr.toUpperCase(),
+lib\screens\booking_success.dart:205:                            label: 'INVITE FRIENDS'.tr.toUpperCase(),
+lib\screens\booking_success.dart:213:                            'back_to_home'.tr,
+lib\screens\broadcast_screen.dart:37:    final msg = _messageController.text.trim();
+lib\screens\broadcast_screen.dart:62:        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('broadcast_sent'.tr), backgroundColor: AppTheme.primary));
+lib\screens\broadcast_screen.dart:97:      backgroundColor: Colors.transparent,
+lib\screens\broadcast_screen.dart:99:      title: Text('broadcast_title'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 18, letterSpacing: 2)),
+lib\screens\broadcast_screen.dart:111:          Text('send_to'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: AppTheme.primary, letterSpacing: 2)),
+lib\screens\broadcast_screen.dart:115:          Text('message_label'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: Colors.white24, letterSpacing: 2)),
+lib\screens\broadcast_screen.dart:139:            Text('REACH_YOUR_FANS'.tr.toUpperCase(), style: const 
+TextStyle(color: AppTheme.primary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+lib\screens\broadcast_screen.dart:143:        Text('marketing_engine_title'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 24)),
+lib\screens\broadcast_screen.dart:152:        Text('QUICK_TEMPLATES'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.white24, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 2)),
+lib\screens\broadcast_screen.dart:187:        _targetOption('followers', Icons.people_outline, 'followers'.tr),
+lib\screens\broadcast_screen.dart:189:        _targetOption('staff', Icons.badge_outlined, 'staff'.tr),
+lib\screens\broadcast_screen.dart:227:          hintText: 'message_label'.tr,
+lib\screens\broadcast_screen.dart:240:      label: Text('IGNITE_BROADCAST'.tr.toUpperCase()),
+lib\screens\clubs_discovery_screen.dart:70:        backgroundColor: Colors.transparent,
+lib\screens\clubs_discovery_screen.dart:72:        title: Text('EXPLORE_CLUBS'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(letterSpacing: 2)),
+lib\screens\clubs_discovery_screen.dart:83:                hintText: 'search_club_hint'.tr,
+lib\screens\clubs_discovery_screen.dart:96:                ? Center(child: Text('NO_CLUBS_FOUND'.tr, style: const 
+TextStyle(color: Colors.white24)))
+lib\screens\clubs_discovery_screen.dart:144:                                backgroundColor: isFollowing ? 
+Colors.transparent : AppTheme.primary,
+lib\screens\clubs_discovery_screen.dart:151:                              child: Text(isFollowing ? 'FOLLOWING'.tr : 
+'FOLLOW'.tr, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+lib\screens\club_dashboard.dart:123:                      Tab(text: 'INSIGHTS'.tr),
+lib\screens\club_dashboard.dart:124:                      Tab(text: 'STUDIO'.tr),
+lib\screens\club_dashboard.dart:125:                      Tab(text: 'PUBLISH'.tr),
+lib\screens\club_dashboard.dart:154:          _buildSectionTitle('OPERATIONAL DOMAINS'.tr),
+lib\screens\club_dashboard.dart:158:          _buildSectionTitle('INTEL FEED'.tr),
+lib\screens\club_dashboard.dart:174:          Text('STUDIO_MODE'.tr, style: const TextStyle(color: Colors.white, 
+fontWeight: FontWeight.w900, letterSpacing: 2)),
+lib\screens\club_dashboard.dart:176:          Text('branding_desc'.tr, textAlign: TextAlign.center, style: const 
+TextStyle(color: Colors.white24, fontSize: 10)),
+lib\screens\club_dashboard.dart:178:          _studioAction('EDIT_CLUB_BIO'.tr, Icons.short_text_rounded),
+lib\screens\club_dashboard.dart:180:          _studioAction('UPDATE_GALLERY'.tr, Icons.photo_library_rounded),
+lib\screens\club_dashboard.dart:182:          _studioAction('SET_LOCATION'.tr, Icons.location_on_rounded),
+lib\screens\club_dashboard.dart:207:      backgroundColor: Colors.transparent,
+lib\screens\club_dashboard.dart:219:                child: Text('PRO-SUITE COMMAND CENTRE'.tr.toUpperCase(), style: 
+const TextStyle(color: AppTheme.primary, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 3)),
+lib\screens\club_dashboard.dart:235:    String label = 'CLUB_BRAND'.tr;
+lib\screens\club_dashboard.dart:238:      label = 'RESTAURANT_BRAND'.tr;
+lib\screens\club_dashboard.dart:241:      label = 'LOUNGE_BRAND'.tr;
+lib\screens\club_dashboard.dart:244:      label = 'CAFE_BRAND'.tr;
+lib\screens\club_dashboard.dart:269:        _statBox('EVENTS'.tr, _totalEvents.toString(), 
+Icons.event_available_rounded),
+lib\screens\club_dashboard.dart:271:        _statBox('REACH'.tr, _totalFollowers.toString(), Icons.people_alt_rounded),
+lib\screens\club_dashboard.dart:273:        _statBox('RATING'.tr, _avgRating.toString(), Icons.star_rounded),
+lib\screens\club_dashboard.dart:312:        _domainCard('SECURITY_HUB'.tr, '$_activeStaff Active', 
+Icons.security_rounded, AppTheme.secondary, () {
+lib\screens\club_dashboard.dart:315:        _domainCard('BRANDING'.tr, 'Edit Hub', Icons.auto_fix_high_rounded, 
+Colors.purpleAccent, () {
+lib\screens\club_dashboard.dart:318:        _domainCard('LEDGER'.tr, 'Tactical Logs', Icons.history_edu_rounded, 
+Colors.orangeAccent, () {
+lib\screens\club_dashboard.dart:321:        _domainCard('PUBLISH'.tr, 'New Experience', 
+Icons.add_circle_outline_rounded, Colors.amber, () {
+lib\screens\club_dashboard.dart:357:        _shortcutTile('MASTER OPERATIONAL LEDGER'.tr, 'The tactical flow of all 
+event entries.'.tr, Colors.greenAccent),
+lib\screens\club_dashboard.dart:359:        _shortcutTile('CLUB BRADING & IG VIBES'.tr, 'Maintain your professional 
+hub appearance.'.tr, AppTheme.primary),
+lib\screens\club_dashboard.dart:361:        _shortcutTile('GLOBAL LOCATION SETTINGS'.tr, 'GPS Localization for all 
+cloud events.'.tr, Colors.white),
+lib\screens\club_management_hub.dart:73:        backgroundColor: Colors.transparent,
+lib\screens\club_management_hub.dart:76:          'CLUB_HUB'.tr.toUpperCase(),
+lib\screens\club_management_hub.dart:121:            'NO_CLUB_IDENTITY'.tr,
+lib\screens\club_management_hub.dart:136:            child: Text('CREATE_CLUB_IDENTITY'.tr),
+lib\screens\club_management_hub.dart:165:              _buildSectionHeader('INSTITUTIONAL_SITE'.tr),
+lib\screens\club_management_hub.dart:168:              _buildSectionHeader('STAFF_Roster'.tr),
+lib\screens\club_management_hub.dart:171:              _buildSectionHeader('BRANDING_STORAGE'.tr),
+lib\screens\club_management_hub.dart:219:                  _club!.bio ?? 'INSTITUTIONAL_IDENTITY'.tr,
+lib\screens\club_management_hub.dart:265:                  colors: [Colors.black.withValues(alpha: 0.8), 
+Colors.transparent],
+lib\screens\club_management_hub.dart:280:                  'UPDATE_PERMANENT_SITE'.tr.toUpperCase(),
+lib\screens\club_management_hub.dart:307:            'MANAGERS'.tr,
+lib\screens\club_management_hub.dart:324:            'SECURITY'.tr,
+lib\screens\club_profile.dart:209:      ShareParams(text: 'share_club_msg'.trArgs([widget.organizerName, 
+widget.organizerId])),
+lib\screens\club_profile.dart:283:          'Edit ${field.tr}',
+lib\screens\club_profile.dart:292:            hintText: 'Enter new ${field.tr}',
+lib\screens\club_profile.dart:299:            child: Text('cancel'.tr),
+lib\screens\club_profile.dart:303:            child: Text('save'.tr),
+lib\screens\club_profile.dart:346:              '($_reviewCount ${'TOTAL_REVIEWS'.tr})',
+lib\screens\club_profile.dart:363:      backgroundColor: Colors.transparent,
+lib\screens\club_profile.dart:375:              Text('RATE_CLUB'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 20)),
+lib\screens\club_profile.dart:399:                        SnackBar(content: Text('REVIEW_SUCCESS'.tr), 
+backgroundColor: AppTheme.secondary),
+lib\screens\club_profile.dart:404:                  child: Text('SUBMIT_REVIEW'.tr.toUpperCase()),
+lib\screens\club_profile.dart:437:                _buildSideIcon(Icons.phone_rounded, _handleCallClub, label: 
+'CALL'.tr),
+lib\screens\club_profile.dart:438:                _buildSideIcon(Icons.share_rounded, _handleShare, label: 'SHARE'.tr),
+lib\screens\club_profile.dart:441:                }, label: 'EXPLORE_NEARBY'.tr),
+lib\screens\club_profile.dart:442:                _buildSideIcon(Icons.dashboard_rounded, _showManagementBottomSheet, 
+label: 'MANAGE'.tr, color: AppTheme.primary),
+lib\screens\club_profile.dart:470:                _buildSideIcon(Icons.phone_rounded, _handleCallClub, label: 
+'CALL'.tr),
+lib\screens\club_profile.dart:472:                  color: _isFavorited ? Colors.redAccent : Colors.white70, label: 
+'FAVORITE'.tr),
+lib\screens\club_profile.dart:473:                _buildSideIcon(Icons.share_rounded, _handleShare, label: 'SHARE'.tr),
+lib\screens\club_profile.dart:476:                }, label: 'EXPLORE_NEARBY'.tr),
+lib\screens\club_profile.dart:488:      backgroundColor: Colors.transparent,
+lib\screens\club_profile.dart:697:      backgroundColor: Colors.transparent,
+lib\screens\club_profile.dart:716:                  Text('SWITCH_ENTITY'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 20)),
+lib\screens\club_profile.dart:814:            color: isSel ? AppTheme.primary.withValues(alpha: 0.1) : 
+Colors.transparent,
+lib\screens\club_profile.dart:816:            border: Border.all(color: isSel ? AppTheme.primary.withValues(alpha: 
+0.2) : Colors.transparent),
+lib\screens\club_profile.dart:863:              'No photos uploaded'.tr,
+lib\screens\club_profile.dart:950:                'JOIN_ORGANIZERS_TEASER'.tr.toUpperCase(),
+lib\screens\club_profile.dart:959:              _buildInlineHelp('organize'.tr, 'HELP_BECOME_ORGANIZER_USER_SHORT', 
+icon: Icons.auto_awesome_rounded),
+lib\screens\club_profile.dart:964:            'HELP_BECOME_ORGANIZER_USER_SHORT'.tr,
+lib\screens\club_profile.dart:1031:                    Colors.transparent,
+lib\screens\club_profile.dart:1078:                  content: Text(_previewAsVisitor ? 'PREVIEW_MODE_ACTIVE'.tr : 
+'OWNER_MODE_ACTIVE'.tr),
+lib\screens\club_profile.dart:1291:                    _bio ?? 'THE_VIBE_IS_HERE'.tr,
+lib\screens\club_profile.dart:1310:                  label: FittedBox(child: Text('EDIT_PROFILE'.tr.toUpperCase(), 
+style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1))),
+lib\screens\club_profile.dart:1388:            backgroundColor: Colors.transparent,
+lib\screens\club_profile.dart:1411:    final date = e.dateTime?.split('|').first.trim() ?? '';
+lib\screens\club_profile.dart:1412:    final time = e.dateTime?.split('|').last.trim() ?? '';
+lib\screens\club_profile.dart:1474:                  : const ColorFilter.mode(Colors.transparent, BlendMode.multiply),
+lib\screens\club_profile.dart:1490:                    Colors.transparent,
+lib\screens\club_profile.dart:1755:          Text('FEW SPOTS'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.white, fontWeight: FontWeight.w900, fontSize: 10)),
+lib\screens\club_profile.dart:1803:            Text('BLOCK_CLUB'.tr, style: const TextStyle(color: Colors.white, 
+fontWeight: FontWeight.bold)),
+lib\screens\club_profile.dart:1806:        content: Text('block_confirm_msg'.tr, style: const TextStyle(color: 
+Colors.white70, fontSize: 14)),
+lib\screens\club_profile.dart:1808:          TextButton(onPressed: () => Navigator.pop(ctx), child: Text('cancel'.tr, 
+style: const TextStyle(color: Colors.white54))),
+lib\screens\club_profile.dart:1819:                    content: Text('club_blocked_success'.tr),
+lib\screens\club_profile.dart:1824:              child: Text('block'.tr, style: const TextStyle(color: 
+Colors.redAccent, fontWeight: FontWeight.bold)),
+lib\screens\club_profile.dart:1835:      backgroundColor: Colors.transparent,
+lib\screens\club_profile.dart:1856:              _buildIGActionSmall(Icons.dashboard_rounded, 'DASHBOARD'.tr, () {
+lib\screens\club_profile.dart:1860:              _buildIGActionSmall(Icons.analytics_rounded, 'MARKETING'.tr, () {
+lib\screens\club_profile.dart:1864:              _buildIGActionSmall(Icons.people_rounded, 'STAFF'.tr, () {
+lib\screens\club_profile.dart:1868:              _buildIGActionSmall(Icons.archive_rounded, 'ARCHIVES'.tr, () {
+lib\screens\club_profile.dart:1873:              _buildIGActionSmall(Icons.report_problem_rounded, 'REPORT'.tr, () {
+lib\screens\club_profile.dart:1878:              _buildIGActionSmall(Icons.block_rounded, 'BLOCK'.tr, () {
+lib\screens\club_profile.dart:1901:            Text('report_club'.tr, style: const TextStyle(color: Colors.white, 
+fontWeight: FontWeight.bold)),
+lib\screens\club_profile.dart:1912:                hintText: 'reason_details'.tr,
+lib\screens\club_profile.dart:1923:          TextButton(onPressed: () => Navigator.pop(ctx), child: Text('cancel'.tr, 
+style: const TextStyle(color: Colors.white54))),
+lib\screens\club_profile.dart:1936:                      content: Text('report_sent'.tr),
+lib\screens\club_profile.dart:1942:              child: Text('send'.tr, style: const TextStyle(color: 
+Colors.orangeAccent, fontWeight: FontWeight.bold)),
+lib\screens\club_profile.dart:2163:            Text('Quick Booking'.tr, style: const TextStyle(color: Colors.white, 
+fontWeight: FontWeight.bold, fontSize: 18)),
+lib\screens\club_profile.dart:2165:            Text('Coming soon...'.tr, style: const TextStyle(color: 
+Colors.white70)),
+lib\screens\club_profile.dart:2188:              hintText: 'search_events_hint'.tr,
+lib\screens\club_profile.dart:2208:            Text('no_active_events'.tr, style: const TextStyle(color: 
+Colors.white24)),
+lib\screens\club_profile.dart:2233:            Text(customDesc ?? 'Help content...'.tr, textAlign: TextAlign.center, 
+style: const TextStyle(color: Colors.white60, fontSize: 13, height: 1.5)),
+lib\screens\club_profile.dart:2243:      onTap: () => _showSectionHelp(title, customDesc: descKey.tr),
+lib\screens\club_profile_editor.dart:231:                Text('${'error_saving_profile'.tr}: $e', style: const 
+TextStyle(fontSize: 10)),
+lib\screens\club_profile_editor.dart:266:              Text('BRAND_IDENTITY_LIVE'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 18, letterSpacing: 2)),
+lib\screens\club_profile_editor.dart:268:              Text('Your professional club profile is now deployed to the 
+SIFO network.'.tr, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white60, fontSize: 13)),
+lib\screens\club_profile_editor.dart:281:                child: Text('VIEW_MY_PAGE'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+lib\screens\club_profile_editor.dart:292:    String desc = 'providing_details'.tr;
+lib\screens\club_profile_editor.dart:293:    if (section == 'BASIC IDENTITY'.tr) desc = 'HELPER_BASIC_DESC'.tr;
+lib\screens\club_profile_editor.dart:294:    if (section == 'PERMANENT GALLERY (VIBES)'.tr) desc = 
+'HELPER_GALLERY_DESC'.tr;
+lib\screens\club_profile_editor.dart:295:    if (section == 'CONTACT INFO'.tr) desc = 'HELPER_CONTACT_DESC'.tr;
+lib\screens\club_profile_editor.dart:296:    if (section == 'LOGISTICS & PERKS'.tr) desc = 'HELPER_LOGISTICS_DESC'.tr;
+lib\screens\club_profile_editor.dart:297:    if (section == 'BRAND_LOGO'.tr) desc = 'HELPER_LOGO_DESC'.tr;
+lib\screens\club_profile_editor.dart:298:    if (section == 'ENTITY_TYPE'.tr) desc = 'HELPER_ENTITY_DESC'.tr;
+lib\screens\club_profile_editor.dart:302:      backgroundColor: Colors.transparent,
+lib\screens\club_profile_editor.dart:316:            Text(title.tr, style: AppTheme.headlineStyle.copyWith(fontSize: 
+18)),
+lib\screens\club_profile_editor.dart:331:        backgroundColor: Colors.transparent,
+lib\screens\club_profile_editor.dart:333:        title: Text('MANAGE BRAND'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 16)),
+lib\screens\club_profile_editor.dart:360:                      _buildSectionTitle('BASIC IDENTITY'.tr),
+lib\screens\club_profile_editor.dart:361:                      _buildTextField('CLUB NAME'.tr, _nameController, hint: 
+'Club Name...'),
+lib\screens\club_profile_editor.dart:363:                      _buildTextField('BIO / SLOGAN'.tr, _bioController, 
+hint: 'The best night in town...', maxLines: 3),
+lib\screens\club_profile_editor.dart:365:                      _buildSectionTitle('ENTITY_TYPE'.tr),
+lib\screens\club_profile_editor.dart:370:                      _buildSectionTitle('CONTACT INFO'.tr),
+lib\screens\club_profile_editor.dart:371:                      _buildTextField('OFFICIAL PHONE'.tr, _phoneController, 
+hint: '+213...'),
+lib\screens\club_profile_editor.dart:373:                      _buildTextField('CLUB_LOCATION_ADDRESS'.tr, 
+_addressController, hint: 'e.g. 123 Street, Hydra, Algiers...'),
+lib\screens\club_profile_editor.dart:382:                      _buildSectionTitle('PERMANENT GALLERY (VIBES)'.tr),
+lib\screens\club_profile_editor.dart:383:                      Text('Add up to 5 images to showcase your club\'s 
+atmosphere.'.tr, style: const TextStyle(color: Colors.white38, fontSize: 11)),
+lib\screens\club_profile_editor.dart:445:                      _buildSectionTitle('LOGISTICS & PERKS'.tr),
+lib\screens\club_profile_editor.dart:446:                      _buildTextField('AMENITIES_LOGISTICS'.tr, 
+_amenitiesController, hint: 'e.g. Valet, Security, VIP Lounge...', maxLines: 3),
+lib\screens\club_profile_editor.dart:448:                      _buildTextField('DEFAULT_FOLLOWER_PERK'.tr, 
+_perkController, hint: 'e.g. 10% Discount, Free Drink...'),
+lib\screens\club_profile_editor.dart:451:                      _buildSectionTitle('LOCATION'.tr),
+lib\screens\club_profile_editor.dart:527:          : Text(isLastTab ? 'PUBLISH UPDATES'.tr : 'التالي (الصور والموقع)', 
+style: const TextStyle(fontWeight: FontWeight.bold)),
+lib\screens\club_profile_editor.dart:549:            title: Text('CLUB GPS LOCATION'.tr, style: const TextStyle(color: 
+Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
+lib\screens\club_profile_editor.dart:550:            subtitle: Text(_lat != null ? 'LOCATION_CAPTURED'.tr : 
+'LOCATION_NOT_SET'.tr, style: TextStyle(color: _lat != null ? AppTheme.secondary : Colors.white24, fontSize: 10)),
+lib\screens\club_profile_editor.dart:558:                    label: 'PICK_FROM_MAP'.tr,
+lib\screens\club_profile_editor.dart:567:                    label: 'MY_LOCATION'.tr,
+lib\screens\club_profile_editor.dart:586:      if (!serviceEnabled) throw 'location_services_disabled'.tr;
+lib\screens\club_profile_editor.dart:591:        if (permission == LocationPermission.denied) throw 
+'location_permission_denied'.tr;
+lib\screens\club_profile_editor.dart:618:        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('location_captured'.tr), backgroundColor: Colors.green));
+lib\screens\club_profile_editor.dart:640:      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('location_updated'.tr), backgroundColor: Colors.green));
+lib\screens\club_profile_editor.dart:646:      {'id': 'club', 'label': 'CLUB_BRAND'.tr, 'icon': Icons.nightlife},
+lib\screens\club_profile_editor.dart:647:      {'id': 'restaurant', 'label': 'RESTAURANT_BRAND'.tr, 'icon': 
+Icons.restaurant},
+lib\screens\club_profile_editor.dart:648:      {'id': 'cafe', 'label': 'CAFE_BRAND'.tr, 'icon': Icons.coffee},
+lib\screens\club_profile_editor.dart:649:      {'id': 'entertainment', 'label': 'ENTERTAINMENT_BRAND'.tr, 'icon': 
+Icons.theater_comedy_rounded},
+lib\screens\club_profile_editor.dart:683:        _buildSectionTitle('CORE COUNTRY'.tr),
+lib\screens\club_profile_editor.dart:707:                      Text(country.name.tr.toUpperCase(), style: 
+TextStyle(color: sel ? Colors.white : Colors.white38, fontSize: 10, fontWeight: FontWeight.bold)),
+lib\screens\club_profile_editor.dart:723:          _buildSectionTitle('BRAND_LOGO'.tr),
+lib\screens\club_profile_editor.dart:757:          Text('OFFICIAL_LOGO_DESC'.tr, style: const TextStyle(color: 
+Colors.white24, fontSize: 10)),
+lib\screens\create_event.dart:166:        backgroundColor: Colors.transparent,
+lib\screens\create_event.dart:181:              Text('draft_found'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 22)),
+lib\screens\create_event.dart:183:              Text('restore_draft_query'.tr, textAlign: TextAlign.center, style: 
+const TextStyle(color: Colors.white38, fontSize: 13)),
+lib\screens\create_event.dart:193:                      child: Text('discard_draft'.tr, style: const TextStyle(color: 
+Colors.redAccent, fontWeight: FontWeight.bold)),
+lib\screens\create_event.dart:219:                      child: Text('restore'.tr, style: const TextStyle(fontWeight: 
+FontWeight.bold)),
+lib\screens\create_event.dart:305:              'LOCATION_SYNCED'.tr,
+lib\screens\create_event.dart:321:        content: Text('PLEASE_ENTER_EVENT_NAME'.tr),
+lib\screens\create_event.dart:328:        content: Text('PLEASE_SELECT_MAIN_IMAGE'.tr),
+lib\screens\create_event.dart:336:        ? '${_dateController.text} ${_timeController.text}'.trim()
+lib\screens\create_event.dart:365:            price: double.tryParse(_priceController.text) ?? 0.0,
+lib\screens\create_event.dart:378:            promoDiscount: double.tryParse(_promoDiscountController.text) ?? 0.0,
+lib\screens\create_event.dart:381:            promoLimit: int.tryParse(_promoLimitController.text) ?? 0,
+lib\screens\create_event.dart:382:            followerDiscount: double.tryParse(_discountController.text) ?? 0.0,
+lib\screens\create_event.dart:385:            maxCapacity: _isCapacityLimited ? int.tryParse(_capacityController.text) 
+: null,
+lib\screens\create_event.dart:393:            'price': double.tryParse(_priceController.text) ?? 0.0,
+lib\screens\create_event.dart:405:            'promo_discount': double.tryParse(_promoDiscountController.text) ?? 0.0,
+lib\screens\create_event.dart:406:            'promo_value': _promoValueController.text.trim().isEmpty ? null : 
+_promoValueController.text.trim(),
+lib\screens\create_event.dart:407:            'promo_label': _promoLabelController.text.trim().isEmpty ? null : 
+_promoLabelController.text.trim(),
+lib\screens\create_event.dart:408:            'promo_limit': int.tryParse(_promoLimitController.text) ?? 0,
+lib\screens\create_event.dart:409:            'follower_discount': double.tryParse(_discountController.text) ?? 0.0,
+lib\screens\create_event.dart:410:            'follower_perk': _perkController.text.trim().isEmpty ? null : 
+_perkController.text.trim(),
+lib\screens\create_event.dart:417:            'max_capacity': _isCapacityLimited ? 
+int.tryParse(_capacityController.text) : null,
+lib\screens\create_event.dart:424:          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text(widget.event == null ? 'event_created_success'.tr : 'event_updated_success'.tr)));
+lib\screens\create_event.dart:432:        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('${'action_failed'.tr}: $e')));
+lib\screens\create_event.dart:458:    String desc = customDesc ?? 'providing_details'.tr;
+lib\screens\create_event.dart:459:    if (section == 'media_studio'.tr) desc = 'HELP_MEDIA_DESC'.tr;
+lib\screens\create_event.dart:460:    if (section == 'FOLLOWER_PERKS'.tr) desc = 'HELP_PERKS_DESC'.tr;
+lib\screens\create_event.dart:461:    if (section == 'basic_info'.tr) desc = 'HELP_BASIC_DESC'.tr;
+lib\screens\create_event.dart:462:    if (section == 'logistics'.tr) desc = 'HELP_LOGISTICS_DESC'.tr;
+lib\screens\create_event.dart:466:      backgroundColor: Colors.transparent,
+lib\screens\create_event.dart:489:      onTap: () => _showSectionHelp(title, customDesc: descKey.tr),
+lib\screens\create_event.dart:506:        backgroundColor: Colors.transparent,
+lib\screens\create_event.dart:508:        title: Text((widget.isInitial ? 'create_experience' : 
+'CREATE_EVENT').tr.toUpperCase(), style: AppTheme.labelStyle.copyWith(letterSpacing: 2)),
+lib\screens\create_event.dart:515:              label: Text('clear'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.redAccent, fontSize: 10, fontWeight: FontWeight.bold)),
+lib\screens\create_event.dart:528:                _buildSectionHeader('media_studio'.tr),
+lib\screens\create_event.dart:537:            _buildSectionHeader('basic_info'.tr),
+lib\screens\create_event.dart:538:            _buildInputField('experience_name'.tr, 'experience_name_hint'.tr, 
+_nameController, icon: Icons.auto_awesome_rounded),
+lib\screens\create_event.dart:540:            _buildInputField('description'.tr, 'description_hint'.tr, 
+_descriptionController, maxLines: 4, maxLength: 250),
+lib\screens\create_event.dart:551:            _buildExpandableSection('POLICY_AND_RULES'.tr, Icons.gavel_rounded, [
+lib\screens\create_event.dart:552:              _buildInputField('house_rules'.tr, 'house_rules_hint'.tr, 
+_rulesController, maxLines: 5),
+lib\screens\create_event.dart:556:            _buildExpandableSection('universal_incentives'.tr, Icons.star_rounded, [
+lib\screens\create_event.dart:558:                Expanded(child: _buildInputField('fixed_discount'.tr + 
+(TranslationService.isRtl ? ' (اختياري)' : ' (Optional)'), '500', _promoDiscountController, icon: 
+Icons.money_off_rounded, keyboardType: TextInputType.number)),
+lib\screens\create_event.dart:560:                Expanded(flex: 2, child: _buildInputField('gift_description'.tr + 
+(TranslationService.isRtl ? ' (اختياري)' : ' (Optional)'), 'free_drink'.tr, _promoValueController, icon: 
+Icons.redeem_rounded)),
+lib\screens\create_event.dart:565:              _buildPresetChips(['free_drink'.tr, 'vip_access'.tr, 'skip_line'.tr], 
+(v) => _promoValueController.text = v),
+lib\screens\create_event.dart:572:            _buildSectionHeader('settings'.tr),
+lib\screens\create_event.dart:573:            _buildSwitchTile('PRO-VETTING: CALL REQUIRED'.tr, 
+'require_confirm_desc'.tr, requireCallConfirmation, (v) => setState(() => requireCallConfirmation = v), helpKey: 
+'HELP_VETTING_POLICY_DESC', icon: Icons.phone_callback_rounded),
+lib\screens\create_event.dart:578:              _buildInputField('${'price'.tr} (${_getCurrency()})', '2500', 
+_priceController, icon: Icons.payments_outlined, keyboardType: TextInputType.number, helpKey: 'HELP_PRICING_DESC'),
+lib\screens\create_event.dart:586:            _buildSwitchTile('hide_price'.tr, 'hide_price_desc'.tr, hidePrice, (v) 
+=> setState(() => hidePrice = v), icon: Icons.money_off_rounded),
+lib\screens\create_event.dart:601:    return _buildExpandableSection('logistics_and_category'.tr, Icons.map_outlined, [
+lib\screens\create_event.dart:603:      Text('category'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.white24, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
+lib\screens\create_event.dart:607:      _buildInputField('venue_address'.tr, 'location_hint'.tr, _locationController, 
+icon: Icons.location_on_rounded, helpKey: 'HELP_LOCATION_DESC'),
+lib\screens\create_event.dart:636:              cat.toUpperCase().tr,
+lib\screens\create_event.dart:655:            icon: title == 'media_studio'.tr ? Icons.photo_library_outlined : title 
+== 'logistics'.tr ? Icons.map_outlined : Icons.info_outline_rounded
+lib\screens\create_event.dart:754:            _buildInlineHelp(label, helpKey ?? (label == 'experience_name'.tr ? 
+'HELP_EXPERIENCE_SHORT' : 'explaining_role'), icon: label == 'experience_name'.tr ? Icons.edit_note_rounded : 
+Icons.info_outline_rounded),
+lib\screens\create_event.dart:798:              Text('EVENT_TIMELINE'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.white, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 2)),
+lib\screens\create_event.dart:800:              _buildInlineHelp('EVENT_TIMELINE'.tr, 'HELP_TIMELINE_DESC', icon: 
+Icons.schedule_rounded),
+lib\screens\create_event.dart:806:          Text('STARTS_ON'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.white24, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
+lib\screens\create_event.dart:810:              Expanded(child: _buildPickerField('date'.tr, _dateController, 
+Icons.calendar_today_rounded, () => _selectDate(context, _dateController))),
+lib\screens\create_event.dart:812:              Expanded(child: _buildPickerField('time'.tr, _timeController, 
+Icons.access_time_rounded, () => _selectTime(context, _timeController))),
+lib\screens\create_event.dart:818:          Text('ENDS_ON'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.white24, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
+lib\screens\create_event.dart:822:              Expanded(child: _buildPickerField('date'.tr, _endDateController, 
+Icons.calendar_today_rounded, () => _selectDate(context, _endDateController))),
+lib\screens\create_event.dart:824:              Expanded(child: _buildPickerField('time'.tr, _endTimeController, 
+Icons.history_toggle_off_rounded, () => _selectTime(context, _endTimeController))),
+lib\screens\create_event.dart:851:                      Text('ENABLE_CAPACITY_LIMIT'.tr, style: const TextStyle(color: 
+Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+lib\screens\create_event.dart:853:                      _buildInlineHelp('capacity'.tr, 'HELP_CAPACITY_SHORT', icon: 
+Icons.groups_outlined),
+lib\screens\create_event.dart:858:                    _isCapacityLimited ? 'capacity'.tr : 'UNLIMITED_CAPACITY'.tr,
+lib\screens\create_event.dart:873:            _buildInputField('max_capacity'.tr, '150', _capacityController, icon: 
+Icons.group_outlined, keyboardType: TextInputType.number),
+lib\screens\create_event.dart:884:        Text('PAYMENT_POLICY'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.white24, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 2)),
+lib\screens\create_event.dart:891:                title: 'AT_DOOR'.tr,
+lib\screens\create_event.dart:908:                title: 'FREE'.tr,
+lib\screens\create_event.dart:925:                title: 'PREPAY_TEASER'.tr,
+lib\screens\create_event.dart:929:                badge: 'SOON'.tr,
+lib\screens\create_event.dart:932:                    SnackBar(content: Text('HYPE_TITLE'.tr), backgroundColor: 
+AppTheme.primary)
+lib\screens\create_event.dart:960:          color: isSelected ? AppTheme.primary.withValues(alpha: 0.1) : (isActive ? 
+Colors.white.withValues(alpha: 0.02) : Colors.transparent),
+lib\screens\create_event.dart:1049:          : Text('publish_event'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.black, fontWeight: FontWeight.w900, letterSpacing: 3, fontSize: 16)),
+lib\screens\create_event.dart:1107:        title: Text('clear_draft'.tr, style: const TextStyle(color: Colors.white)),
+lib\screens\create_event.dart:1108:        content: Text('clear_draft_confirm'.tr, style: const TextStyle(color: 
+Colors.white70)),
+lib\screens\create_event.dart:1110:          TextButton(onPressed: () => Navigator.pop(ctx), child: Text('cancel'.tr, 
+style: const TextStyle(color: Colors.white24))),
+lib\screens\create_event.dart:1116:              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('draft_cleared'.tr)));
+lib\screens\create_event.dart:1118:            child: Text('clear'.tr, style: const TextStyle(color: 
+Colors.redAccent)),
+lib\screens\create_event.dart:1168:                      Text('SPECIAL_FOLLOWERS_INVITATION'.tr.toUpperCase(), style: 
+TextStyle(color: _notifyFollowers ? AppTheme.primary : Colors.white, fontWeight: FontWeight.w900, fontSize: 10, 
+letterSpacing: 1)),
+lib\screens\create_event.dart:1170:                      _buildInlineHelp('NOTIFY_FOLLOWERS'.tr, 'HELP_NOTIFY_SHORT', 
+icon: Icons.campaign_outlined),
+lib\screens\create_event.dart:1174:                  Text('notify_followers_desc'.tr, style: const TextStyle(color: 
+Colors.white24, fontSize: 9)),
+lib\screens\create_event.dart:1207:                  c.text.isEmpty ? 'select'.tr : c.text,
+lib\screens\create_event.dart:1250:        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+lib\screens\edit_profile_screen.dart:138:      backgroundColor: Colors.transparent,
+lib\screens\edit_profile_screen.dart:143:        title: Text('account_settings'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 2)),
+lib\screens\edit_profile_screen.dart:155:            _buildGlassInput('display_name'.tr, _nameController, 
+Icons.person_outline),
+lib\screens\edit_profile_screen.dart:157:            _buildGlassInput('phone_number'.tr, _phoneController, 
+Icons.phone_outlined),
+lib\screens\edit_profile_screen.dart:159:            _buildGlassInput('email_address'.tr, _emailController, 
+Icons.alternate_email),
+lib\screens\edit_profile_screen.dart:161:            _buildGlassInput('change_password'.tr, _passwordController, 
+Icons.lock_open_outlined, obscure: true),
+lib\screens\edit_profile_screen.dart:175:      decoration: BoxDecoration(gradient: LinearGradient(begin: 
+Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.black.withValues(alpha: 0.8), Colors.transparent])),
+lib\screens\edit_profile_screen.dart:242:        child: _isLoading ? const CircularProgressIndicator(color: 
+Colors.black) : Text('confirm_changes'.tr.toUpperCase(), style: const TextStyle(color: Colors.black, fontWeight: 
+FontWeight.w900, letterSpacing: 2)),
+lib\screens\edit_profile_screen.dart:250:  Widget _buildPasswordHint() => Align(alignment: Alignment.centerLeft, 
+child: Text('  ${'pass_hint'.tr}', style: const TextStyle(color: Colors.white24, fontSize: 10)));
+lib\screens\edit_profile_screen.dart:253:    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: 
+Colors.transparent, elevation: 0, content: Container(padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 
+16), decoration: BoxDecoration(color: const Color(0xFF1A1A1A), borderRadius: BorderRadius.circular(20), border: 
+Border.all(color: AppTheme.secondary.withValues(alpha: 0.5)), boxShadow: [BoxShadow(color: 
+AppTheme.secondary.withValues(alpha: 0.2), blurRadius: 20)]), child: Row(children: [const Icon(Icons.check_circle, 
+color: AppTheme.secondary), const SizedBox(width: 12), Text('profile_updated'.tr, style: const TextStyle(color: 
+Colors.white, fontWeight: FontWeight.bold))]))));
+lib\screens\event_creation_widget.dart:37:      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('PLEASE_ENTER_EVENT_NAME'.tr), backgroundColor: Colors.redAccent));
+lib\screens\event_creation_widget.dart:41:      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('PLEASE_SELECT_MAIN_IMAGE'.tr), backgroundColor: Colors.redAccent));
+lib\screens\event_creation_widget.dart:57:          price: _paymentMode == 'free' ? 0 : 
+(double.tryParse(_priceController.text) ?? 2500),
+lib\screens\event_creation_widget.dart:78:          Text('PUBLISH NEW EXPERIENCE'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: AppTheme.primary)),
+lib\screens\event_creation_widget.dart:102:            _field('PRICE'.tr, _priceController, keyboard: 
+TextInputType.number),
+lib\screens\event_creation_widget.dart:105:          _field('TITLE'.tr, _nameController),
+lib\screens\event_creation_widget.dart:108:            Expanded(child: _field('DATE'.tr, _startDateController, hint: 
+'Tonight 22:00')),
+lib\screens\event_creation_widget.dart:113:          _field('DESCRIPTION'.tr, _descController, maxLines: 3),
+lib\screens\event_creation_widget.dart:122:              child: _isSaving ? const CircularProgressIndicator(color: 
+Colors.black) : Text('PUBLISH LIVE'.tr, style: const TextStyle(fontWeight: FontWeight.bold)),
+lib\screens\event_creation_widget.dart:132:      {'id': 'at_door', 'label': 'PAY_AT_VENUE'.tr, 'icon': 
+Icons.door_front_door_rounded},
+lib\screens\event_creation_widget.dart:133:      {'id': 'free', 'label': 'FREE_ENTRY_MODE'.tr, 'icon': 
+Icons.card_giftcard_rounded},
+lib\screens\event_creation_widget.dart:134:      {'id': 'pre', 'label': 'PRE_PAYMENT'.tr, 'icon': Icons.speed_rounded, 
+'locked': true},
+lib\screens\event_creation_widget.dart:140:        Text('PAYMENT_MODE'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+lib\screens\event_creation_widget.dart:176:                          'COMING_SOON'.tr.toUpperCase(),
+lib\screens\event_details.dart:138:            content: Text('please_login_first'.tr),
+lib\screens\event_details.dart:187:      ShareParams(text: 'share_event_msg'.trArgs([widget.event.title, 
+widget.event.id])),
+lib\screens\event_details.dart:207:              'welcome_back'.tr,
+lib\screens\event_details.dart:284:            Text('PROCESSING_BOOKING'.tr, style: const TextStyle(fontSize: 12)),
+lib\screens\event_details.dart:307:              'INSTANT_CONFIRM'.tr,
+lib\screens\event_details.dart:308:              '${'secured_spot'.tr} - ${selectedTier.toUpperCase()}',
+lib\screens\event_details.dart:317:              'REQUEST_SENT'.tr,
+lib\screens\event_details.dart:318:              'Your request for ${widget.event.title} is being reviewed.'.tr,
+lib\screens\event_details.dart:326:                title: 'NEW_BOOKING_REQUEST'.tr,
+lib\screens\event_details.dart:327:                body: '$userName has requested $guestCount spots ($selectedTier) 
+for ${widget.event.title}'.tr,
+lib\screens\event_details.dart:339:          SnackBar(content: Text('err_booking'.tr), backgroundColor: 
+Colors.redAccent),
+lib\screens\event_details.dart:364:              'REQUEST_SENT'.tr,
+lib\screens\event_details.dart:369:              'REQUEST_QUEUED_DESC'.tr,
+lib\screens\event_details.dart:387:                'OK'.tr.toUpperCase(),
+lib\screens\event_details.dart:406:      ).showSnackBar(SnackBar(content: Text('report_sent'.tr)));
+lib\screens\event_details.dart:511:                'MANAGEMENT_HUB'.tr.toUpperCase(),
+lib\screens\event_details.dart:521:                _buildManagementTile(Icons.confirmation_number_rounded, 
+'FREE_ENTRY'.tr, () {
+lib\screens\event_details.dart:522:                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('feature_coming_soon'.tr)));
+lib\screens\event_details.dart:525:                _buildManagementTile(Icons.remove_red_eye_rounded, 'VIEWS'.tr, () {
+lib\screens\event_details.dart:526:                  _showQuickStats('total_views'.tr, '${widget.event.viewCount}');
+lib\screens\event_details.dart:529:                _buildManagementTile(Icons.people_alt_rounded, 'PRESENT'.tr, () {
+lib\screens\event_details.dart:530:                  _showQuickStats('people_inside'.tr, 
+'${widget.event.totalBookedCount}');
+lib\screens\event_details.dart:533:                _buildManagementTile(Icons.hourglass_bottom_rounded, 'WAITING'.tr, 
+() {
+lib\screens\event_details.dart:556:            Text('LIVE_DATA'.tr, style: const TextStyle(color: Colors.white24, 
+fontSize: 10)),
+lib\screens\event_details.dart:562:            child: Text('close'.tr),
+lib\screens\event_details.dart:614:              'VENUE_LOCATION'.tr.toUpperCase(),
+lib\screens\event_details.dart:676:                           Text('MAP_PREVIEW'.tr, style: const TextStyle(color: 
+Colors.white24, fontSize: 10)),
+lib\screens\event_details.dart:690:                          Colors.transparent,
+lib\screens\event_details.dart:728:                            venue?.toUpperCase() ?? 'EVENT_VENUE'.tr,
+lib\screens\event_details.dart:745:                          colors: [Colors.transparent, 
+Colors.black.withValues(alpha: 0.8)],
+lib\screens\event_details.dart:753:                            'CLICK_TO_NAVIGATE'.tr.toUpperCase(),
+lib\screens\event_details.dart:845:          content: Text('location_not_set'.tr),
+lib\screens\event_details.dart:855:      backgroundColor: Colors.transparent,
+lib\screens\event_details.dart:867:            Text('CHOOSE_NAVIGATION'.tr.toUpperCase(), style: AppTheme.labelStyle),
+lib\screens\event_details.dart:930:      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('app_not_installed'.tr)));
+lib\screens\event_details.dart:1002:              'verified_publisher'.tr,
+lib\screens\event_details.dart:1006:            _buildInlineHelp('verified_publisher'.tr, 'HELP_VERIFIED_USER_SHORT', 
+icon: Icons.verified_user_rounded),
+lib\screens\event_details.dart:1026:    String desc = customDesc ?? 'providing_details'.tr;
+lib\screens\event_details.dart:1030:      backgroundColor: Colors.transparent,
+lib\screens\event_details.dart:1053:      onTap: () => _showSectionHelp(title, customDesc: descKey.tr),
+lib\screens\event_details.dart:1070:          color: isFollowing ? Colors.transparent : accent.withValues(alpha: 0.1),
+lib\screens\event_details.dart:1075:          (isFollowing ? 'following' : 'follow').tr.toUpperCase(),
+lib\screens\event_details.dart:1092:          'house_rules'.tr.toUpperCase(),
+lib\screens\event_details.dart:1180:            tooltip: 'manage_event'.tr,
+lib\screens\event_details.dart:1215:                    Colors.transparent,
+lib\screens\event_details.dart:1216:                    Colors.transparent,
+lib\screens\event_details.dart:1251:                            'FEW_SPOTS_LEFT'.tr,
+lib\screens\event_details.dart:1331:      backgroundColor: Colors.transparent,
+lib\screens\event_details.dart:1359:                  Text('verified_publisher'.tr, style: const TextStyle(color: 
+Colors.white38, fontSize: 13)),
+lib\screens\event_details.dart:1371:                           SnackBar(content: Text('club_info_missing'.tr))
+lib\screens\event_details.dart:1379:                    child: Text('VIEW_PROFILE'.tr, style: const TextStyle(color: 
+Colors.black, fontWeight: FontWeight.bold)),
+lib\screens\event_details.dart:1399:            'report_event'.tr,
+lib\screens\event_details.dart:1406:            'block_publisher'.tr,
+lib\screens\event_details.dart:1423:              'DATE'.tr,
+lib\screens\event_details.dart:1430:              'VENUE'.tr,
+lib\screens\event_details.dart:1444:              'PAYMENT_MODE'.tr,
+lib\screens\event_details.dart:1445:              widget.event.price == 0 ? 'FREE_ENTRY_MODE'.tr : 'PAY_AT_VENUE'.tr,
+lib\screens\event_details.dart:1460:          'about_event'.tr.toUpperCase(),
+lib\screens\event_details.dart:1469:          widget.event.description ?? 'no_description'.tr,
+lib\screens\event_details.dart:1603:            ? 'VIEW_TICKET'.tr
+lib\screens\event_details.dart:1605:                ? 'REQUEST_ENTRY'.tr
+lib\screens\event_details.dart:1606:                : 'secure_entry'.tr)
+lib\screens\event_details.dart:1629:      backgroundColor: Colors.transparent,
+lib\screens\event_details.dart:1634:          String tierLabel = 'STANDARD_TICKET'.tr;
+lib\screens\event_details.dart:1640:            tierLabel = 'VIP_TICKET'.tr;
+lib\screens\event_details.dart:1645:            tierLabel = 'DIAMOND_TICKET'.tr;
+lib\screens\event_details.dart:1704:                          'SELECT_CATEGORY'.tr.toUpperCase(),
+lib\screens\event_details.dart:1724:                              tierLabel == 'VIP_TICKET'.tr ? 'HELP_TIER_VIP_SHORT' 
+: tierLabel == 'DIAMOND_TICKET'.tr ? 'HELP_TIER_DIAMOND_SHORT' : 'HELP_TIER_STANDARD_SHORT',
+lib\screens\event_details.dart:1725:                              icon: tierLabel == 'VIP_TICKET'.tr ? 
+Icons.stars_rounded : tierLabel == 'DIAMOND_TICKET'.tr ? Icons.diamond_rounded : Icons.confirmation_number_outlined,
+lib\screens\event_details.dart:1757:                          'NUMBER_OF_GUESTS'.tr,
+lib\screens\event_details.dart:1765:                          'max_10_guests'.tr,
+lib\screens\event_details.dart:1829:                    'PAYMENT_METHOD'.tr.toUpperCase(),
+lib\screens\event_details.dart:1842:                          title: 'PAY_AT_DOOR'.tr,
+lib\screens\event_details.dart:1853:                          title: 'PAY_NOW_ONLINE'.tr,
+lib\screens\event_details.dart:1857:                          badge: 'LOCKED_COMING_SOON'.tr,
+lib\screens\event_details.dart:1860:                            _showToast('LOCKED_COMING_SOON'.tr);
+lib\screens\event_details.dart:1882:                      _invoiceRow('BOOKING_PAYMENT_METHOD'.tr, widget.event.price 
+== 0 ? 'FREE_ENTRY_MODE'.tr : 'PAY_AT_VENUE'.tr, AppTheme.primary),
+lib\screens\event_details.dart:1884:                      _invoiceRow('YOUR_SELECTION'.tr, '$guestCount x $tierLabel', 
+Colors.white38),
+lib\screens\event_details.dart:1887:                        _invoiceRow('DISCOUNT'.tr, 
+'-${LocalizationService.formatPrice(savings, widget.event.countryCode)}', AppTheme.secondary),
+lib\screens\event_details.dart:1896:                                'TOTAL_DUE'.tr,
+lib\screens\event_details.dart:1905:                                  'DUE_AT_ARRIVAL'.tr,
+lib\screens\event_details.dart:1914:                                  'FREE_BOOKING_NOTICE'.tr,
+lib\screens\event_details.dart:1943:                    onTap: () => _showSectionHelp('house_rules'.tr, customDesc: 
+widget.event.rules),
+lib\screens\event_details.dart:1957:                              'I_AGREE_TO_RULES'.tr,
+lib\screens\event_details.dart:1996:                            'CONFIRM_BOOKING'.tr.toUpperCase(),
+lib\screens\event_details.dart:2164:      discountLabel = '${'FLASH_OFFER'.tr} 
+-${widget.event.globalDiscount.toInt()}%';
+lib\screens\event_details.dart:2229:                      _buildInlineHelp('DISCOUNT'.tr, 'HELP_LOYALTY_USER_SHORT', 
+icon: Icons.loyalty_rounded),
+lib\screens\event_details.dart:2236:              'PRICE'.tr,
+lib\screens\event_details.dart:2343:                              ? 'FOLLOWER_ADVANTAGE_ACTIVE'.tr.toUpperCase()
+lib\screens\event_details.dart:2344:                              : 'hype_teaser'.tr.toUpperCase(),
+lib\screens\event_details.dart:2353:                        _buildInlineHelp('EXCLUSIVE_PERK'.tr, 
+'HELP_LOYALTY_USER_SHORT', icon: Icons.auto_awesome_rounded),
+lib\screens\event_details.dart:2358:                        'unlock_massive_savings'.tr,
+lib\screens\event_details.dart:2374:              'FOLLOWER_DISCOUNT'.tr,
+lib\screens\event_details.dart:2382:              'EXCLUSIVE_PERK'.tr,
+lib\screens\event_details.dart:2418:                      'join_exclusive_club'.tr.toUpperCase(),
+lib\screens\event_details.dart:2505:                Text('ACT_FAST'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.redAccent, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1)),
+lib\screens\event_details.dart:2507:                Text('FEW_SPOTS_LEFT'.tr, style: const TextStyle(color: 
+Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+lib\screens\event_details.dart:2614:        _showQuickStats('event_stats'.tr, '${widget.event.viewCount}');
+lib\screens\event_details.dart:2621:        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('redirecting_to_marketing'.tr)));
+lib\screens\event_details.dart:2624:        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('feature_coming_soon'.tr)));
+lib\screens\event_details.dart:2627:        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('chat_coming_soon'.tr)));
+lib\screens\event_ledger_detail.dart:104:          _tabButton('TIMELINE'.tr, 0),
+lib\screens\event_ledger_detail.dart:105:          _tabButton('GENERATED'.tr, 1),
+lib\screens\event_ledger_detail.dart:119:            color: isSelected ? AppTheme.primary : Colors.transparent,
+lib\screens\event_ledger_detail.dart:140:            Container(decoration: BoxDecoration(gradient: 
+LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.transparent, 
+AppTheme.background]))),
+lib\screens\event_ledger_detail.dart:168:          _tacticalStat('TOTAL'.tr, '${_logs.length}', AppTheme.primary),
+lib\screens\event_ledger_detail.dart:169:          _tacticalStat('REFUSED'.tr, '${_tacticalStats['refusals']}', 
+Colors.orangeAccent),
+lib\screens\event_ledger_detail.dart:170:          _tacticalStat('EJECTED'.tr, '${_tacticalStats['ejections']}', 
+Colors.redAccent),
+lib\screens\event_ledger_detail.dart:204:        title: Text('CLEAR_LOGS'.tr),
+lib\screens\event_ledger_detail.dart:207:          TextButton(onPressed: () => Navigator.pop(ctx), child: 
+Text('cancel'.tr, style: const TextStyle(color: Colors.white24))),
+lib\screens\event_ledger_detail.dart:217:            child: Text('confirm'.tr, style: const TextStyle(color: 
+Colors.redAccent)),
+lib\screens\event_ledger_detail.dart:227:      backgroundColor: Colors.transparent,
+lib\screens\event_ledger_detail.dart:241:            Text('TACTICAL_AUDIT'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 18)),
+lib\screens\event_ledger_detail.dart:243:            Text('HELPER_LEDGER_DESC'.tr, textAlign: TextAlign.center, style: 
+const TextStyle(color: Colors.white60, fontSize: 13, height: 1.5)),
+lib\screens\event_ledger_detail.dart:258:    final date = DateTime.tryParse(log['created_at'] ?? '');
+lib\screens\event_manage_details.dart:163:            backgroundColor: Colors.transparent,
+lib\screens\event_manage_details.dart:166:            title: Text('TACTICAL_OPS_CENTER'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 16, letterSpacing: 2, color: AppTheme.primary)),
+lib\screens\event_manage_details.dart:172:                tooltip: 'delete_event'.tr,
+lib\screens\event_manage_details.dart:177:                tooltip: 'edit_event'.tr,
+lib\screens\event_manage_details.dart:182:                tooltip: 'export_pdf'.tr,
+lib\screens\event_manage_details.dart:204:                  _buildSectionHeader('activity_feed'.tr.toUpperCase()),
+lib\screens\event_manage_details.dart:226:          Expanded(child: _revStat('total_revenue'.tr, finalRev, 
+AppTheme.primary)),
+lib\screens\event_manage_details.dart:228:          Expanded(child: _revStat('pending_payment'.tr, pendingRev, 
+Colors.amber)),
+lib\screens\event_manage_details.dart:256:          Text('total_entered'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: AppTheme.secondary, fontSize: 10)),
+lib\screens\event_manage_details.dart:305:                  'scan_tickets'.tr.toUpperCase(),
+lib\screens\event_manage_details.dart:321:            _buildActionTile(Icons.person_add_alt_1, 'add_visitor'.tr, 
+AppTheme.secondary, () => _showAddVisitorModal()),
+lib\screens\event_manage_details.dart:322:            _buildActionTile(Icons.analytics_outlined, 'live_stats'.tr, 
+AppTheme.primary, () => _showQuickStatsModal(bookings)),
+lib\screens\event_manage_details.dart:325:              'attendance_requests'.tr, 
+lib\screens\event_manage_details.dart:331:              _buildActionTile(Icons.rocket_launch_rounded, 
+'MARKETING_CENTER'.tr, AppTheme.secondary, () {
+lib\screens\event_manage_details.dart:335:              _buildActionTile(Icons.picture_as_pdf_outlined, 
+'export_pdf'.tr, Colors.orangeAccent, _exportReport),
+lib\screens\event_manage_details.dart:337:              _buildActionTile(Icons.bolt_rounded, 
+'EXCLUSIVE_FOLLOWER_DEAL'.tr, Colors.amber, () => _promptDiscountPush()),
+lib\screens\event_manage_details.dart:339:              _buildActionTile(Icons.campaign_rounded, 
+'NEW_ANNOUNCEMENT'.tr, AppTheme.primary, () => _promptAnnouncementPush()),
+lib\screens\event_manage_details.dart:341:              _buildActionTile(Icons.inventory_2_rounded, 
+'FINALIZE_MISSION'.tr, Colors.redAccent, () => _confirmFinalizeMission(bookings)),
+lib\screens\event_manage_details.dart:343:              _buildActionTile(Icons.edit_note_rounded, 'edit_event'.tr, 
+AppTheme.primary, () => _editEvent(bookings)),
+lib\screens\event_manage_details.dart:345:              _buildActionTile(Icons.delete_forever_rounded, 
+'delete_event'.tr, Colors.redAccent, () => _deleteEvent()),
+lib\screens\event_manage_details.dart:403:      backgroundColor: Colors.transparent,
+lib\screens\event_manage_details.dart:428:                        Text('attendance_requests'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: Colors.amber, letterSpacing: 2)),
+lib\screens\event_manage_details.dart:432:                          child: Text('${pending.length} ${'pending'.tr}', 
+style: const TextStyle(color: Colors.amber, fontSize: 10, fontWeight: FontWeight.bold))
+lib\screens\event_manage_details.dart:438:                       Expanded(child: Center(child: 
+Column(mainAxisAlignment: MainAxisAlignment.center, children: [const Icon(Icons.assignment_turned_in_rounded, color: 
+Colors.white10, size: 64), const SizedBox(height: 16), Text('no_pending_requests'.tr, style: const TextStyle(color: 
+Colors.white24))]))),
+lib\screens\event_manage_details.dart:481:                                                Text('${b.numGuests} 
+${'guests'.tr} • ${b.createdAt?.substring(0, 10) ?? 'N/A'}', style: const TextStyle(color: Colors.white24, fontSize: 
+10)),
+lib\screens\event_manage_details.dart:511:                                              
+'CALL_VERIFICATION_REQUIRED'.tr,
+lib\screens\event_manage_details.dart:526:                                          label: 'REJECT'.tr,
+lib\screens\event_manage_details.dart:537:                                          label: (isCallReq ? 
+'VERIFY_&_ACCEPT' : 'ACCEPT_REQUEST').tr,
+lib\screens\event_manage_details.dart:575:           content: Text('update_failed'.tr),
+lib\screens\event_manage_details.dart:582:          content: Text('error_occurred'.tr),
+lib\screens\event_manage_details.dart:600:        title: Text('NEW_ANNOUNCEMENT'.tr, style: const TextStyle(color: 
+Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+lib\screens\event_manage_details.dart:605:            Text('announcement_desc'.tr, style: const TextStyle(color: 
+Colors.white38, fontSize: 11)),
+lib\screens\event_manage_details.dart:615:                  hintText: 'announcement_hint'.tr,
+lib\screens\event_manage_details.dart:624:          TextButton(onPressed: () => Navigator.pop(context), child: 
+Text('cancel'.tr, style: const TextStyle(color: Colors.white38))),
+lib\screens\event_manage_details.dart:631:                title: 'OFFICIAL_ANNOUNCEMENT'.trArgs([widget.event.title]),
+lib\screens\event_manage_details.dart:639:                  content: Text('broadcast_sent'.tr),
+lib\screens\event_manage_details.dart:647:            child: Text('SEND_NOW'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+lib\screens\event_manage_details.dart:692:            title: Text('generate_entry_ticket'.tr, style: const 
+TextStyle(color: Colors.white)),
+lib\screens\event_manage_details.dart:700:                  decoration: InputDecoration(hintText: 'phone_number'.tr, 
+hintStyle: const TextStyle(color: Colors.white24)),
+lib\screens\event_manage_details.dart:706:                    Text('guests_label'.tr, style: const TextStyle(color: 
+Colors.white70)),
+lib\screens\event_manage_details.dart:719:              TextButton(onPressed: () => Navigator.pop(context), child: 
+Text('cancel'.tr)),
+lib\screens\event_manage_details.dart:729:                  await _auditService.logAction(actionType: 
+'MANUAL_BOOKING', description: 'manual_entry_issued'.tr, relatedEventId: widget.event.id);
+lib\screens\event_manage_details.dart:732:                child: Text('issue_ticket'.tr),
+lib\screens\event_manage_details.dart:746:    if (bookings.isEmpty) return Center(child: Text('no_requests'.tr, style: 
+const TextStyle(color: Colors.white24)));
+lib\screens\event_manage_details.dart:772:                    Text('${b.numGuests} ${'guests_label'.tr} • 
+${b.paymentStatus.tr.toUpperCase()}', style: AppTheme.bodyStyle.copyWith(color: AppTheme.onSurfaceVariant, fontSize: 
+11)),
+lib\screens\event_manage_details.dart:794:      backgroundColor: Colors.transparent,
+lib\screens\event_manage_details.dart:811:            Text('live_stats'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: AppTheme.primary, letterSpacing: 4, fontSize: 10)),
+lib\screens\event_manage_details.dart:816:                Expanded(child: _miniMetric('bookings'.tr, '$totalBooked', 
+Icons.confirmation_number_outlined, AppTheme.secondary)),
+lib\screens\event_manage_details.dart:818:                Expanded(child: _miniMetric('arrived'.tr, '$arrived', 
+Icons.login_rounded, AppTheme.primary)),
+lib\screens\event_manage_details.dart:822:            _miniMetric('GENERATED_PASSES'.tr, '$generatedCount', 
+Icons.local_activity_rounded, Colors.blueAccent, wide: true),
+lib\screens\event_manage_details.dart:824:            _miniMetric('total_revenue'.tr, 
+LocalizationService.formatPrice(revFinal, widget.event.countryCode), Icons.payments_outlined, Colors.greenAccent, 
+wide: true),
+lib\screens\event_manage_details.dart:831:                   Text('capacity_usage'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+lib\screens\event_manage_details.dart:860:                child: Text('view_all_reports'.tr.toUpperCase(), style: 
+const TextStyle(color: AppTheme.primary, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 2)),
+lib\screens\event_manage_details.dart:883:                Text('EXCLUSIVE_FOLLOWER_DEAL'.tr, style: const 
+TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+lib\screens\event_manage_details.dart:890:                Text('proactive_desc'.tr, style: const TextStyle(color: 
+Colors.white38, fontSize: 11)),
+lib\screens\event_manage_details.dart:918:                      hintText: 'CUSTOM_VALUE'.tr,
+lib\screens\event_manage_details.dart:927:              TextButton(onPressed: () => Navigator.pop(context), child: 
+Text('cancel'.tr, style: const TextStyle(color: Colors.white38))),
+lib\screens\event_manage_details.dart:940:                      content: Text('broadcast_sent'.tr),
+lib\screens\event_manage_details.dart:948:                child: Text('BROADCAST_NOW'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+lib\screens\event_manage_details.dart:962:        title: Text('FINALIZE_MISSION'.tr, style: const TextStyle(color: 
+Colors.redAccent)),
+lib\screens\event_manage_details.dart:963:        content: Text('FINALIZE_CONFIRM_DESC'.tr, style: const 
+TextStyle(color: Colors.white70, fontSize: 13)),
+lib\screens\event_manage_details.dart:965:          TextButton(onPressed: () => Navigator.pop(ctx), child: 
+Text('cancel'.tr, style: const TextStyle(color: Colors.white38))),
+lib\screens\event_manage_details.dart:972:            child: Text('FINALIZE_NOW'.tr.toUpperCase()),
+lib\screens\event_manage_details.dart:997:        content: Text('MISSION_ARCHIVED_SUCCESS'.tr),
+lib\screens\event_manage_details.dart:1075:            color: widget.isOutlined ? Colors.transparent : 
+widget.color.withValues(alpha: widget.isLoading ? 0.5 : 1.0),
+lib\screens\favorites_screen.dart:86:        title: Text('MY WISHLIST'.tr, style: const TextStyle(fontWeight: 
+FontWeight.w900, fontSize: 18, letterSpacing: 2, color: AppTheme.primary)),
+lib\screens\favorites_screen.dart:126:                    colors: [Colors.transparent, Colors.black.withValues(alpha: 
+0.8)],
+lib\screens\favorites_screen.dart:179:          Text('Nothing here yet'.tr, style: const TextStyle(color: 
+Colors.white38, fontSize: 18)),
+lib\screens\favorites_screen.dart:181:          Text('Explore and save your favorite events'.tr, style: const 
+TextStyle(color: Colors.white24, fontSize: 12)),
+lib\screens\following_screen.dart:79:      backgroundColor: Colors.transparent,
+lib\screens\following_screen.dart:84:      title: Text('Following'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 4)),
+lib\screens\following_screen.dart:85:      flexibleSpace: ClipRRect(child: BackdropFilter(filter: 
+ImageFilter.blur(sigmaX: 10, sigmaY: 10), child: Container(color: Colors.transparent))),
+lib\screens\following_screen.dart:123:                      Text('ORGANIZER'.tr, style: TextStyle(color: 
+AppTheme.primary, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
+lib\screens\following_screen.dart:169:            Text('No followed organizers yet.'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.white24, fontSize: 12, letterSpacing: 2)),
+lib\screens\global_search_screen.dart:144:                  color: Colors.transparent,
+lib\screens\global_search_screen.dart:151:                      hintText: 'search_hint'.tr,
+lib\screens\global_search_screen.dart:197:          Text('explore_the_city'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 22)),
+lib\screens\global_search_screen.dart:199:          Text('search_hint'.tr, style: const TextStyle(color: 
+Colors.white38, fontSize: 14)),
+lib\screens\global_search_screen.dart:213:            Text('NO_RESULTS_FOUND'.tr, style: const TextStyle(color: 
+Colors.white54, fontSize: 16)),
+lib\screens\global_search_screen.dart:228:              Text('CLUBS_FOUND'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(letterSpacing: 2, color: AppTheme.secondary, fontSize: 11)),
+lib\screens\global_search_screen.dart:292:              Text('EVENTS_FOUND'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(letterSpacing: 2, color: AppTheme.primary, fontSize: 11)),
+lib\screens\home_feed.dart:92:    {'id': 'all', 'label': 'ALL'.tr, 'icon': Icons.grid_view},
+lib\screens\home_feed.dart:93:    {'id': 'nearest', 'label': 'near_you'.tr, 'icon': Icons.near_me_rounded},
+lib\screens\home_feed.dart:94:    {'id': 'club', 'label': 'CLUB_BRAND'.tr, 'icon': Icons.nightlife},
+lib\screens\home_feed.dart:95:    {'id': 'restaurant', 'label': 'RESTAURANT_BRAND'.tr, 'icon': Icons.restaurant},
+lib\screens\home_feed.dart:96:    {'id': 'cafe', 'label': 'CAFE_BRAND'.tr, 'icon': Icons.coffee},
+lib\screens\home_feed.dart:97:    {'id': 'entertainment', 'label': 'ENTERTAINMENT_BRAND'.tr, 'icon': 
+Icons.theater_comedy_rounded},
+lib\screens\home_feed.dart:132:          backgroundColor: Colors.transparent,
+lib\screens\home_feed.dart:154:                  'HOW_WAS_IT'.tr.toUpperCase(),
+lib\screens\home_feed.dart:160:                  'RATE_MESSAGE'.trArgs([data['club_name']]),
+lib\screens\home_feed.dart:195:                          SnackBar(content: Text('REVIEW_SUCCESS'.tr), backgroundColor: 
+AppTheme.secondary),
+lib\screens\home_feed.dart:199:                    child: Text('SUBMIT_REVIEW'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.w900)),
+lib\screens\home_feed.dart:204:                  child: Text('LATER'.tr, style: const TextStyle(color: Colors.white24, 
+fontSize: 11)),
+lib\screens\home_feed.dart:246:          content: Text('PRESS_BACK_AGAIN'.tr, style: const TextStyle(color: 
+Colors.white)),
+lib\screens\home_feed.dart:432:          content: Text('location_synced'.tr),
+lib\screens\home_feed.dart:449:              title: Text('location_services_disabled'.tr, style: const 
+TextStyle(color: Colors.white)),
+lib\screens\home_feed.dart:450:              content: Text('enable_location_msg'.tr, style: const TextStyle(color: 
+Colors.white70)),
+lib\screens\home_feed.dart:454:                  child: Text('cancel'.tr, style: const TextStyle(color: 
+Colors.white38)),
+lib\screens\home_feed.dart:461:                  child: Text('settings'.tr, style: const TextStyle(color: 
+AppTheme.primary)),
+lib\screens\home_feed.dart:474:          if (!silent && mounted) 
+ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('location_permission_denied'.tr)));
+lib\screens\home_feed.dart:482:            content: Text('location_permission_denied_forever'.tr),
+lib\screens\home_feed.dart:484:              label: 'settings'.tr,
+lib\screens\home_feed.dart:494:          content: Text('${'locating'.tr}...'),
+lib\screens\home_feed.dart:708:              _buildSectionHeader('NOW_TRENDING'.tr, 'TONIGHT'.tr, showSeeAll: true),
+lib\screens\home_feed.dart:712:              _buildSectionHeader('DISCOVER'.tr, 'NEAR_YOU'.tr),
+lib\screens\home_feed.dart:716:              _buildSectionHeader('CITIES'.tr, 'CITY_PULSE'.tr),
+lib\screens\home_feed.dart:720:              _buildSectionHeader('FEED'.tr, 'ALL_EVENTS'.tr),
+lib\screens\home_feed.dart:762:          child: Text('CLUBS_I_FOLLOW'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(letterSpacing: 2, fontSize: 10, color: AppTheme.secondary)),
+lib\screens\home_feed.dart:813:                  text: 'DISCOVER_THE\n'.tr,
+lib\screens\home_feed.dart:817:                  text: 'NIGHTLIFE'.tr,
+lib\screens\home_feed.dart:927:                    colors: [Colors.transparent, Colors.black.withValues(alpha: 0.8)],
+lib\screens\home_feed.dart:942:                      child: Text('FEATURED'.tr, style: const TextStyle(color: 
+Colors.black, fontSize: 9, fontWeight: FontWeight.w900)),
+lib\screens\home_feed.dart:970:      child: Center(child: Text('NO_EVENTS_YET'.tr, style: const TextStyle(color: 
+Colors.white24))),
+lib\screens\home_feed.dart:1013:        child: const Icon(Icons.translate_rounded, color: AppTheme.primary, size: 20),
+lib\screens\home_feed.dart:1022:      backgroundColor: Colors.transparent,
+lib\screens\home_feed.dart:1031:            Text('CHOOSE_LANGUAGE'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 16)),
+lib\screens\home_feed.dart:1038:            _langTile('Türkçe', Language.tr),
+lib\screens\home_feed.dart:1250:      backgroundColor: Colors.transparent,
+lib\screens\home_feed.dart:1265:                  Text('SELECT_COUNTRY'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 18, letterSpacing: 1)),
+lib\screens\home_feed.dart:1528:                    isOwner ? 'MY_CLUB'.tr : name.toUpperCase(), 
+lib\screens\home_feed.dart:1558:          color: Colors.transparent,
+lib\screens\home_feed.dart:1579:              hintText: 'search_hint'.tr, 
+lib\screens\home_feed.dart:1667:                                colors: [Colors.transparent, 
+Colors.black.withValues(alpha: 0.6)],
+lib\screens\home_feed.dart:1738:    if (e.price == 0) return _buildPriceChip('FREE_ENTRY'.tr, Colors.tealAccent);
+lib\screens\home_feed.dart:1808:          Text(isFollowingTab ? 'no_followed_events_msg'.tr : 'no_events_found'.tr, 
+style: const TextStyle(color: Colors.white24)),
+lib\screens\home_feed.dart:1820:            child: Text(isFollowingTab ? 'discover_clubs'.tr : 'retry'.tr, style: 
+const TextStyle(color: AppTheme.primary))
+lib\screens\home_feed.dart:1864:                _navItem(0, Icons.explore_rounded, 'home'.tr), 
+lib\screens\home_feed.dart:1865:                _navItem(1, Icons.confirmation_num_rounded, 'passes'.tr), 
+lib\screens\home_feed.dart:1866:                _navItem(2, Icons.person_rounded, 'profile'.tr)
+lib\screens\home_feed.dart:1909:                Text('PENDING_MISSION'.tr.toUpperCase(), style: const TextStyle(color: 
+Colors.white, fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
+lib\screens\home_feed.dart:1910:                Text('Active tasks waiting for your action'.tr, style: const 
+TextStyle(color: Colors.white38, fontSize: 10)),
+lib\screens\home_feed.dart:1922:                child: Text('VIEW'.tr, style: const TextStyle(color: Colors.black, 
+fontWeight: FontWeight.bold, fontSize: 10)),
+lib\screens\home_feed.dart:1933:      color: Colors.transparent,
+lib\screens\home_feed.dart:1961:      backgroundColor: Colors.transparent,
+lib\screens\home_feed.dart:1978:      backgroundColor: Colors.transparent,
+lib\screens\home_feed.dart:2004:                      child: Text('MANAGEMENT_PORTAL'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: AppTheme.primary, fontSize: 10, letterSpacing: 2)),
+lib\screens\home_feed.dart:2017:                            label: 'ENTER_STAFF_SUITE'.tr.toUpperCase(),
+lib\screens\home_feed.dart:2018:                            subtitle: 'DUTY_PORTAL_DESC'.tr,
+lib\screens\home_feed.dart:2031:                          label: 'ENTER_ORGANIZER_SUITE'.tr.toUpperCase(),
+lib\screens\home_feed.dart:2032:                          subtitle: 'BECOME_ORGANIZER_DESC'.tr,
+lib\screens\home_feed.dart:2047:                                Text('MY_ENTITIES'.tr.toUpperCase(), style: const 
+TextStyle(color: AppTheme.primary, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 2)),
+lib\screens\home_feed.dart:2085:                              _drawerTile(Icons.support_agent_rounded, 
+'assistance'.tr, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SupportScreen()))),
+lib\screens\home_feed.dart:2087:                              _drawerTile(Icons.favorite_rounded, 'favorites'.tr, () 
+=> Navigator.push(context, MaterialPageRoute(builder: (_) => const VaultScreen(initialIndex: 1)))),
+lib\screens\home_feed.dart:2089:                              _drawerTile(Icons.history_rounded, 'archive'.tr, () => 
+Navigator.push(context, MaterialPageRoute(builder: (_) => const VaultScreen(initialIndex: 0)))),
+lib\screens\home_feed.dart:2106:                      label: Text('logout'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
+lib\screens\home_feed.dart:2142:                Text('ZAYER'.tr, style: const TextStyle(color: Colors.white24, 
+fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 4)),
+lib\screens\maintenance_screen.dart:29:                'MAINTENANCE_MODE'.tr.toUpperCase(),
+lib\screens\maintenance_screen.dart:35:                message ?? 'MAINTENANCE_DESC'.tr,
+lib\screens\maintenance_screen.dart:56:                    Text('CHECKING_FOR_UPDATES'.tr, style: const 
+TextStyle(color: Colors.white30, fontSize: 12)),
+lib\screens\map_discovery.dart:287:              title: Text('EXPLORE_NEARBY'.tr.toUpperCase(), 
+lib\screens\map_discovery.dart:338:                                color: isSel ? AppTheme.primary : 
+Colors.transparent,
+lib\screens\map_discovery.dart:346:                                    Text(opt['label'].toString().tr, style: const 
+TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 11)),
+lib\screens\map_discovery.dart:372:                        if (context.mounted) 
+ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('location_services_disabled'.tr)));
+lib\screens\map_discovery.dart:393:                            Colors.transparent,
+lib\screens\map_discovery.dart:500:                    Text('VIEW_PROFILE'.tr, style: const TextStyle(color: 
+AppTheme.primary, fontWeight: FontWeight.bold, fontSize: 12)),
+lib\screens\marketing_engine_screen.dart:68:      backgroundColor: Colors.transparent,
+lib\screens\marketing_engine_screen.dart:99:        title: 'new_event_title'.trArgs([e.title]),
+lib\screens\marketing_engine_screen.dart:100:        body: 'new_event_body'.trArgs([e.venue ?? 'Our Club']),
+lib\screens\marketing_engine_screen.dart:109:      _showToast('BROADCAST_SUCCESS'.tr);
+lib\screens\marketing_engine_screen.dart:117:      backgroundColor: Colors.transparent,
+lib\screens\marketing_engine_screen.dart:134:                      'CLUB_MEGAPHONE'.tr.toUpperCase(),
+lib\screens\marketing_engine_screen.dart:159:                      hintText: 'SEARCH_EVENT'.tr,
+lib\screens\marketing_engine_screen.dart:182:                                  title: 
+'new_event_title'.trArgs([e.title]),
+lib\screens\marketing_engine_screen.dart:183:                                  body: 'new_event_body'.trArgs([e.venue 
+?? 'Our Club']),
+lib\screens\marketing_engine_screen.dart:196:                                _showToast('BROADCAST_SUCCESS'.tr);
+lib\screens\marketing_engine_screen.dart:251:      backgroundColor: Colors.transparent,
+lib\screens\marketing_engine_screen.dart:268:                      'URGENCY_BOOSTER'.tr.toUpperCase(),
+lib\screens\marketing_engine_screen.dart:293:                      hintText: 'SEARCH_EVENT'.tr,
+lib\screens\marketing_engine_screen.dart:381:      backgroundColor: Colors.transparent,
+lib\screens\marketing_engine_screen.dart:398:                      'DEPLOY_TACTICAL_PULSE'.tr.toUpperCase(),
+lib\screens\marketing_engine_screen.dart:423:                      hintText: 'SEARCH_EVENT'.tr,
+lib\screens\marketing_engine_screen.dart:432:                  'SELECT_EVENT'.tr,
+lib\screens\marketing_engine_screen.dart:463:                            'NO_EVENTS_FOUND'.tr,
+lib\screens\marketing_engine_screen.dart:535:          'SET_PULSE_POWER'.tr,
+lib\screens\marketing_engine_screen.dart:560:        final percentage = double.tryParse(amount.replaceAll('%', '')) ?? 
+0.0;
+lib\screens\marketing_engine_screen.dart:578:          ).showSnackBar(SnackBar(content: 
+Text('PULSE_DEPLOYED_SUCCESS'.tr)));
+lib\screens\marketing_engine_screen.dart:605:                    'MARKETING_CENTER'.tr.toUpperCase(),
+lib\screens\marketing_engine_screen.dart:614:                    onTap: () => _showHelp('MARKETING_CENTER'.tr, 
+'HELPER_MARKETING_ENGINE_DESC'.tr),
+lib\screens\marketing_engine_screen.dart:616:                      message: 'MORE_INFO'.tr,
+lib\screens\marketing_engine_screen.dart:639:                      _buildSectionHeader('GROWTH_TOOLS'.tr),
+lib\screens\marketing_engine_screen.dart:641:                        onTap: () => _showHelp('GROWTH_TOOLS'.tr, 
+'HELPER_MARKETING_ENGINE_DESC'.tr),
+lib\screens\marketing_engine_screen.dart:657:                      _buildSectionHeader('AUTOMATION'.tr),
+lib\screens\marketing_engine_screen.dart:659:                        onTap: () => _showHelp('AUTOMATION'.tr, 
+'HELPER_AUTOMATION_DESC'.tr),
+lib\screens\marketing_engine_screen.dart:667:                    'EVENT_PULSE'.tr,
+lib\screens\marketing_engine_screen.dart:668:                    'REMINDERS_DESC'.tr,
+lib\screens\marketing_engine_screen.dart:678:                    'WELCOME_ALERTS'.tr,
+lib\screens\marketing_engine_screen.dart:679:                    'WELCOME_DESC'.tr,
+lib\screens\marketing_engine_screen.dart:691:                      _buildSectionHeader('LOYALTY'.tr),
+lib\screens\marketing_engine_screen.dart:693:                        onTap: () => _showHelp('LOYALTY'.tr, 
+'FOLLOWER_LOYALTY_DESC'.tr),
+lib\screens\marketing_engine_screen.dart:739:                    colors: [Colors.transparent, 
+Colors.black.withValues(alpha: 0.9)],
+lib\screens\marketing_engine_screen.dart:752:                      child: Text('CURRENT_TARGET'.tr.toUpperCase(), 
+style: const TextStyle(color: Colors.black, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
+lib\screens\marketing_engine_screen.dart:815:                        Text('FLASH_PULSE'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16)),
+lib\screens\marketing_engine_screen.dart:827:                    Text('FLASH_PULSE_DESC'.tr, style: const 
+TextStyle(color: Colors.white24, fontSize: 11)),
+lib\screens\marketing_engine_screen.dart:884:                        Text('URGENCY_BOOSTER'.tr.toUpperCase(), style: 
+const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16)),
+lib\screens\marketing_engine_screen.dart:896:                    Text('SCARCITY_HYPE_DESC'.tr, style: const 
+TextStyle(color: Colors.white24, fontSize: 11)),
+lib\screens\marketing_engine_screen.dart:944:                        Text('CLUB_MEGAPHONE'.tr.toUpperCase(), style: 
+const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16)),
+lib\screens\marketing_engine_screen.dart:956:                    Text('MEGAPHONE_DESC'.tr, style: const 
+TextStyle(color: Colors.white24, fontSize: 11)),
+lib\screens\marketing_engine_screen.dart:1032:              Text('LOYALTY_PROGRAM'.tr.toUpperCase(), style: 
+TextStyle(color: isLevelLocked ? Colors.white24 : AppTheme.primary, fontWeight: FontWeight.w900, fontSize: 12, 
+letterSpacing: 1)),
+lib\screens\marketing_engine_screen.dart:1044:                  child: Text('ACTIVE'.tr, style: const TextStyle(color: 
+AppTheme.primary, fontSize: 8, fontWeight: FontWeight.w900)),
+lib\screens\marketing_engine_screen.dart:1049:          Text('FOLLOWER_LOYALTY_DESC'.tr, style: const TextStyle(color: 
+Colors.white38, fontSize: 12, height: 1.5)),
+lib\screens\master_operational_ledger.dart:70:        final d = DateTime.tryParse(l['created_at'] ?? '');
+lib\screens\master_operational_ledger.dart:169:      backgroundColor: Colors.transparent,
+lib\screens\master_operational_ledger.dart:178:          Text('OPERATIONAL_LEDGER'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 12, letterSpacing: 2)),
+lib\screens\master_operational_ledger.dart:186:          tooltip: 'FILTER_BY_DATE'.tr,
+lib\screens\master_operational_ledger.dart:191:          tooltip: 'SHARE_TOOL'.tr,
+lib\screens\master_operational_ledger.dart:196:          tooltip: 'DOWNLOAD_TOOL'.tr,
+lib\screens\master_operational_ledger.dart:201:          tooltip: 'CLEAR_HISTORY'.tr,
+lib\screens\master_operational_ledger.dart:206:          tooltip: 'SEAL_ARCHIVE'.tr,
+lib\screens\master_operational_ledger.dart:214:        dividerColor: Colors.transparent,
+lib\screens\master_operational_ledger.dart:232:    String desc = 'operational_insight'.tr;
+lib\screens\master_operational_ledger.dart:235:      title = 'SHARE_TOOL'.tr;
+lib\screens\master_operational_ledger.dart:236:      desc = 'HELP_SHARE_DESC'.tr;
+lib\screens\master_operational_ledger.dart:238:      title = 'DOWNLOAD_TOOL'.tr;
+lib\screens\master_operational_ledger.dart:239:      desc = 'HELP_DOWNLOAD_DESC'.tr;
+lib\screens\master_operational_ledger.dart:241:      title = 'DELETE_TOOL'.tr;
+lib\screens\master_operational_ledger.dart:242:      desc = 'HELP_DELETE_DESC'.tr;
+lib\screens\master_operational_ledger.dart:244:      title = 'operational_census'.tr;
+lib\screens\master_operational_ledger.dart:245:      desc = 'HELP_CENSUS_DESC'.tr;
+lib\screens\master_operational_ledger.dart:247:      title = 'SEAL_ARCHIVE'.tr;
+lib\screens\master_operational_ledger.dart:248:      desc = 'HELP_ARCHIVE_DESC'.tr;
+lib\screens\master_operational_ledger.dart:253:      backgroundColor: Colors.transparent,
+lib\screens\master_operational_ledger.dart:283:        title: Text('SEAL_ARCHIVE'.tr, style: const TextStyle(color: 
+Colors.white)),
+lib\screens\master_operational_ledger.dart:284:        content: Text('SEAL_ARCHIVE_WARNING'.tr, style: const 
+TextStyle(color: Colors.white70)),
+lib\screens\master_operational_ledger.dart:286:          TextButton(onPressed: () => Navigator.pop(ctx), child: 
+Text('CANCEL'.tr)),
+lib\screens\master_operational_ledger.dart:289:            child: Text('PROCEED'.tr, style: const TextStyle(color: 
+AppTheme.secondary)),
+lib\screens\master_operational_ledger.dart:307:          SnackBar(content: Text(success ? 'mission_sealed_success'.tr 
+: 'action_failed'.tr)),
+lib\screens\master_operational_ledger.dart:321:              Text('OPERATIONAL_CENSUS'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.white24, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 2)),
+lib\screens\master_operational_ledger.dart:332:              _censusCard('TOTAL_PERSONS'.tr, 
+_census['total'].toString(), AppTheme.primary),
+lib\screens\master_operational_ledger.dart:334:              _censusCard('CHECKED_IN'.tr, 
+_census['scanned'].toString(), Colors.greenAccent),
+lib\screens\master_operational_ledger.dart:336:              _censusCard('REMAINING_PERSONS'.tr, 
+_census['remaining'].toString(), Colors.orangeAccent),
+lib\screens\master_operational_ledger.dart:382:      child: Text('NO_MISSION_RECORDS'.tr, style: const 
+TextStyle(color: Colors.white24, fontSize: 12)),
+lib\screens\master_operational_ledger.dart:402:          final date = DateTime.tryParse(archive['finalized_at'] ?? '');
+lib\screens\master_operational_ledger.dart:413:              backgroundColor: Colors.transparent,
+lib\screens\master_operational_ledger.dart:414:              collapsedBackgroundColor: Colors.transparent,
+lib\screens\master_operational_ledger.dart:568:        title: Text('CLEAR_LOGS'.tr, style: const TextStyle(color: 
+Colors.white)),
+lib\screens\master_operational_ledger.dart:569:        content: Text('CLEAR_LOGS_WARNING'.tr, style: const 
+TextStyle(color: Colors.white70)),
+lib\screens\master_operational_ledger.dart:571:          TextButton(onPressed: () => Navigator.pop(ctx), child: 
+Text('CANCEL'.tr)),
+lib\screens\master_operational_ledger.dart:574:            child: Text('CLEAR'.tr, style: const TextStyle(color: 
+Colors.redAccent)),
+lib\screens\master_operational_ledger.dart:587:          SnackBar(content: Text(success ? 'history_cleared'.tr : 
+'action_failed'.tr))
+lib\screens\master_operational_ledger.dart:611:    final date = DateTime.tryParse(log['created_at'] ?? '');
+lib\screens\master_operational_ledger.dart:684:    if (type.contains('FOLLOW')) return Icons.trending_up_rounded;
+lib\screens\mission_logs_screen.dart:70:        title: Text('STAFF_MISSION_LOGS'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 4)),
+lib\screens\mission_logs_screen.dart:71:        background: ClipRRect(child: BackdropFilter(filter: 
+ImageFilter.blur(sigmaX: 10, sigmaY: 10), child: Container(color: Colors.transparent))),
+lib\screens\mission_logs_screen.dart:147:            Text('NO_LOGS_YET'.tr, style: const TextStyle(color: 
+Colors.white24, fontSize: 12, letterSpacing: 2)),
+lib\screens\mission_matrix_screen.dart:258:            final hour = h is int ? h : int.tryParse(h.toString()) ?? 0;
+lib\screens\mission_matrix_screen.dart:328:      backgroundColor: Colors.transparent,
+lib\screens\mission_matrix_screen.dart:364:          tooltip: 'REFRESH'.tr,
+lib\screens\mission_matrix_screen.dart:369:          tooltip: 'DOWNLOAD_REPORT'.tr,
+lib\screens\mission_matrix_screen.dart:383:          tooltip: 'TACTICAL_VETTING'.tr,
+lib\screens\mission_matrix_screen.dart:393:          tooltip: 'BLACKLIST'.tr,
+lib\screens\mission_matrix_screen.dart:400:          tooltip: 'OPERATIONAL_LEDGER'.tr,
+lib\screens\mission_matrix_screen.dart:431:              'no_events_found'.tr,
+lib\screens\mission_matrix_screen.dart:468:                        'global_overview'.tr.toUpperCase(),
+lib\screens\mission_matrix_screen.dart:522:              title: 'entry_trend'.tr,
+lib\screens\mission_matrix_screen.dart:523:              subtitle: 'hourly_entries_title'.tr,
+lib\screens\mission_matrix_screen.dart:535:                    title: 'status_distribution'.tr,
+lib\screens\mission_matrix_screen.dart:536:                    subtitle: 'checkin_modes'.tr,
+lib\screens\mission_matrix_screen.dart:558:      final name = log['user_name'] ?? 'staff'.tr;
+lib\screens\mission_matrix_screen.dart:572:              'STAFF_EFFICIENCY'.tr.toUpperCase(),
+lib\screens\mission_matrix_screen.dart:582:              onTap: () => _showHelp('STAFF_EFFICIENCY'.tr),
+lib\screens\mission_matrix_screen.dart:604:                        'NO_DATA'.tr,
+lib\screens\mission_matrix_screen.dart:629:                                '$count actions'.tr,
+lib\screens\mission_matrix_screen.dart:663:            'TOTAL_BOOKINGS'.tr,
+lib\screens\mission_matrix_screen.dart:672:            'FIELD_CENSUS'.tr,
+lib\screens\mission_matrix_screen.dart:681:            'SECURITY_INCIDENTS'.tr,
+lib\screens\mission_matrix_screen.dart:728:                  message: 'MORE_INFO'.tr,
+lib\screens\mission_matrix_screen.dart:890:          'rejected'.tr,
+lib\screens\mission_matrix_screen.dart:896:          'ejected'.tr,
+lib\screens\mission_matrix_screen.dart:902:          'blocked'.tr,
+lib\screens\mission_matrix_screen.dart:950:          colors: [AppTheme.primary.withValues(alpha: 0.1), 
+Colors.transparent],
+lib\screens\mission_matrix_screen.dart:964:                    'capacity_usage'.tr.toUpperCase(),
+lib\screens\mission_matrix_screen.dart:974:                    onTap: () => _showHelp('capacity_usage'.tr),
+lib\screens\mission_matrix_screen.dart:976:                      message: 'MORE_INFO'.tr,
+lib\screens\mission_matrix_screen.dart:1018:            '${'arrived'.tr}: $_arrivedCount / $_capacity',
+lib\screens\mission_matrix_screen.dart:1050:                  'recent_security_activity'.tr.toUpperCase(),
+lib\screens\mission_matrix_screen.dart:1059:                  onPressed: () => 
+_showHelp('recent_security_activity'.tr),
+lib\screens\mission_matrix_screen.dart:1088:                        'No recent actions'.tr,
+lib\screens\mission_matrix_screen.dart:1171:                ? DateTime.tryParse(
+lib\screens\mission_matrix_screen.dart:1192:          'AUDIENCE_INTELLIGENCE'.tr.toUpperCase(),
+lib\screens\mission_matrix_screen.dart:1222:                      'total_fans'.tr.toUpperCase(),
+lib\screens\mission_matrix_screen.dart:1247:                  'manage_fans'.tr,
+lib\screens\mission_matrix_screen.dart:1266:      backgroundColor: Colors.transparent,
+lib\screens\mission_matrix_screen.dart:1300:                    'fan_base'.tr.toUpperCase(),
+lib\screens\mission_matrix_screen.dart:1324:                        'no_followers_yet'.tr,
+lib\screens\mission_matrix_screen.dart:1370:                            'FAN'.tr,
+lib\screens\mission_matrix_screen.dart:1398:        color: Colors.transparent,
+lib\screens\mission_matrix_screen.dart:1429:                        'VIEW_FULL_LOGS'.tr.toUpperCase(),
+lib\screens\mission_matrix_screen.dart:1438:                        'detailed_tactical_ledger'.tr,
+lib\screens\mission_matrix_screen.dart:1459:          'EVENT_ARCHIVE'.tr.toUpperCase(),
+lib\screens\mission_matrix_screen.dart:1519:    if (title == 'SECURITY_INCIDENTS'.tr) desc = 'تعرض عدد الحالات الأمنية 
+مثل الطرد أو المنع عند الباب.';
+lib\screens\mission_matrix_screen.dart:1520:    if (title == 'FIELD_CENSUS'.tr) desc = 'تعرض عدد الأشخاص الذين دخلوا 
+الحفل بالفعل حتى الآن.';
+lib\screens\mission_matrix_screen.dart:1521:    if (title == 'TOTAL_BOOKINGS'.tr) desc = 'تعرض العدد الكلي للتذاكر 
+المحجوزة لهذا الحفل.';
+lib\screens\mission_matrix_screen.dart:1522:    if (title == 'capacity_usage'.tr) desc = 'توضح نسبة امتلاء القاعة 
+مقارنة بالطاقة الاستيعابية القصوى.';
+lib\screens\mission_matrix_screen.dart:1523:    if (title == 'THE_VAULT'.tr) desc = 'تعرض المبالغ المالية التي تم 
+جمعها كاش عند الباب.';
+lib\screens\mission_matrix_screen.dart:1524:    if (title == 'recent_security_activity'.tr) desc = 'تعرض آخر العمليات 
+التي قام بها طاقم الأمن.';
+lib\screens\mission_matrix_screen.dart:1525:    if (title == 'entry_trend'.tr) desc = 'مخطط بياني يوضح أوقات الذروة 
+لدخول الزوار حسب الساعات.';
+lib\screens\mission_matrix_screen.dart:1526:    if (title == 'status_distribution'.tr) desc = 'يوضح توزيع التذاكر حسب 
+حالتها (مستخدمة، متأخرة، مؤكدة).';
+lib\screens\mission_matrix_screen.dart:1527:    if (title == 'STAFF_EFFICIENCY'.tr) desc = 'يوضح نشاط كل فرد من طاقم 
+العمل وكم عملية قام بها.';
+lib\screens\mission_matrix_screen.dart:1531:      backgroundColor: Colors.transparent,
+lib\screens\my_events_screen.dart:48:        backgroundColor: Colors.transparent,
+lib\screens\my_events_screen.dart:51:          'MY_EVENTS'.tr,
+lib\screens\notifications_screen.dart:61:      backgroundColor: Colors.transparent,
+lib\screens\notifications_screen.dart:72:          'notifications'.tr.toUpperCase(),
+lib\screens\notifications_screen.dart:79:          child: Text('mark_all_read'.tr, style: const TextStyle(color: 
+AppTheme.primary, fontSize: 11)),
+lib\screens\notifications_screen.dart:94:            Text('no_notifications'.tr, style: const TextStyle(color: 
+Colors.white24, fontSize: 14)),
+lib\screens\notifications_screen.dart:142:          content: Text(accept ? 'Invitation accepted!'.tr : 'Invitation 
+declined'.tr),
+lib\screens\notifications_screen.dart:245:                            child: Text('decline'.tr.toUpperCase(), style: 
+const TextStyle(color: Colors.white54, fontSize: 10)),
+lib\screens\notifications_screen.dart:255:                            child: Text('accept'.tr.toUpperCase(), style: 
+const TextStyle(color: Colors.black, fontSize: 10, fontWeight: FontWeight.bold)),
+lib\screens\operational_ledger_hub.dart:78:        backgroundColor: Colors.transparent,
+lib\screens\operational_ledger_hub.dart:83:              'OPERATIONAL_ARCHIVES'.tr.toUpperCase(),
+lib\screens\operational_ledger_hub.dart:155:                        Colors.transparent,
+lib\screens\operational_ledger_hub.dart:179:                      'ENTERED'.tr,
+lib\screens\operational_ledger_hub.dart:184:                      'GENERATED_PASSES'.tr,
+lib\screens\operational_ledger_hub.dart:189:                      'REFUSED'.tr,
+lib\screens\operational_ledger_hub.dart:239:            'NO_ARCHIVES_FOUND'.tr,
+lib\screens\operational_ledger_hub.dart:254:      backgroundColor: Colors.transparent,
+lib\screens\operational_ledger_hub.dart:265:            Text('OPERATIONAL_ARCHIVES'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 18)),
+lib\screens\operational_ledger_hub.dart:267:            Text('HELPER_ARCHIVES_DESC'.tr, textAlign: TextAlign.center, 
+style: const TextStyle(color: Colors.white60, fontSize: 13, height: 1.5)),
+lib\screens\organizer_activity_screen.dart:47:        backgroundColor: Colors.transparent,
+lib\screens\organizer_dashboard.dart:145:    String desc = customDesc ?? 'providing_details'.tr;
+lib\screens\organizer_dashboard.dart:146:    if (section == 'media_studio'.tr) desc = 'HELP_MEDIA_DESC'.tr;
+lib\screens\organizer_dashboard.dart:147:    if (section == 'FOLLOWER_PERKS'.tr) desc = 'HELP_PERKS_DESC'.tr;
+lib\screens\organizer_dashboard.dart:148:    if (section == 'basic_info'.tr) desc = 'HELP_BASIC_DESC'.tr;
+lib\screens\organizer_dashboard.dart:149:    if (section == 'logistics'.tr) desc = 'HELP_LOGISTICS_DESC'.tr;
+lib\screens\organizer_dashboard.dart:150:    if (section == 'FINANCIAL_INTEL'.tr) desc = 
+'HELPER_FINANCIAL_INTEL_DESC'.tr;
+lib\screens\organizer_dashboard.dart:151:    if (section == 'MY_EVENTS'.tr) desc = 'HELPER_MY_EVENTS_DESC'.tr;
+lib\screens\organizer_dashboard.dart:152:    if (section == 'FIXED_INFRASTRUCTURE'.tr) desc = 
+'HELPER_INFRASTRUCTURE_DESC'.tr;
+lib\screens\organizer_dashboard.dart:153:    if (section == 'LIVE_PULSE'.tr) desc = 'HELPER_LIVE_DESC'.tr;
+lib\screens\organizer_dashboard.dart:157:      backgroundColor: Colors.transparent,
+lib\screens\organizer_dashboard.dart:180:      onTap: () => _showSectionHelp(title, customDesc: descKey.tr),
+lib\screens\organizer_dashboard.dart:237:            label: Text(labelKey.tr.toUpperCase(),
+lib\screens\organizer_dashboard.dart:254:      title: Text('COMMAND CENTER'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 4, color: Colors.white38)),
+lib\screens\organizer_dashboard.dart:274:            
+'GREETING_ORGANIZER'.trArgs([supabase.auth.currentUser?.userMetadata?['full_name'] ?? widget.clubName ?? 'COMMANDER']),
+lib\screens\organizer_dashboard.dart:295:                    _headerStat('$eventCount', 'EVENTS'.tr),
+lib\screens\organizer_dashboard.dart:298:                      'FOLLOWERS'.tr,
+lib\screens\organizer_dashboard.dart:304:                    _headerStat('4.9', 'RATING'.tr),
+lib\screens\organizer_dashboard.dart:332:                child: _headerActionBtn('EDIT_BRANDING'.tr, 
+Icons.edit_note_rounded, () => Navigator.push(context, MaterialPageRoute(builder: (_) => 
+ClubManagementHubScreen(clubId: widget.clubId))).then((_) => _refresh()), isPrimary: true),
+lib\screens\organizer_dashboard.dart:336:                child: _headerActionBtn('PUBLIC_PREVIEW'.tr, 
+Icons.remove_red_eye_outlined, () {
+lib\screens\organizer_dashboard.dart:377:                  Text('ORGANIZER_LEVEL'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.white38, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 2)),
+lib\screens\organizer_dashboard.dart:401:              ? 'next_level_in'.trArgs(['${5 - eventCount}']) 
+lib\screens\organizer_dashboard.dart:402:              : (level == 2 ? 'next_level_in'.trArgs(['${15 - eventCount}']) 
+: 'MAX_LEVEL_REACHED'.tr),
+lib\screens\organizer_dashboard.dart:420:          label: 'MANAGE_BOOKINGS'.tr.toUpperCase(),
+lib\screens\organizer_dashboard.dart:421:          subtitle: 'CONFIRM_VISITOR_REQUESTS'.tr,
+lib\screens\organizer_dashboard.dart:429:          label: 'STAFF_MANAGEMENT'.tr.toUpperCase(),
+lib\screens\organizer_dashboard.dart:430:          subtitle: 'MANAGE_CREW_ROLES'.tr,
+lib\screens\organizer_dashboard.dart:522:          color: onTap != null ? Colors.white.withValues(alpha: 0.03) : 
+Colors.transparent,
+lib\screens\organizer_dashboard.dart:524:          border: Border.all(color: onTap != null ? 
+AppTheme.primary.withValues(alpha: 0.1) : Colors.transparent),
+lib\screens\organizer_dashboard.dart:580:            _buildSectionHeader('FINANCIAL_INTEL'.tr, 
+Icons.analytics_outlined, Colors.greenAccent),
+lib\screens\organizer_dashboard.dart:581:            _buildInlineHelp('FINANCIAL_INTEL'.tr, 
+'HELPER_FINANCIAL_INTEL_DESC'),
+lib\screens\organizer_dashboard.dart:599:                  _showToast('SCROLLING_TO_LIVE_FEED'.tr);
+lib\screens\organizer_dashboard.dart:601:                child: _miniStatCard('checked_in'.tr, '${arrivals.length}', 
+Icons.how_to_reg_rounded, AppTheme.primary),
+lib\screens\organizer_dashboard.dart:612:                     _showToast('NO_PENDING_REQ'.tr);
+lib\screens\organizer_dashboard.dart:615:                child: _miniStatCard('PENDING_REQ'.tr, '${(data['bookings'] 
+as List<Booking>).where((b) => b.paymentStatus == 'pending' || b.paymentStatus == 'pending_confirmation').length}', 
+Icons.hourglass_empty_rounded, AppTheme.secondary)
+lib\screens\organizer_dashboard.dart:629:          gradient: LinearGradient(colors: 
+[AppTheme.primary.withValues(alpha: 0.1), Colors.transparent]),
+lib\screens\organizer_dashboard.dart:641:                  Text('KICKSTART_JOURNEY'.tr.toUpperCase(), style: const 
+TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold, fontSize: 10, letterSpacing: 2)),
+lib\screens\organizer_dashboard.dart:643:                  Text('PUBLISH_FIRST_MSG'.tr, style: const TextStyle(color: 
+Colors.white38, fontSize: 10)),
+lib\screens\organizer_dashboard.dart:674:          eventDate = DateTime.tryParse(dateStr);
+lib\screens\organizer_dashboard.dart:698:        title: 'EVENT_START_SOON'.tr,
+lib\screens\organizer_dashboard.dart:699:        body: 'EVENT_START_BODY'.trArgs([nextEvent.title]),
+lib\screens\organizer_dashboard.dart:726:                  Text('LIVE_PULSE'.tr.toUpperCase(), style: const 
+TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold, fontSize: 9, letterSpacing: 3)),
+lib\screens\organizer_dashboard.dart:736:                    Text('COUNTDOWN'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.redAccent, fontSize: 8, fontWeight: FontWeight.bold)),
+lib\screens\organizer_dashboard.dart:781:            _buildSectionHeader('MY_EVENTS'.tr, Icons.event_note_rounded, 
+AppTheme.primary),
+lib\screens\organizer_dashboard.dart:782:            _buildInlineHelp('MY_EVENTS'.tr, 'HELPER_MY_EVENTS_DESC'),
+lib\screens\organizer_dashboard.dart:791:            _buildSectionHeader('FIXED_INFRASTRUCTURE'.tr, 
+Icons.business_rounded, Colors.white),
+lib\screens\organizer_dashboard.dart:792:            _buildInlineHelp('FIXED_INFRASTRUCTURE'.tr, 
+'HELPER_INFRASTRUCTURE_DESC'),
+lib\screens\organizer_dashboard.dart:801:            _buildSectionHeader('LIVE_PULSE'.tr, Icons.sensors_rounded, 
+AppTheme.primary),
+lib\screens\organizer_dashboard.dart:802:            _buildInlineHelp('LIVE_PULSE'.tr, 'HELPER_LIVE_DESC'),
+lib\screens\organizer_dashboard.dart:843:                    Text('TOTAL_VIEWS'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.white38, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
+lib\screens\organizer_dashboard.dart:845:                    _buildInlineHelp('TOTAL_VIEWS'.tr, 'HELP_VIEWS_SHORT', 
+icon: Icons.remove_red_eye_outlined),
+lib\screens\organizer_dashboard.dart:870:              Text('TOTAL_REVENUE'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.greenAccent, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 2)),
+lib\screens\organizer_dashboard.dart:872:              _buildInlineHelp('TOTAL_REVENUE'.tr, 'HELP_REVENUE_SHORT', 
+icon: Icons.payments_outlined),
+lib\screens\organizer_dashboard.dart:900:              _buildInlineHelp(label, label == 'checked_in'.tr ? 
+'HELP_SCANNED_SHORT' : (label == 'PENDING_REQ'.tr ? 'HELP_PENDING_SHORT' : 'HELP_REFUSALS_SHORT'), icon: label == 
+'checked_in'.tr ? Icons.qr_code_scanner_rounded : (label == 'PENDING_REQ'.tr ? Icons.hourglass_empty_rounded : 
+Icons.block_flipped)),
+lib\screens\organizer_dashboard.dart:978:                Text(label.tr, style: const TextStyle(color: Colors.white24, 
+fontSize: 7, fontWeight: FontWeight.bold)),
+lib\screens\organizer_dashboard.dart:981:                  label.tr, 
+lib\screens\organizer_dashboard.dart:995:    if (arrivals.isEmpty) return _buildEmptyState('NO_RECENT_ARRIVALS'.tr);
+lib\screens\organizer_dashboard.dart:1030:                'COLLECT_PAYMENT'.tr.toUpperCase(),
+lib\screens\organizer_dashboard.dart:1039:                'PAID'.tr.toUpperCase(),
+lib\screens\organizer_dashboard.dart:1051:    if (events.isEmpty) return _buildEmptyState('NO_ACTIVE_EVENTS'.tr);
+lib\screens\organizer_dashboard.dart:1073:                  gradient: LinearGradient(begin: Alignment.topCenter, end: 
+Alignment.bottomCenter, colors: [Colors.transparent, Colors.black.withValues(alpha: 0.8)]),
+lib\screens\organizer_dashboard.dart:1111:                _drawerSection('modules'.tr),
+lib\screens\organizer_dashboard.dart:1112:                _drawerTile(Icons.dashboard_rounded, 'control_center'.tr, () 
+{
+lib\screens\organizer_dashboard.dart:1116:                _drawerTile(Icons.inventory_2_outlined, 
+'operational_archives'.tr, () {
+lib\screens\organizer_dashboard.dart:1120:                _drawerTile(Icons.people_alt_rounded, 'manage_staff'.tr, () {
+lib\screens\organizer_dashboard.dart:1124:                _drawerTile(Icons.storefront_rounded, 'public_profile'.tr, 
+() {
+lib\screens\organizer_dashboard.dart:1128:                _drawerTile(Icons.favorite_rounded, 'manage_fans'.tr, () {
+lib\screens\organizer_dashboard.dart:1139:                _drawerSection('account'.tr),
+lib\screens\organizer_dashboard.dart:1140:                _drawerTile(Icons.swap_horiz_rounded, 'switch_club'.tr, () {
+lib\screens\organizer_dashboard.dart:1144:                _drawerTile(Icons.logout, 'logout'.tr, () => 
+supabase.auth.signOut(), isDestructive: true),
+lib\screens\organizer_dashboard.dart:1151:                  _drawerSection('MY_ENTITIES'.tr),
+lib\screens\organizer_dashboard.dart:1200:                Text('VERIFIED_ORGANIZER'.tr, style: const TextStyle(color: 
+AppTheme.primary, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+lib\screens\organizer_dashboard.dart:1236:      _showToast('PAYMENT_RECORDED'.tr);
+lib\screens\organizer_dashboard.dart:1240:      _showToast('err_update'.tr);
+lib\screens\organizer_dashboard.dart:1284:            label.tr,
+lib\screens\organizer_followers_screen.dart:53:        backgroundColor: Colors.transparent,
+lib\screens\profile.dart:88:                        'passes'.tr,
+lib\screens\profile.dart:92:                            '${'VIEW_ALL_TICKETS'.tr} ($_bookingCount)',
+lib\screens\profile.dart:101:                        'MY_INFO'.tr,
+lib\screens\profile.dart:105:                            'ACCOUNT_SETTINGS'.tr,
+lib\screens\profile.dart:111:                              'change_password'.tr,
+lib\screens\profile.dart:116:                              'RECOVERY_EMAIL'.tr,
+lib\screens\profile.dart:121:                              'DELETE_ACCOUNT'.tr,
+lib\screens\profile.dart:132:                        TranslationService.translate('PREFERENCES_SETTINGS'),
+lib\screens\profile.dart:136:                            TranslationService.translate('favorites'),
+lib\screens\profile.dart:146:                            'THE_VAULT'.tr,
+lib\screens\profile.dart:162:                          TranslationService.translate('push_notifications'),
+lib\screens\profile.dart:168:                          TranslationService.translate('change_language'),
+lib\screens\profile.dart:178:                          TranslationService.translate('assistance'),
+lib\screens\profile.dart:188:                          TranslationService.translate('privacy_policy'),
+lib\screens\profile.dart:225:            TranslationService.translate(title).toUpperCase(),
+lib\screens\profile.dart:255:      backgroundColor: Colors.transparent,
+lib\screens\profile.dart:332:                      : TranslationService.translate('set_phone_number'),
+lib\screens\profile.dart:369:                content: Text('VERIFICATION_SENT'.tr),
+lib\screens\profile.dart:395:              'ACCOUNT_NOT_VERIFIED'.tr,
+lib\screens\profile.dart:400:              'VERIFY_NOW'.tr.toUpperCase(),
+lib\screens\profile.dart:460:            (isAttendee ? 'following' : 'followers').tr.toUpperCase(),
+lib\screens\profile.dart:478:              '${'RATING'.tr}: ${rating.toStringAsFixed(1)}',
+lib\screens\profile.dart:637:          TranslationService.translate('logout').toUpperCase(),
+lib\screens\profile.dart:660:      backgroundColor: Colors.transparent,
+lib\screens\profile.dart:690:                'change_password'.tr,
+lib\screens\profile.dart:694:              _dialogInput('old_password'.tr, oldPassC, obscureOld, () {
+lib\screens\profile.dart:698:              _dialogInput('new_password'.tr, newPassC, obscureNew, () {
+lib\screens\profile.dart:702:              _dialogInput('CONFIRM_PASSWORD'.tr, confirmPassC, obscureConfirm, () {
+lib\screens\profile.dart:712:                        SnackBar(content: Text('please_fill_all'.tr)),
+lib\screens\profile.dart:718:                        SnackBar(content: Text('PASSWORDS_DO_NOT_MATCH'.tr)),
+lib\screens\profile.dart:723:                      SnackBar(content: Text('password_updated_success'.tr), 
+backgroundColor: AppTheme.secondary),
+lib\screens\profile.dart:727:                  child: Text('SAVE'.tr.toUpperCase()),
+lib\screens\profile.dart:770:      backgroundColor: Colors.transparent,
+lib\screens\profile.dart:800:                'ADD_RECOVERY_EMAIL'.tr,
+lib\screens\profile.dart:805:                'RECOVERY_EMAIL_DESC'.tr,
+lib\screens\profile.dart:809:              _emailInput('email'.tr, emailC),
+lib\screens\profile.dart:811:              _emailInput('CONFIRM_EMAIL'.tr, confirmEmailC),
+lib\screens\profile.dart:819:                        SnackBar(content: Text('please_fill_all'.tr)),
+lib\screens\profile.dart:825:                        SnackBar(content: Text('EMAILS_DO_NOT_MATCH'.tr)),
+lib\screens\profile.dart:832:                        UserAttributes(email: emailC.text.trim()),
+lib\screens\profile.dart:838:                        SnackBar(content: Text('recovery_email_updated'.tr), 
+backgroundColor: AppTheme.secondary),
+lib\screens\profile.dart:849:                  child: Text('SAVE'.tr.toUpperCase()),
+lib\screens\profile.dart:888:      backgroundColor: Colors.transparent,
+lib\screens\profile.dart:924:                      'DELETE_ACCOUNT'.tr,
+lib\screens\profile.dart:931:                  'DELETE_ACCOUNT_WARNING'.tr,
+lib\screens\profile.dart:949:                      'PROCEED'.tr.toUpperCase(),
+lib\screens\profile.dart:960:                      'CANCEL'.tr.toUpperCase(),
+lib\screens\profile.dart:967:                  'VERIFY_PASSWORD'.tr,
+lib\screens\profile.dart:972:                  'ENTER_PASSWORD_TO_DELETE'.tr,
+lib\screens\profile.dart:976:                _dialogInput('password'.tr, passwordC, obscurePassword, () {
+lib\screens\profile.dart:991:                          SnackBar(content: Text('please_fill_all'.tr)),
+lib\screens\profile.dart:997:                        SnackBar(content: Text('ACCOUNT_DELETED_SUCCESS'.tr), 
+backgroundColor: Colors.redAccent),
+lib\screens\profile.dart:1010:                      'CONFIRM_DELETE'.tr.toUpperCase(),
+lib\screens\profile.dart:1025:                      'back'.tr.toUpperCase(),
+lib\screens\profile.dart:1041:      backgroundColor: Colors.transparent,
+lib\screens\profile.dart:1147:                    TranslationService.translate('organize').toUpperCase(),
+lib\screens\profile.dart:1157:                    TranslationService.translate('management_console'),
+lib\screens\profile.dart:1185:            'no_passes_yet'.tr,
+lib\screens\profile.dart:1186:            'EXPLORE_MSG'.tr,
+lib\screens\profile.dart:1237:            : const ColorFilter.mode(Colors.transparent, BlendMode.dst),
+lib\screens\profile.dart:1288:                    TranslationService.translate('${b.numGuests} guests'),
+lib\screens\profile.dart:1332:                Text('CONNECTION_ERROR'.tr, style: const TextStyle(color: 
+Colors.white24, fontSize: 13)),
+lib\screens\profile.dart:1335:                  child: Text('RETRY'.tr, style: const TextStyle(color: 
+AppTheme.primary)),
+lib\screens\profile.dart:1345:            (isVisitor ? 'no_following' : 'no_followers_yet').tr,
+lib\screens\profile.dart:1346:            isVisitor ? 'FOLLOW_TO_STAY_UPDATED'.tr : 'SHARE_PROFILE_MSG'.tr,
+lib\screens\profile.dart:1425:          isVisitor ? (type?.toString().toUpperCase() ?? 'CLUB') : 'FAN'.tr,
+lib\screens\scan_entry.dart:197:      final response = await supabase.from('bookings').select('*, 
+events(*)').eq('guest_phone', _phoneC.text.trim()).eq('event_id', _lastEventId ?? '').maybeSingle();
+lib\screens\scan_entry.dart:199:        _showResultSheet(icon: Icons.search_off, iconColor: Colors.orange, title: 
+'no_booking_found'.tr, subtitle: 'check_phone_again'.tr, isSuccess: false);
+lib\screens\scan_entry.dart:240:        _showResultSheet(icon: Icons.qr_code_2, iconColor: Colors.orange, title: 
+'qr_unknown'.tr, subtitle: 'qr_unknown_desc'.tr, isSuccess: false);
+lib\screens\scan_entry.dart:264:        title: 'access_denied'.tr, 
+lib\screens\scan_entry.dart:265:        subtitle: '${booking.userName}\n${'USER_BLACKLISTED'.tr}', 
+lib\screens\scan_entry.dart:280:        title: 'used_ticket'.tr, 
+lib\screens\scan_entry.dart:281:        subtitle: '${booking.userName}\n${'ALREADY_SCANNED_AT'.tr}: $scanTime', 
+lib\screens\scan_entry.dart:290:        title: 'ejected_status'.tr, 
+lib\screens\scan_entry.dart:307:        title: booking.securityCleared ? 'SECURITY_CLEARED'.tr : 
+'SECURITY_VALIDATION'.tr,
+lib\screens\scan_entry.dart:308:        subtitle: '${booking.userName}\n${booking.numGuests} ${'guests_count'.tr}',
+lib\screens\scan_entry.dart:317:        title: isLate ? 'late_entry'.tr : 'MANAGER_MODE'.tr,
+lib\screens\scan_entry.dart:318:        subtitle: '${booking.userName}\n${booking.numGuests} 
+${'guests_count'.tr}${isLate ? '\n(+$delayMinutes min)' : ''}',
+lib\screens\scan_entry.dart:348:    _showResultSheet(icon: Icons.error, iconColor: Colors.red, title: 'error'.tr, 
+subtitle: m, isSuccess: false);
+lib\screens\scan_entry.dart:383:                    Text('follower_member'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 2)),
+lib\screens\scan_entry.dart:405:                          isFollower ? 'VERIFIED_FOLLOWER_DESC'.tr : 
+'STANDARD_GUEST'.tr,
+lib\screens\scan_entry.dart:434:                          Text('SECURITY_PENDING_WARNING'.tr.toUpperCase(), style: 
+const TextStyle(color: Colors.redAccent, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1)),
+lib\screens\scan_entry.dart:436:                          Text('ASK_GUEST_TO_GO_TO_SECURITY'.tr, style: const 
+TextStyle(color: Colors.redAccent, fontSize: 9, fontWeight: FontWeight.bold)),
+lib\screens\scan_entry.dart:487:                            SnackBar(content: Text('operation_failed'.tr), 
+backgroundColor: Colors.redAccent),
+lib\screens\scan_entry.dart:503:                        (_currentMode == ScannerMode.security ? 'ALLOW_ENTRY'.tr : 
+'CONFIRM_PAYMENT_ENTRY'.tr).toUpperCase(), 
+lib\screens\scan_entry.dart:528:                                    SnackBar(content: Text('operation_failed'.tr), 
+backgroundColor: Colors.redAccent),
+lib\screens\scan_entry.dart:549:                                Text('late_accepted'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.amber, fontWeight: FontWeight.w900, fontSize: 10)),
+lib\screens\scan_entry.dart:560:                                final success = await 
+_bookingService.cancelBooking(booking.id, reason: 'reason_late'.tr);
+lib\screens\scan_entry.dart:566:                                    SnackBar(content: Text('operation_failed'.tr), 
+backgroundColor: Colors.redAccent),
+lib\screens\scan_entry.dart:579:                            child: Text('late_refused'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 10)),
+lib\screens\scan_entry.dart:591:                child: Text('scan_next'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.bold)),
+lib\screens\scan_entry.dart:598:                label: Text('grant_perk'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.black, fontWeight: FontWeight.w900, letterSpacing: 1)),
+lib\screens\scan_entry.dart:618:                        label: Text('eject_guest'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+lib\screens\scan_entry.dart:634:                        label: Text('block_visitor'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+lib\screens\scan_entry.dart:655:      final ok = await _enforcementService.ejectGuest(bookingId: booking.id, reason: 
+'reason_security'.tr);
+lib\screens\scan_entry.dart:661:          SnackBar(content: Text('operation_failed'.tr), backgroundColor: 
+Colors.redAccent),
+lib\screens\scan_entry.dart:672:      final ok = await _enforcementService.addToBlacklist(clubId: widget.organizerId 
+?? '', phone: booking.guestPhone, userId: booking.userId, reason: 'reason_security'.tr);
+lib\screens\scan_entry.dart:678:          SnackBar(content: Text('operation_failed'.tr), backgroundColor: 
+Colors.redAccent),
+lib\screens\scan_entry.dart:695:        title: Text('GRANT SPECIAL PERK'.tr, style: const TextStyle(color: 
+AppTheme.secondary)),
+lib\screens\scan_entry.dart:702:          TextButton(onPressed: () => Navigator.pop(ctx), child: Text('cancel'.tr, 
+style: const TextStyle(color: Colors.white24))),
+lib\screens\scan_entry.dart:705:              final ok = await _bookingService.grantManualPerk(booking.id, 
+perkC.text.trim(), managerId: supabase.auth.currentUser?.id);
+lib\screens\scan_entry.dart:709:                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('perk_granted_success'.tr)));
+lib\screens\scan_entry.dart:712:                  SnackBar(content: Text('operation_failed'.tr), backgroundColor: 
+Colors.redAccent),
+lib\screens\scan_entry.dart:717:            child: Text('confirm'.tr),
+lib\screens\scan_entry.dart:756:          _showResultSheet(icon: Icons.check_circle, iconColor: Colors.greenAccent, 
+title: 'SUCCESS'.tr, subtitle: 'ACTION_COMPLETED'.tr, isSuccess: false);
+lib\screens\scan_entry.dart:759:          SnackBar(content: Text('operation_failed'.tr), backgroundColor: 
+Colors.redAccent),
+lib\screens\scan_entry.dart:774:        title: Text(_currentMode == ScannerMode.security ? 'SECURITY_MODE'.tr : 
+'MANAGER_MODE'.tr, 
+lib\screens\scan_entry.dart:782:                _modeTab(ScannerMode.security, Icons.shield_outlined, 'SECURITY'.tr),
+lib\screens\scan_entry.dart:784:                _modeTab(ScannerMode.payment, Icons.payments_outlined, 'MANAGER'.tr),
+lib\screens\scan_entry.dart:831:            border: Border.all(color: sel ? (mode == ScannerMode.security ? 
+AppTheme.primary : AppTheme.secondary) : Colors.transparent),
+lib\screens\scan_entry.dart:878:                  _staffRole.tr.toUpperCase(),
+lib\screens\scan_entry.dart:887:            child: Text('VERIFIED'.tr, style: const TextStyle(color: 
+Colors.greenAccent, fontSize: 8, fontWeight: FontWeight.bold)),
+lib\screens\scan_entry.dart:917:                    Text('LIVE OCCUPANCY'.tr, style: const TextStyle(color: 
+Colors.white24, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 2)),
+lib\screens\scan_entry.dart:935:                    _miniStat('IN'.tr, '$_scannedToday', AppTheme.primary),
+lib\screens\scan_entry.dart:936:                    _miniStat('CAP'.tr, '$_totalCapacity', Colors.white24),
+lib\screens\scan_entry.dart:937:                    _miniStat('LEFT'.tr, '${_totalCapacity - _scannedToday}', 
+AppTheme.secondary),
+lib\screens\scan_entry.dart:944:          Text(_lastEventName ?? 'loading'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 24)),
+lib\screens\scan_entry.dart:979:              Text(_foundBooking!.ticketType == 'Manual' ? 'SERIAL_ID_LAST_4'.tr : 
+'PASS_ID'.tr, style: TextStyle(color: AppTheme.primary.withValues(alpha: 0.5), fontSize: 10, fontWeight: 
+FontWeight.bold, letterSpacing: 4)),
+lib\screens\scan_entry.dart:991:                Text('${'FULL_SN'.tr}: ${_foundBooking!.qrCode}', style: const 
+TextStyle(color: Colors.white24, fontSize: 10, letterSpacing: 1)),
+lib\screens\scan_entry.dart:999:              Text(_foundBooking!.guestPhone?.toUpperCase() ?? 'NO_PHONE'.tr, style: 
+const TextStyle(color: Colors.white38, fontSize: 14, letterSpacing: 2, fontWeight: FontWeight.bold)),
+lib\screens\scan_entry.dart:1028:                                Text('start_time'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.white38, fontSize: 8, letterSpacing: 1)),
+lib\screens\scan_entry.dart:1073:              Text('${_foundBooking!.numGuests} ${'guests_label'.tr.toUpperCase()}', 
+style: const TextStyle(color: Colors.white38, fontSize: 12, fontWeight: FontWeight.bold)),
+lib\screens\scan_entry.dart:1085:                  : Text('confirm_entry'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+lib\screens\scan_entry.dart:1088:              TextButton(onPressed: () => setState(() => _foundBooking = null), 
+child: Text('back_to_scan'.tr.toUpperCase(), style: const TextStyle(color: Colors.white24, fontSize: 10))),
+lib\screens\scan_entry.dart:1199:          Expanded(child: TextField(controller: _phoneC, style: const 
+TextStyle(color: Colors.white), keyboardType: TextInputType.phone, decoration: InputDecoration(hintText: 
+'phone_number'.tr, hintStyle: const TextStyle(color: Colors.white24), border: InputBorder.none))),
+lib\screens\scan_entry.dart:1218:          title: Text(isConfirming ? 'confirm_action'.tr : 'manual_ticket_btn'.tr, 
+style: AppTheme.headlineStyle.copyWith(fontSize: 18, color: isConfirming ? AppTheme.secondary : Colors.white)),
+lib\screens\scan_entry.dart:1222:              Text(isConfirming ? 'confirm_manual_issuance'.tr : 
+'instant_ticket_desc'.tr, style: TextStyle(color: isConfirming ? Colors.white : Colors.white54, fontSize: 13, 
+fontWeight: isConfirming ? FontWeight.bold : FontWeight.normal)),
+lib\screens\scan_entry.dart:1228:                    Text('guests_count'.tr, style: const TextStyle(color: 
+Colors.white70)),
+lib\screens\scan_entry.dart:1247:                      Text('$guests ${'guests_label'.tr}', style: const 
+TextStyle(color: AppTheme.secondary, fontWeight: FontWeight.bold, fontSize: 18)),
+lib\screens\scan_entry.dart:1254:            TextButton(onPressed: () => Navigator.pop(ctx), child: Text('cancel'.tr, 
+style: const TextStyle(color: Colors.white24))),
+lib\screens\scan_entry.dart:1295:                        title: 'ticket_issued'.tr, 
+lib\screens\scan_entry.dart:1296:                        subtitle: 
+'manual_entry_success_desc'.trArgs([booking.qrCode.substring(booking.qrCode.length - 4)]), 
+lib\screens\scan_entry.dart:1302:                      SnackBar(content: Text('operation_failed'.tr), backgroundColor: 
+Colors.redAccent),
+lib\screens\scan_entry.dart:1317:                : Text(isConfirming ? 'confirm_are_you_sure'.tr : 'confirm'.tr, 
+style: const TextStyle(fontWeight: FontWeight.bold)),
+lib\screens\scan_entry.dart:1331:      _sendCapacityAlert('Event Full!'.tr, 'Capacity has reached 100% 
+($_scannedToday/$_totalCapacity)'.tr, 100);
+lib\screens\scan_entry.dart:1333:      _sendCapacityAlert('Warning: Capacity 90%'.tr, 'Crowd alert: 
+$_scannedToday/$_totalCapacity entered.'.tr, 90);
+lib\screens\splash_screen.dart:124:                    'sifo_slogan'.tr.toUpperCase(),
+lib\screens\splash_screen.dart:182:                  gradient: LinearGradient(colors: [AppTheme.primary, 
+Colors.transparent]),
+lib\screens\staff_acceptance_screen.dart:87:        ).showSnackBar(SnackBar(content: Text('action_failed'.tr)));
+lib\screens\staff_acceptance_screen.dart:110:    final role = displayAssignment['role'] ?? 'staff_member'.tr;
+lib\screens\staff_acceptance_screen.dart:138:              'assignment_pending'.tr,
+lib\screens\staff_acceptance_screen.dart:146:              'invited_to_work_at'.tr,
+lib\screens\staff_acceptance_screen.dart:173:                  _buildAssignRow(Icons.qr_code_scanner, 'role'.tr, role),
+lib\screens\staff_acceptance_screen.dart:200:                      'agree_start_work'.tr,
+lib\screens\staff_acceptance_screen.dart:208:                'reject_assignment'.tr,
+lib\screens\staff_activity_logs.dart:42:        title: Text('staff_activity_logs'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 18)),
+lib\screens\staff_activity_logs.dart:62:          Text('No activity recorded yet.'.tr, style: const TextStyle(color: 
+Colors.white24)),
+lib\screens\staff_activity_logs.dart:136:      final parts = description.split('|').map((e) => e.trim()).toList();
+lib\screens\staff_activity_logs.dart:143:          final t = pair[0].trim();
+lib\screens\staff_activity_logs.dart:144:          final v = pair[1].trim();
+lib\screens\staff_dashboard_screen.dart:123:        backgroundColor: Colors.transparent,
+lib\screens\staff_dashboard_screen.dart:131:        title: Text('staff_hub'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 18)),
+lib\screens\staff_dashboard_screen.dart:134:            tooltip: 'SWITCH_ACCOUNT'.tr,
+lib\screens\staff_dashboard_screen.dart:149:             Text('staff_console_active'.tr, 
+lib\screens\staff_dashboard_screen.dart:152:              Text('select_tool'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 28)),
+lib\screens\staff_dashboard_screen.dart:177:                      label: 'QR_SCANNER'.tr,
+lib\screens\staff_dashboard_screen.dart:188:                      label: 'GUEST_LIST'.tr,
+lib\screens\staff_dashboard_screen.dart:199:                      label: 'LOGS'.tr,
+lib\screens\staff_dashboard_screen.dart:210:                      label: 'LIVE_STATS'.tr,
+lib\screens\staff_dashboard_screen.dart:221:                      label: 'ISSUE_NEW_PASS'.tr,
+lib\screens\staff_dashboard_screen.dart:237:        _buildSectionHeader('TACTICAL_MISSIONS'.tr, Icons.bolt_rounded),
+lib\screens\staff_dashboard_screen.dart:255:                 child: Center(child: Text('ALL_CLEAR'.tr, style: const 
+TextStyle(color: Colors.white24, fontSize: 10, letterSpacing: 2, fontWeight: FontWeight.bold))),
+lib\screens\staff_dashboard_screen.dart:354:                Text(isOn ? 'ON_DUTY'.tr.toUpperCase() : 
+'OFF_DUTY'.tr.toUpperCase(), style: TextStyle(color: isOn ? AppTheme.primary : Colors.white24, fontWeight: 
+FontWeight.w900, fontSize: 10, letterSpacing: 2)),
+lib\screens\staff_dashboard_screen.dart:369:              (_currentShift == null ? 'START_SHIFT' : 
+'CLOCK_OUT').tr.toUpperCase(),
+lib\screens\staff_dashboard_screen.dart:399:            title: Text('profile'.tr),
+lib\screens\staff_dashboard_screen.dart:408:            title: Text('assistance'.tr),
+lib\screens\staff_dashboard_screen.dart:418:            title: Text('logout'.tr, style: const TextStyle(color: 
+Colors.redAccent)),
+lib\screens\staff_dashboard_screen.dart:441:      backgroundColor: Colors.transparent,
+lib\screens\staff_dashboard_screen.dart:453:                Text('ISSUE_NEW_PASS'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: AppTheme.primary, letterSpacing: 2)),
+lib\screens\staff_dashboard_screen.dart:455:                _buildIssuanceField('GUEST_NAME'.tr, Icons.person_outline, 
+nameController),
+lib\screens\staff_dashboard_screen.dart:457:                _buildIssuanceField('GUEST_PHONE'.tr, 
+Icons.phone_android_rounded, phoneController),
+lib\screens\staff_dashboard_screen.dart:459:                Text('TICKET_TYPE'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.white24, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1)),
+lib\screens\staff_dashboard_screen.dart:481:                    child: Text('GENERATE_PASS'.tr.toUpperCase(), style: 
+const TextStyle(fontWeight: FontWeight.bold)),
+lib\screens\staff_dashboard_screen.dart:550:            Text('SUCCESS'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 24)),
+lib\screens\staff_dashboard_screen.dart:553:              'pass_generated_success'.trArgs([code]),
+lib\screens\staff_dashboard_screen.dart:565:                label: Text('SHARE'.tr.toUpperCase()),
+lib\screens\staff_dashboard_screen.dart:576:              child: Text('CLOSE'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.white24)),
+lib\screens\staff_duty_history_screen.dart:47:        backgroundColor: Colors.transparent,
+lib\screens\staff_duty_history_screen.dart:49:        title: Text('PERSONNEL_DUTY_LOG'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 16, letterSpacing: 2)),
+lib\screens\staff_duty_history_screen.dart:72:    final date = DateTime.tryParse(log['created_at'] ?? '');
+lib\screens\staff_duty_history_screen.dart:122:          Text('NO_VISIT_HISTORY'.tr, style: const TextStyle(color: 
+Colors.white10, letterSpacing: 1.5, fontSize: 12, fontWeight: FontWeight.bold)),
+lib\screens\staff_event_selector.dart:70:        backgroundColor: Colors.transparent,
+lib\screens\staff_event_selector.dart:85:                Text('CHOOSE EVENT'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: AppTheme.primary, letterSpacing: 4)),
+lib\screens\staff_event_selector.dart:87:                Text('select_event_to_manage'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 24)),
+lib\screens\staff_event_selector.dart:91:                    ? Center(child: Text('no_active_events'.tr, style: const 
+TextStyle(color: Colors.white24)))
+lib\screens\staff_event_selector.dart:142:              tooltip: 'download_record'.tr,
+lib\screens\staff_guest_list_screen.dart:102:        SnackBar(content: Text('checked_in_success'.tr), backgroundColor: 
+AppTheme.primary),
+lib\screens\staff_guest_list_screen.dart:138:      backgroundColor: Colors.transparent,
+lib\screens\staff_guest_list_screen.dart:140:      title: Text('guest_list'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 18, letterSpacing: 2)),
+lib\screens\staff_guest_list_screen.dart:186:            color: active ? AppTheme.primary.withValues(alpha: 0.1) : 
+Colors.transparent,
+lib\screens\staff_guest_list_screen.dart:190:            label.tr.toUpperCase(),
+lib\screens\staff_guest_list_screen.dart:207:          hintText: 'search_guests'.tr,
+lib\screens\staff_guest_list_screen.dart:257:                      Text(booking.userName.isEmpty ? 'Anonymous'.tr : 
+booking.userName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+lib\screens\staff_guest_list_screen.dart:268:                      child: Text('check_in_manual'.tr, style: const 
+TextStyle(color: Colors.black, fontSize: 10, fontWeight: FontWeight.bold)),
+lib\screens\staff_guest_list_screen.dart:275:                    child: Text('already_used'.tr, style: const 
+TextStyle(color: AppTheme.primary, fontSize: 10, fontWeight: FontWeight.bold)),
+lib\screens\staff_guest_list_screen.dart:310:            Text('no_bookings_found'.tr, style: const TextStyle(color: 
+Colors.white38)),
+lib\screens\staff_hub_screen.dart:161:        title: titleKey.tr,
+lib\screens\staff_hub_screen.dart:162:        body: bodyKey.trArgs([staffName, clubName]),
+lib\screens\staff_hub_screen.dart:188:      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('error_processing'.tr)));
+lib\screens\staff_hub_screen.dart:214:                      Text('MISSION CONTROL'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: AppTheme.primary, letterSpacing: 4, fontSize: 10)),
+lib\screens\staff_hub_screen.dart:216:                      Text('Your Assignments'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 32)),
+lib\screens\staff_hub_screen.dart:218:                      Text('Manage your roles and club connections 
+globally.'.tr, style: const TextStyle(color: Colors.white24, fontSize: 13)),
+lib\screens\staff_hub_screen.dart:246:      backgroundColor: Colors.transparent,
+lib\screens\staff_hub_screen.dart:282:            title: Text('profile'.tr),
+lib\screens\staff_hub_screen.dart:291:            title: Text('assistance'.tr),
+lib\screens\staff_hub_screen.dart:301:            title: Text('logout'.tr, style: const TextStyle(color: 
+Colors.redAccent)),
+lib\screens\staff_hub_screen.dart:366:                          Text(job['role'].toString().tr.toUpperCase(), style: 
+const TextStyle(color: AppTheme.primary, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
+lib\screens\staff_hub_screen.dart:383:                          child: Text('accept'.tr.toUpperCase(), style: const 
+TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+lib\screens\staff_hub_screen.dart:392:                          child: Text('LOG_SHIFT'.tr, style: const 
+TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+lib\screens\staff_hub_screen.dart:430:              Text('ACTIVE_MISSION'.tr, style: 
+AppTheme.headlineStyle.copyWith(fontSize: 20, color: AppTheme.primary)),
+lib\screens\staff_hub_screen.dart:444:            child: Text('I_AM_ON_IT'.tr, style: const TextStyle(color: 
+Colors.black, fontWeight: FontWeight.bold)),
+lib\screens\staff_hub_screen.dart:460:              'no_assignments_yet'.tr,
+lib\screens\staff_hub_screen.dart:466:              'wait_for_invite'.tr,
+lib\screens\staff_invitations_screen.dart:97:                        'mission_control'.tr.toUpperCase(),
+lib\screens\staff_invitations_screen.dart:106:                        'pending_invites'.tr,
+lib\screens\staff_invitations_screen.dart:144:      backgroundColor: Colors.transparent,
+lib\screens\staff_invitations_screen.dart:218:                      'reject'.tr.toUpperCase(),
+lib\screens\staff_invitations_screen.dart:237:                      'ACCEPT'.tr.toUpperCase(),
+lib\screens\staff_invitations_screen.dart:262:            accept ? 'CONFIRM_MISSION'.tr : 'REJECT_MISSION'.tr,
+lib\screens\staff_invitations_screen.dart:267:                ? 'mission_accept_desc'.trArgs([invite['role'], 
+invite['club_name']])
+lib\screens\staff_invitations_screen.dart:268:                : 'mission_reject_desc'.trArgs([invite['club_name']]),
+lib\screens\staff_invitations_screen.dart:274:              child: Text('CANCEL'.tr, style: const TextStyle(color: 
+Colors.white24)),
+lib\screens\staff_invitations_screen.dart:295:                accept ? 'PROCEED'.tr : 'CONFIRM'.tr,
+lib\screens\staff_invitations_screen.dart:332:            'no_pending_mission'.tr,
+lib\screens\staff_logs_screen.dart:64:          widget.eventId == null ? 'OPERATIONAL_LEDGER'.tr : 'EVENT_LOGS'.tr,
+lib\screens\staff_logs_screen.dart:75:                'no_events_found'.tr,
+lib\screens\staff_logs_screen.dart:118:        subtitle: Text('tap_to_view_scanned'.tr),
+lib\screens\staff_logs_screen.dart:215:    String desc = 'staff_personal_docs'.tr;
+lib\screens\staff_logs_screen.dart:218:      title = 'SHARE_TOOL'.tr;
+lib\screens\staff_logs_screen.dart:219:      desc = 'HELP_SHARE_STAFF_DESC'.tr;
+lib\screens\staff_logs_screen.dart:221:      title = 'DOWNLOAD_TOOL'.tr;
+lib\screens\staff_logs_screen.dart:222:      desc = 'HELP_DOWNLOAD_STAFF_DESC'.tr;
+lib\screens\staff_logs_screen.dart:227:      backgroundColor: Colors.transparent,
+lib\screens\staff_logs_screen.dart:288:              _canViewTeamLogs ? 'TEAM_OPERATIONAL_LOGS'.tr : 
+'MY_OPERATIONAL_LOGS'.tr,
+lib\screens\staff_logs_screen.dart:298:          dividerColor: Colors.transparent,
+lib\screens\staff_logs_screen.dart:304:            Tab(text: 'SCAN_AUDIT'.tr.toUpperCase()),
+lib\screens\staff_logs_screen.dart:305:            Tab(text: 'MANUAL_ENTRIES'.tr.toUpperCase()),
+lib\screens\staff_logs_screen.dart:310:            tooltip: 'SHARE'.tr,
+lib\screens\staff_logs_screen.dart:319:            tooltip: 'DOWNLOAD_TOOL'.tr,
+lib\screens\staff_logs_screen.dart:343:                    'no_scans_found'.tr,
+lib\screens\staff_logs_screen.dart:352:                    'no_manual_found'.tr,
+lib\screens\staff_logs_screen.dart:398:        final date = DateTime.tryParse(log['created_at'] ?? '');
+lib\screens\staff_logs_screen.dart:489:      final parts = description.split('|').map((e) => e.trim()).toList();
+lib\screens\staff_logs_screen.dart:496:          final t = pair[0].trim();
+lib\screens\staff_logs_screen.dart:497:          final v = pair[1].trim();
+lib\screens\staff_logs_screen.dart:564:        title: Text('DELETE_LOG'.tr, style: const TextStyle(color: 
+Colors.white)),
+lib\screens\staff_logs_screen.dart:566:          'DELETE_LOG_CONFIRM'.tr,
+lib\screens\staff_logs_screen.dart:572:            child: Text('CANCEL'.tr),
+lib\screens\staff_logs_screen.dart:576:            child: Text('DELETE'.tr, style: const TextStyle(color: 
+Colors.redAccent)),
+lib\screens\staff_management_screen.dart:77:    final query = _searchController.text.trim();
+lib\screens\staff_management_screen.dart:86:    if (query.trim().isEmpty) return;
+lib\screens\staff_management_screen.dart:188:      _showMsg('please_select_staff_from_list'.tr, isError: true);
+lib\screens\staff_management_screen.dart:200:        _showMsg('error_self_invite'.tr, isError: true);
+lib\screens\staff_management_screen.dart:222:        title: 'job_invitation_title'.tr,
+lib\screens\staff_management_screen.dart:223:        body: 'job_invitation_body'.trArgs([_activeRole.tr]),
+lib\screens\staff_management_screen.dart:230:        description: 'Invited ${_selectedUser!['full_name']} as 
+${_activeRole.tr}.',
+lib\screens\staff_management_screen.dart:240:      _showMsg('staff_added_success'.tr, isError: false);
+lib\screens\staff_management_screen.dart:242:      _showMsg('action_failed'.tr, isError: true);
+lib\screens\staff_management_screen.dart:260:      backgroundColor: Colors.transparent,
+lib\screens\staff_management_screen.dart:290:      _showMsg('action_failed'.tr, isError: true);
+lib\screens\staff_management_screen.dart:304:        title: 'ROLE_UPDATED_TITLE'.tr,
+lib\screens\staff_management_screen.dart:305:        body: 'ROLE_UPDATED_BODY'.trArgs([newRole.tr]),
+lib\screens\staff_management_screen.dart:315:      _showMsg('staff_updated_success'.tr);
+lib\screens\staff_management_screen.dart:317:      _showMsg('action_failed'.tr, isError: true);
+lib\screens\staff_management_screen.dart:337:          title: Text('edit_staff_permissions'.tr, style: const 
+TextStyle(color: Colors.white)),
+lib\screens\staff_management_screen.dart:346:                  decoration: InputDecoration(labelText: 'role'.tr, 
+labelStyle: const TextStyle(color: Colors.white70)),
+lib\screens\staff_management_screen.dart:347:                  items: ['role_manager', 'role_security', 
+'Scanner'].map((r) => DropdownMenuItem(value: r, child: Text(r.tr))).toList(),
+lib\screens\staff_management_screen.dart:358:                  title: Text(perm.tr, style: const TextStyle(color: 
+Colors.white70, fontSize: 12)),
+lib\screens\staff_management_screen.dart:367:            TextButton(onPressed: () => Navigator.pop(ctx), child: 
+Text('cancel'.tr)),
+lib\screens\staff_management_screen.dart:374:              child: Text('save'.tr, style: const TextStyle(color: 
+Colors.black)),
+lib\screens\staff_management_screen.dart:386:    _showMsg('invite_link_copied'.tr);
+lib\screens\staff_management_screen.dart:397:          'manage_staff'.tr,
+lib\screens\staff_management_screen.dart:403:            tooltip: 'copy_invite_link'.tr,
+lib\screens\staff_management_screen.dart:408:            tooltip: 'TACTICAL_VETTING'.tr,
+lib\screens\staff_management_screen.dart:426:                        'add_new_staff'.tr,
+lib\screens\staff_management_screen.dart:430:                        onTap: () => _showHelp('add_new_staff'.tr, 
+'HELPER_STAFF_DESC'.tr),
+lib\screens\staff_management_screen.dart:437:                    'search_staff_hint'.tr,
+lib\screens\staff_management_screen.dart:450:                        'Authority Level'.tr,
+lib\screens\staff_management_screen.dart:454:                        onTap: () => _showHelp('Authority Level'.tr, 
+'HELPER_INFRASTRUCTURE_DESC'.tr),
+lib\screens\staff_management_screen.dart:463:                    'Permissions'.tr,
+lib\screens\staff_management_screen.dart:477:                        'current_staff'.tr,
+lib\screens\staff_management_screen.dart:481:                        onTap: () => _showHelp('current_staff'.tr, 
+'HELPER_STAFF_DESC'.tr),
+lib\screens\staff_management_screen.dart:522:              'assign_as_staff'.tr.toUpperCase(),
+lib\screens\staff_management_screen.dart:546:              'no_users_found'.tr,
+lib\screens\staff_management_screen.dart:570:                hintText: 'phone_or_name_hint'.tr,
+lib\screens\staff_management_screen.dart:601:                  'SEARCH'.tr,
+lib\screens\staff_management_screen.dart:634:                Text('SEARCH_RESULTS'.tr.toUpperCase(), style: const 
+TextStyle(color: AppTheme.primary, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+lib\screens\staff_management_screen.dart:636:                Text('${_searchResults.length} ${'FOUND'.tr}', style: 
+const TextStyle(color: Colors.white24, fontSize: 9, fontWeight: FontWeight.bold)),
+lib\screens\staff_management_screen.dart:765:              role.tr,
+lib\screens\staff_management_screen.dart:811:                perm.tr,
+lib\screens\staff_management_screen.dart:835:            'no_staff_added'.tr,
+lib\screens\staff_management_screen.dart:874:                  Text(staff.role.tr.toUpperCase(), style: const 
+TextStyle(color: AppTheme.secondary, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.w900)),
+lib\screens\staff_management_screen.dart:912:              'TACTICAL_NOTIFICATIONS'.tr.toUpperCase(),
+lib\screens\staff_management_screen.dart:927:                '🚨 ${'URGENT'.tr}',
+lib\screens\staff_management_screen.dart:928:                'urgent_mission'.tr,
+lib\screens\staff_management_screen.dart:933:                '🎫 ${'GATE'.tr}',
+lib\screens\staff_management_screen.dart:934:                'gate_support'.tr,
+lib\screens\staff_management_screen.dart:939:                '💎 ${'VIP'.tr}',
+lib\screens\staff_management_screen.dart:940:                'vip_support'.tr,
+lib\screens\staff_management_screen.dart:945:                '🍹 ${'BAR'.tr}',
+lib\screens\staff_management_screen.dart:946:                'bar_support'.tr,
+lib\screens\staff_management_screen.dart:995:        _showMsg('No active staff to notify.'.tr, isError: true);
+lib\screens\staff_management_screen.dart:1017:      _showMsg('Notification sent to $successCount staff member(s).'.tr);
+lib\screens\staff_management_screen.dart:1019:      _showMsg('Failed to send notification.'.tr, isError: true);
+lib\screens\staff_management_screen.dart:1041:                'CRITICAL_OPERATIONS'.tr.toUpperCase(),
+lib\screens\staff_management_screen.dart:1056:      title: Text(key.tr, style: const TextStyle(color: Colors.white, 
+fontSize: 13, fontWeight: FontWeight.bold)),
+lib\screens\support_form.dart:44:        SnackBar(content: Text('please_fill_all'.tr)),
+lib\screens\support_form.dart:59:          SnackBar(content: Text('request_sent_success'.tr)),
+lib\screens\support_form.dart:65:          SnackBar(content: Text('${'action_failed'.tr}: $e')),
+lib\screens\support_form.dart:86:            Text('contact_dev'.tr, style: AppTheme.headlineStyle.copyWith(fontSize: 
+24)),
+lib\screens\support_form.dart:88:            Text('support_subtitle'.tr, style: AppTheme.bodyStyle.copyWith(color: 
+AppTheme.onSurfaceVariant)),
+lib\screens\support_form.dart:92:            Text('category'.tr.toUpperCase(), style: AppTheme.labelStyle),
+lib\screens\support_form.dart:105:                  items: _categoryKeys.entries.map((e) => DropdownMenuItem(value: 
+e.key, child: Text(e.value.tr))).toList(),
+lib\screens\support_form.dart:113:            _buildField('subject'.tr.toUpperCase(), 'subject_hint'.tr, 
+_subjectController),
+lib\screens\support_form.dart:117:            _buildField('message'.tr.toUpperCase(), 'message_hint'.tr, 
+_messageController, isLong: true),
+lib\screens\support_form.dart:130:                    child: Text('send_request'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.bold)),
+lib\screens\support_screen.dart:48:          content: Text('please_fill_all'.tr),
+lib\screens\support_screen.dart:66:            content: Text('request_sent_success'.tr),
+lib\screens\support_screen.dart:77:            content: Text('${'action_failed'.tr}: $e'),
+lib\screens\support_screen.dart:117:                child: Container(color: Colors.transparent),
+lib\screens\support_screen.dart:133:                child: Container(color: Colors.transparent),
+lib\screens\support_screen.dart:187:              'assistance'.tr.toUpperCase(),
+lib\screens\support_screen.dart:217:              'SIFO_ELITE_SUPPORT'.tr.toUpperCase(),
+lib\screens\support_screen.dart:229:          'HOW_CAN_WE_HELP'.tr,
+lib\screens\support_screen.dart:240:          'support_subtitle'.tr,
+lib\screens\support_screen.dart:351:                  'JOIN_SIFO_BENEFIT'.tr,
+lib\screens\support_screen.dart:356:                  'SIGN_UP_TO_TRACK'.tr,
+lib\screens\support_screen.dart:365:              'SIGN_UP'.tr,
+lib\screens\support_screen.dart:379:          'SEND_A_MESSAGE'.tr.toUpperCase(),
+lib\screens\support_screen.dart:410:                    _categoryKeys[cat]!.tr.toUpperCase(),
+lib\screens\support_screen.dart:424:        _buildTextField('subject'.tr, 'subject_hint'.tr, _subjectController, 
+Icons.label_important_outline_rounded),
+lib\screens\support_screen.dart:426:        _buildTextField('message'.tr, 'message_hint'.tr, _messageController, 
+Icons.message_outlined, isLong: true),
+lib\screens\support_screen.dart:444:                    'send_request'.tr.toUpperCase(),
+lib\screens\support_screen.dart:490:          'COMMON_QUESTIONS'.tr.toUpperCase(),
+lib\screens\support_screen.dart:499:        _faqTile('faq_booking_title'.tr, 'faq_booking_desc'.tr),
+lib\screens\support_screen.dart:500:        _faqTile('faq_refund_title'.tr, 'faq_refund_desc'.tr),
+lib\screens\support_screen.dart:501:        _faqTile('faq_staff_title'.tr, 'faq_staff_desc'.tr),
+lib\screens\ticket.dart:134:        title: Text('MY_TICKETS'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 20, letterSpacing: 2)),
+lib\screens\ticket.dart:162:                 Tab(text: 'ACTIVE'.tr.toUpperCase()),
+lib\screens\ticket.dart:163:                 Tab(text: 'HISTORY'.tr.toUpperCase()),
+lib\screens\ticket.dart:189:            Text(isHist ? 'no_history'.tr : 'no_tickets'.tr, style: const TextStyle(color: 
+Colors.white38)),
+lib\screens\ticket.dart:270:                                    ? 'WAITING_FOR_CONFIRMATION'.tr 
+lib\screens\ticket.dart:271:                                    : 'WAITING_FOR_PAYMENT'.tr,
+lib\screens\ticket.dart:283:                                      ? 'call_to_confirm_desc'.tr
+lib\screens\ticket.dart:284:                                      : 'payment_at_door_desc'.tr,
+lib\screens\ticket.dart:303:                            color: isUsed ? Colors.transparent : AppTheme.primary,
+lib\screens\ticket.dart:346:                                    '${b.numGuests} ${'guests'.tr}',
+lib\screens\ticket.dart:376:                          _buildDetailRow('event'.tr, e?.title ?? '---', 
+Icons.auto_awesome),
+lib\screens\ticket.dart:378:                          _buildDetailRow('entry_id'.tr, b.qrCode.toUpperCase(), 
+Icons.layers_outlined),
+lib\screens\ticket.dart:387:                                Text('original_price'.tr, style: const TextStyle(color: 
+Colors.white24, fontSize: 12)),
+lib\screens\ticket.dart:399:                                  Text('discount'.tr, style: const TextStyle(color: 
+AppTheme.secondary, fontSize: 12)),
+lib\screens\ticket.dart:411:                                Text('final_price'.tr, style: const TextStyle(color: 
+Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+lib\screens\ticket.dart:442:                                    Text('SHOW_OPTIONS'.tr, style: const TextStyle(color: 
+AppTheme.primary, fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 1)),
+lib\screens\ticket.dart:449:                          Center(child: TextButton(onPressed: () => _cancel(b), child: 
+Text('cancel_res'.tr.toUpperCase(), style: const TextStyle(color: Colors.white24, fontSize: 10, letterSpacing: 1)))),
+lib\screens\ticket.dart:462:                                'ARCHIVE'.tr, 
+lib\screens\ticket.dart:469:                                'REMOVE'.tr, 
+lib\screens\ticket.dart:479:                              child: Text('VIEW_QR'.tr, style: const TextStyle(color: 
+Colors.white38, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1)),
+lib\screens\ticket.dart:535:          Text('guests_label'.tr, style: const TextStyle(color: Colors.white24, fontSize: 
+9, fontWeight: FontWeight.bold)),
+lib\screens\ticket.dart:549:      child: loading ? const SizedBox(height: 20, width: 20, child: 
+CircularProgressIndicator(strokeWidth: 2, color: Colors.black)) : Text('change_count'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+lib\screens\ticket.dart:580:    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('redeem_success'.tr)));
+lib\screens\ticket.dart:586:      backgroundColor: Colors.transparent,
+lib\screens\ticket.dart:600:            Text('REDEMPTION'.tr, style: AppTheme.labelStyle.copyWith(color: 
+AppTheme.primary, letterSpacing: 2)),
+lib\screens\ticket.dart:609:                  child: _buildOption(Icons.local_activity, 'CLAIM'.tr, () {
+lib\screens\ticket.dart:616:                  child: _buildOption(Icons.send_rounded, 'TRANSFER'.tr, () {
+lib\screens\ticket.dart:634:      backgroundColor: Colors.transparent,
+lib\screens\ticket.dart:654:                Text('TRANSFER_TICKET'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(color: AppTheme.primary, letterSpacing: 2)),
+lib\screens\ticket.dart:662:                    labelText: 'FRIEND_PHONE'.tr,
+lib\screens\ticket.dart:665:                    hintText: '05...'.tr,
+lib\screens\ticket.dart:671:                Text('TRANSFER_WARNING'.tr, style: const TextStyle(color: Colors.white24, 
+fontSize: 10), textAlign: TextAlign.center),
+lib\screens\ticket.dart:686:                      : Text('CONFIRM_TRANSFER'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+lib\screens\ticket.dart:701:    final success = await _bookingService.transferTicket(bookingId, 
+_transferController.text);
+lib\screens\ticket.dart:709:          content: Text('transfer_success'.tr),
+lib\screens\ticket.dart:715:          content: Text('transfer_failed'.tr),
+lib\screens\ticket.dart:813:    if (color == Colors.transparent) return;
+lib\screens\tickets_list_screen.dart:53:          backgroundColor: Colors.transparent,
+lib\screens\tickets_list_screen.dart:55:          title: Text('passes'.tr.toUpperCase(), style: 
+AppTheme.labelStyle.copyWith(letterSpacing: 2)),
+lib\screens\tickets_list_screen.dart:86:                  dividerColor: Colors.transparent,
+lib\screens\tickets_list_screen.dart:89:                    Tab(text: 'active'.tr.toUpperCase()),
+lib\screens\tickets_list_screen.dart:90:                    Tab(text: 'history'.tr.toUpperCase()),
+lib\screens\tickets_list_screen.dart:125:              Text('no_tickets_found'.tr, style: const TextStyle(color: 
+Colors.white24)),
+lib\screens\tickets_list_screen.dart:150:      return Center(child: Text(type == 'active' ? 'no_active_tickets'.tr : 
+'no_archived_tickets'.tr, style: const TextStyle(color: Colors.white10, fontSize: 12)));
+lib\screens\tickets_list_screen.dart:168:            return Transform.translate(
+lib\screens\tickets_list_screen.dart:213:                                      colors: [Colors.transparent, 
+Colors.black.withValues(alpha: 0.4)],
+lib\screens\tickets_list_screen.dart:319:        status.tr.toUpperCase(), 
+lib\screens\vault_screen.dart:150:              'THE_VAULT'.tr.toUpperCase(),
+lib\screens\vault_screen.dart:184:                  Tab(text: 'ALL_ARCHIVE'.tr.toUpperCase()),
+lib\screens\vault_screen.dart:185:                  Tab(text: 'passes'.tr.toUpperCase()),
+lib\screens\vault_screen.dart:186:                  Tab(text: 'favorites'.tr.toUpperCase()),
+lib\screens\vault_screen.dart:187:                  Tab(text: 'LIKES'.tr.toUpperCase()),
+lib\screens\vault_screen.dart:188:                  Tab(text: 'SHARES'.tr.toUpperCase()),
+lib\screens\vault_screen.dart:189:                  Tab(text: 'GIFTS'.tr.toUpperCase()),
+lib\screens\vault_screen.dart:221:              'vault_guest_title'.tr,
+lib\screens\vault_screen.dart:227:              'vault_guest_subtitle'.tr,
+lib\screens\vault_screen.dart:242:                child: Text('SIGN_UP'.tr.toUpperCase(), style: const 
+TextStyle(fontWeight: FontWeight.w900, letterSpacing: 2)),
+lib\screens\vault_screen.dart:255:      return _emptyState(Icons.archive_outlined, 'no_history_yet'.tr);
+lib\screens\vault_screen.dart:262:          _sectionHeader('PASSES'.tr, _bookings.length),
+lib\screens\vault_screen.dart:274:          _sectionHeader('FAVORITES'.tr, _favorites.length),
+lib\screens\vault_screen.dart:286:          _sectionHeader('LIKES'.tr, _likes.length),
+lib\screens\vault_screen.dart:319:    if (_bookings.isEmpty) return _emptyState(Icons.confirmation_number_outlined, 
+'no_passes_yet'.tr);
+lib\screens\vault_screen.dart:335:    if (_favorites.isEmpty) return _emptyState(Icons.favorite_border_rounded, 
+'no_favorites_yet'.tr);
+lib\screens\vault_screen.dart:351:    if (_likes.isEmpty) return _emptyState(Icons.thumb_up_alt_outlined, 
+'no_likes_yet'.tr);
+lib\screens\vault_screen.dart:367:    if (_shares.isEmpty) return _emptyState(Icons.ios_share_rounded, 
+'no_shares_yet'.tr);
+lib\screens\vault_screen.dart:388:    if (giftBookings.isEmpty) return _emptyState(Icons.card_giftcard_rounded, 
+'no_gifts_yet'.tr);
+lib\screens\vetting_hub_screen.dart:91:                Text('TACTICAL_VETTING'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 16, letterSpacing: 2)),
+lib\screens\vetting_hub_screen.dart:92:                Text('FIELD_VERIFICATION_HUB'.tr, style: const TextStyle(color: 
+AppTheme.primary, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
+lib\screens\vetting_hub_screen.dart:97:              onTap: () => _showHelp('TACTICAL_VETTING'.tr, 
+'HELPER_VETTING_DESC'.tr),
+lib\screens\vetting_hub_screen.dart:99:                message: 'MORE_INFO'.tr,
+lib\screens\vetting_hub_screen.dart:112:            Tab(text: 'PENDING_PAYMENTS'.tr.toUpperCase()),
+lib\screens\vetting_hub_screen.dart:141:            Text('CLEAR_QUEUE'.tr, style: const TextStyle(color: 
+Colors.white24, fontSize: 14)),
+lib\screens\vetting_hub_screen.dart:206:                        isCall ? 'REJECT'.tr : 'DENY_PAYMENT'.tr,
+lib\screens\vetting_hub_screen.dart:214:                        isCall ? 'CONFIRM_CALL'.tr : 'CONFIRM_PAYMENT'.tr,
+lib\screens\vetting_hub_screen.dart:233:      backgroundColor: Colors.transparent,
+lib\screens\vetting_hub_screen.dart:286:          title: isConfirmed ? 'TICKET_APPROVED'.tr : 'TICKET_REJECTED'.tr,
+lib\screens\vetting_hub_screen.dart:288:            ? 'TICKET_CONFIRMED_BODY'.trArgs([booking['events']?['title'] ?? 
+'Event'])
+lib\screens\vetting_hub_screen.dart:289:            : 'TICKET_REJECTED_BODY'.trArgs([booking['events']?['title'] ?? 
+'Event']),
+lib\screens\vetting_hub_screen.dart:320:        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: 
+Text('action_failed'.tr)));
+lib\screens\visitor_history_screen.dart:72:      backgroundColor: Colors.transparent,
+lib\screens\visitor_history_screen.dart:74:        title: Text('MY_CLUB_HISTORY'.tr.toUpperCase(), style: 
+AppTheme.headlineStyle.copyWith(fontSize: 16, letterSpacing: 2)),
+lib\screens\visitor_history_screen.dart:90:    final date = DateTime.tryParse(log['created_at'] ?? '');
+lib\screens\visitor_history_screen.dart:93:    final eventTitle = log['events']?['title'] ?? 'CLUB_EXPERIENCE'.tr;
+lib\screens\visitor_history_screen.dart:116:                gradient: LinearGradient(begin: Alignment.bottomCenter, 
+end: Alignment.topCenter, colors: [Colors.black.withValues(alpha: 0.8), Colors.transparent]),
+lib\screens\visitor_history_screen.dart:151:                  child: Text('VERIFIED_ENTRY'.tr.toUpperCase(), style: 
+const TextStyle(color: AppTheme.primary, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1)),
+lib\screens\visitor_history_screen.dart:168:           Text('NO_VISIT_HISTORY'.tr, style: const TextStyle(color: 
+Colors.white10, letterSpacing: 1.5, fontSize: 13, fontWeight: FontWeight.bold)),
+lib\services\booking_service.dart:97:      String finalName = guestName?.trim() ?? '';
+lib\services\booking_service.dart:98:      String finalPhone = guestPhone?.trim() ?? 'Walk-in';
+lib\services\booking_service.dart:106:        finalName = 'WALKIN_GUEST'.tr;
+lib\services\booking_service.dart:224:          appliedPerk = 'early_bird_advantage'.tr;
+lib\services\booking_service.dart:290:          title: isPendingConf ? 'BOOKING_ACTION_REQUIRED'.tr : 'New 
+Booking!'.tr,
+lib\services\booking_service.dart:292:              ? 'BOOKING_PENDING_CALL_BODY'.trArgs([result.userName])
+lib\services\booking_service.dart:293:              : '${result.userName} just booked for ${result.event?.title}'.tr,
+lib\services\booking_service.dart:305:              title: 'EVENT_MILESTONE'.tr,
+lib\services\booking_service.dart:306:              body: 'MILESTONE_BODY'.trArgs([(ratio * 100).toInt().toString(), 
+result.event!.title]),
+lib\services\booking_service.dart:337:          .eq('phone', targetPhone.trim())
+lib\services\booking_service.dart:354:        title: 'TICKET_RECEIVED_TITLE'.tr,
+lib\services\booking_service.dart:355:        body: 'TICKET_RECEIVED_BODY'.trArgs([eventTitle]),
+lib\services\booking_service.dart:423:          title: 'REMINDER_12H_TITLE'.trArgs([result.event!.title]),
+lib\services\booking_service.dart:424:          body: 'REMINDER_12H_BODY'.tr,
+lib\services\booking_service.dart:433:          title: 'REMINDER_3H_TITLE'.trArgs([result.event!.title]),
+lib\services\booking_service.dart:434:          body: 'REMINDER_3H_BODY'.tr,
+lib\services\booking_service.dart:458:          title = 'TICKET_APPROVED'.tr;
+lib\services\booking_service.dart:459:          body = 'secured_spot_desc'.trArgs([eventTitle]);
+lib\services\booking_service.dart:462:          title = 'BOOKING_PENDING_CALL'.tr;
+lib\services\booking_service.dart:463:          body = 'call_required_desc'.trArgs([eventTitle]);
+lib\services\booking_service.dart:466:          title = 'TICKET_REJECTED'.tr;
+lib\services\booking_service.dart:467:          body = 'declined_notice_body'.trArgs([eventTitle]);
+lib\services\booking_service.dart:471:          title = 'welcome_visitor_title'.trArgs([guestName]);
+lib\services\booking_service.dart:472:          body = 'welcome_visitor_body'.trArgs([eventTitle]);
+lib\services\booking_service.dart:494:        title: '$prefix ARRIVED'.tr,
+lib\services\booking_service.dart:495:        body: '$guestName ${'has_arrived_at'.tr} $eventTitle',
+lib\services\booking_service.dart:513:          title: '$prefix ARRIVED'.tr,
+lib\services\booking_service.dart:514:          body: '$guestName ${'has_arrived_at'.tr} $eventTitle',
+lib\services\booking_service.dart:623:          title: 'SECURITY_CHECK_PASSED'.tr,
+lib\services\booking_service.dart:624:          body: 'SECURITY_CHECK_BODY'.trArgs([response['user_name'] ?? 'Guest', 
+eventTitle]),
+lib\services\booking_service.dart:641:            title: 'SECURITY_CHECK_PASSED'.tr,
+lib\services\booking_service.dart:642:            body: 'SECURITY_CHECK_BODY'.trArgs([response['user_name'] ?? 
+'Guest', eventTitle]),
+lib\services\booking_service.dart:708:        title: 'TICKET APPROVED'.tr,
+lib\services\booking_service.dart:709:        body: 'The organizer has approved your request for $eventTitle!'.tr,
+lib\services\booking_service.dart:736:        title: 'TICKET CANCELLED'.tr,
+lib\services\booking_service.dart:737:        body: 'Your ticket for $eventTitle has been cancelled.'.tr,
+lib\services\event_service.dart:95:          title: 'new_event_title'.trArgs([title]),
+lib\services\event_service.dart:96:          body: 'new_event_body'.trArgs([venue]),
+lib\services\event_service.dart:201:            title: 'EVENT_CANCELLED_TITLE'.tr,
+lib\services\event_service.dart:202:            body: 'EVENT_CANCELLED_BODY'.trArgs([title]),
+lib\services\localization_service.dart:71:    if (price == 0) return 'FREE_ENTRY'.tr;
+lib\services\notification_service.dart:155:        title: 'discount_push_title'.trArgs([eventTitle]),
+lib\services\notification_service.dart:156:        body: 'discount_push_body'.trArgs([discountAmount]),
+lib\services\notification_service.dart:175:        title: 'MISSION_CALL'.tr,
+lib\services\reporting_service.dart:64:            _buildSectionTitle('FINANCIAL_LEDGER'.tr),
+lib\services\reporting_service.dart:68:          _buildSectionTitle('OPERATIONAL_LOGS'.tr),
+lib\services\reporting_service.dart:73:              '${'generated_by'.tr}: SIFO Tactical Engine | 
+${DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now())}',
+lib\services\reporting_service.dart:121:              child: pw.Text('TACTICAL_AUDIT'.tr, style: 
+pw.TextStyle(fontSize: 8, color: PdfColors.white, fontWeight: pw.FontWeight.bold)),
+lib\services\reporting_service.dart:140:          _summaryItem('TOTAL_PASSES'.tr, '$guests', PdfColors.blueGrey700),
+lib\services\reporting_service.dart:141:          _summaryItem('SCANNED'.tr, '$used', PdfColors.teal700),
+lib\services\reporting_service.dart:142:          _summaryItem('REVENUE'.tr, LocalizationService.formatPrice(revenue, 
+'DZ'), PdfColors.blue900),
+lib\services\reporting_service.dart:143:          _summaryItem('REFUSALS'.tr, '$refusals', PdfColors.red700),
+lib\services\reporting_service.dart:175:      headers: ['GUEST'.tr, 'TYPE'.tr, 'PAID'.tr, 'STATUS'.tr],
+lib\services\reporting_service.dart:201:      headers: ['TIME'.tr, 'AGENT'.tr, 'ACTION'.tr, 'DETAILS'.tr],
+lib\services\reporting_service.dart:205:        l['action_type']?.toString().tr ?? '',
+lib\services\staff_service.dart:111:          title: 'STAFF_ACCEPTED_TITLE'.tr,
+lib\services\staff_service.dart:112:          body: 'STAFF_ACCEPTED_BODY'.trArgs([staffName, 
+assignment['role'].toString().tr]),
+lib\services\staff_service.dart:135:          title: 'STAFF_REJECTED_TITLE'.tr,
+lib\services\staff_service.dart:136:          body: 'STAFF_REJECTED_BODY'.trArgs([staffName]),
+lib\services\translation_service.dart:27:      case 'tr': currentLanguage.value = Language.tr; break;
+lib\services\translation_service.dart:3690:    Language.tr: {
+lib\services\translation_service.dart:3772:  String get tr => TranslationService.translate(this);
+lib\services\translation_service.dart:3782:  Future<String> get trAuto => TranslationService.translateAuto(this);
+lib\widgets\premium_location_picker.dart:119:                return Transform.translate(
+lib\widgets\premium_location_picker.dart:183:                            _address.isEmpty ? 'SEARCH_LOCATION'.tr : 
+_address,
+lib\widgets\premium_location_picker.dart:249:                            Text('SELECTED_LOCATION'.tr.toUpperCase(), 
+style: AppTheme.labelStyle.copyWith(fontSize: 10, color: AppTheme.primary)),
+lib\widgets\premium_location_picker.dart:252:                              _address.isEmpty ? 'POINTING_ON_MAP'.tr : 
+_address,
+lib\widgets\premium_location_picker.dart:278:                    child: Text('CONFIRM_LOCATION'.tr.toUpperCase(), 
+style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+
+

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "785904905219",
+    "project_id": "sifo-ap",
+    "storage_bucket": "sifo-ap.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:785904905219:android:7b39d5a0bbebe66ba8f236",
+        "android_client_info": {
+          "package_name": "com.sifo.app.standard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7fycnaMU7XNCc1A-93DiIfx3ZOt-Y1jU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

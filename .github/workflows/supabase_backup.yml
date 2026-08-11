@@ -1,0 +1,29 @@
+name: Supabase Database Daily Backup
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # يتم التشغيل تلقائياً يومياً الساعة 2:00 صباحاً بتوقيت UTC
+  workflow_dispatch: # يتيح لك تشغيل النسخ الاحتياطي يدوياً بنقرة واحدة
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install PostgreSQL Client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Run pg_dump Database Backup
+        env:
+          PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          # يتم الاتصال بقاعدة بيانات Supabase الخاصة بك وسحب نسخة احتياطية كاملة ومضغوطة
+          pg_dump -h aws-0-eu-central-1.pooler.supabase.com -p 6543 -U postgres.jufsecvkztpzugvyrhjo -d postgres -F c -b -v -f supabase_backup.dump
+
+      - name: Upload Backup File Securely
+        uses: actions/upload-artifact@v4
+        with:
+          name: supabase-db-backup-${{ github.run_number }}
+          path: supabase_backup.dump
+          retention-days: 14 # الاحتفاظ بالنسخ الاحتياطية لمدة 14 يوماً مجاناً
