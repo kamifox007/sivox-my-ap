@@ -54,6 +54,7 @@ class _AccountSelectorScreenState extends State<AccountSelectorScreen> {
           'bio': row['bio'] ?? '',
           'avatar_url': row['avatar_url'] ?? (profile is Map ? profile['avatar_url'] : null),
           'identity_type': 'OWNER',
+          'role': 'OWNER',
           'business_type': row['business_type'] ?? 'club',
         });
       }

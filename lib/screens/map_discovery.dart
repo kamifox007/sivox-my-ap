@@ -217,14 +217,23 @@ class _MapDiscoveryScreenState extends State<MapDiscoveryScreen> {
     });
 
     // 3. Update to current location if available (background)
-    Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: LocationAccuracy.low))
-      .then((position) {
+    Geolocator.checkPermission().then((permission) async {
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
+        final position = await Geolocator.getCurrentPosition(
+          locationSettings: const LocationSettings(accuracy: LocationAccuracy.low),
+        );
         if (mounted) {
           _mapController?.animateCamera(
-            CameraUpdate.newLatLng(LatLng(position.latitude, position.longitude))
+            CameraUpdate.newLatLng(LatLng(position.latitude, position.longitude)),
           );
         }
-      }).catchError((_) {});
+      }
+    }).catchError((e) {
+      debugPrint('Location service error: $e');
+    });
   }
 
   void _applyFilters() {
