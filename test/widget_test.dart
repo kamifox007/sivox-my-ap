@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:my_app/main.dart';
 
-class MockLocalStorage extends LocalStorage {
+class MockLocalStorage extends LocalStorage implements GotrueAsyncStorage {
   const MockLocalStorage();
 
   @override
@@ -20,17 +20,30 @@ class MockLocalStorage extends LocalStorage {
 
   @override
   Future<void> removePersistedSession() async {}
+
+  @override
+  Future<String?> getItem({required String key}) async => null;
+
+  @override
+  Future<void> setItem({required String key, required String value}) async {}
+
+  @override
+  Future<void> removeItem({required String key}) async {}
 }
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   setUpAll(() async {
     // Initialize Supabase with dummy credentials and mock storage for the test environment
     try {
+      final mock = const MockLocalStorage();
       await Supabase.initialize(
         url: 'https://placeholder.supabase.co',
         anonKey: 'placeholder_anon_key',
-        authOptions: const FlutterAuthClientOptions(
-          localStorage: MockLocalStorage(),
+        authOptions: FlutterAuthClientOptions(
+          localStorage: mock,
+          pkceAsyncStorage: mock,
         ),
       );
     } catch (_) {}

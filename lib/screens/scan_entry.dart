@@ -271,8 +271,9 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
 
     // 2. STATUS CHECK
     if (booking.paymentStatus == 'used') {
-      final scanTime = booking.scannedAtSecurity != null 
-          ? DateFormat('HH:mm').format(DateTime.parse(booking.scannedAtSecurity!)) 
+      final scanTimeStr = booking.scannedAt ?? booking.scannedAtSecurity;
+      final scanTime = scanTimeStr != null
+          ? DateFormat('HH:mm').format(DateTime.parse(scanTimeStr))
           : 'N/A';
       _showResultSheet(
         icon: Icons.block, 
@@ -283,11 +284,11 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
         booking: booking
       );
       return;
-    } else if (booking.paymentStatus == 'ejected') {
+    } else if (booking.paymentStatus == 'ejected' || booking.paymentStatus == 'cancelled') {
       _showResultSheet(
         icon: Icons.gavel_rounded, 
         iconColor: Colors.purple, 
-        title: 'ejected_status'.tr, 
+        title: booking.paymentStatus == 'cancelled' ? 'TICKET_CANCELLED'.tr : 'ejected_status'.tr,
         subtitle: '${booking.userName}\n${booking.cancellationReason ?? 'No reason provided'}', 
         isSuccess: false, 
         booking: booking
@@ -854,8 +855,10 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
 
   Widget _modeTab(ScannerMode mode, IconData icon, String label) {
     bool sel = _currentMode == mode;
+    final userRole = (supabase.auth.currentUser?.userMetadata?['role']?.toString() ?? '').toLowerCase();
+    final isOrganizer = userRole == 'organizer' || userRole == 'admin' || userRole == 'owner' || supabase.auth.currentUser?.id == widget.organizerId;
     final isSecurity = _staffRole == 'role_security';
-    final isManager = _staffRole == 'role_manager' || supabase.auth.currentUser?.id == widget.organizerId;
+    final isManager = _staffRole == 'role_manager' || isOrganizer;
     
     // TACTICAL LOCKING: Enforcement of roles
     bool isLocked = (mode == ScannerMode.security && !isSecurity && !isManager) || 

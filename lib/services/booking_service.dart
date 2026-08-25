@@ -24,6 +24,7 @@ class BookingService {
           .select('*, events(*)')
           .eq('event_id', eventId)
           .eq('user_id', userId)
+          .neq('payment_status', 'cancelled')
           .maybeSingle();
 
       if (response == null) return null;
@@ -78,7 +79,8 @@ class BookingService {
     final random = Random.secure();
     // 8-character random hex
     final randomHex = List.generate(8, (_) => random.nextInt(16).toRadixString(16)).join().toUpperCase();
-    final userId = supabase.auth.currentUser?.id.substring(0, 4) ?? '0000';
+    final rawUserId = supabase.auth.currentUser?.id ?? '0000';
+    final userId = rawUserId.length >= 4 ? rawUserId.substring(0, 4) : rawUserId.padRight(4, '0');
     final timestamp = now.millisecondsSinceEpoch.toString().substring(8);
     return '$prefix-$userId-$timestamp-$randomHex';
   }
