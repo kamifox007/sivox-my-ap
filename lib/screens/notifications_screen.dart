@@ -79,7 +79,17 @@ class NotificationsScreen extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () => service.markAllAsRead(),
+          onPressed: () async {
+            try {
+              await service.markAllAsRead();
+            } catch (e) {
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Could not mark notifications as read: $e')),
+                );
+              }
+            }
+          },
           child: Text('mark_all_read'.tr, style: const TextStyle(color: AppTheme.primary, fontSize: 11)),
         ),
         const SizedBox(width: 16),
