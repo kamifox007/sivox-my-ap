@@ -6,7 +6,6 @@ import 'package:my_app/theme/app_theme.dart';
 import 'package:my_app/services/translation_service.dart';
 import 'package:my_app/services/auth_service.dart';
 import 'package:my_app/screens/home_feed.dart';
-import 'package:my_app/screens/organizer_dashboard.dart';
 import 'package:my_app/screens/organizer_main_wrapper.dart';
 import 'package:my_app/screens/staff_hub_screen.dart';
 import 'package:my_app/services/localization_service.dart';
