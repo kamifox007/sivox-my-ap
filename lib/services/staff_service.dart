@@ -45,9 +45,9 @@ class StaffService {
       // Fetch assignment from database
       final response = await supabase
           .from('staff_assignments')
-          .select('*, events(title, venue, organizer_id)')
+          .select('*, events(title, venue, organizer_id), organizer_profiles(name)')
           .eq('staff_id', userId)
-          .or('status.eq.active,status.eq.pending')
+          .or('status.eq.active,status.eq.pending,status.eq.absent')
           .order('created_at', ascending: false)
           .limit(1)
           .maybeSingle();
