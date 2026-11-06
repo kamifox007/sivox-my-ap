@@ -2117,11 +2117,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen>
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(FontAwesomeIcons.ccVisa, color: Colors.white10, size: 10),
+                  FaIcon(FontAwesomeIcons.ccVisa, color: Colors.white10, size: 10),
                   SizedBox(width: 4),
-                  Icon(FontAwesomeIcons.ccMastercard, color: Colors.white10, size: 10),
+                  FaIcon(FontAwesomeIcons.ccMastercard, color: Colors.white10, size: 10),
                   SizedBox(width: 4),
-                  Icon(FontAwesomeIcons.applePay, color: Colors.white10, size: 14),
+                  FaIcon(FontAwesomeIcons.applePay, color: Colors.white10, size: 14),
                 ],
               ),
             ],
