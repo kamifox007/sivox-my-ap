@@ -38,7 +38,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
       }
       final response = await Supabase.instance.client
           .from('follows')
-          .select('organizer_id, organizer_profiles(id, name, avatar_url, profiles(full_name, avatar_url))')
+          .select('organizer_id, organizer_profiles(id, name, avatar_url, business_type, profiles(full_name, avatar_url))')
           .eq('user_id', userId)
           .order('created_at', ascending: false);
       final list = (response as List).map((row) {
