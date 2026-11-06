@@ -321,17 +321,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 const SizedBox(height: 60),
                 GestureDetector(
-                  onTap: () =>
+                  onTap: () {
+                    if (user == null) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => const EditProfileScreen(),
-                        ),
-                      ).then((val) {
-                        if (val == true) {
-                          setState(() {});
-                        }
-                      }),
+                        MaterialPageRoute(builder: (_) => const AuthScreen()),
+                      );
+                      return;
+                    }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const EditProfileScreen()),
+                    ).then((val) {
+                      if (val == true && mounted) setState(() {});
+                    });
+                  },
                   child: _buildAvatar(user),
                 ),
                 const SizedBox(height: 12),
