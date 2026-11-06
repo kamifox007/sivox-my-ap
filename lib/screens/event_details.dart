@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/screens/auth_screen.dart';
 import 'package:my_app/theme/app_theme.dart';
 import 'package:my_app/models/event.dart';
 import 'package:my_app/services/booking_service.dart';
@@ -126,7 +127,25 @@ class _EventDetailsScreenState extends State<EventDetailsScreen>
     }
   }
 
+  bool _ensureVisitorSignedIn() {
+    if (Supabase.instance.client.auth.currentUser != null) return true;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('please_login_first'.tr),
+        action: SnackBarAction(
+          label: 'login'.tr,
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AuthScreen()),
+          ),
+        ),
+      ),
+    );
+    return false;
+  }
+
   Future<void> _toggleLike() async {
+    if (!_ensureVisitorSignedIn()) return;
     await _interactionService.toggleLike(widget.event.id);
     _fetchLikesData();
   }
@@ -141,6 +160,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen>
   }
 
   Future<void> _toggleFavorite() async {
+    if (!_ensureVisitorSignedIn()) return;
     final res = await _favoriteService.toggleFavorite(widget.event);
     if (res) {
       if (mounted) {
@@ -249,6 +269,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen>
   }
 
   Future<void> _handleFollow() async {
+    if (!_ensureVisitorSignedIn()) return;
     if (widget.event.organizerId != null) {
       final res = await _followService.toggleFollow(widget.event.organizerId!);
       if (mounted) setState(() => isFollowing = res);
@@ -256,6 +277,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen>
   }
 
   Future<void> _handleBooking() async {
+    if (!_ensureVisitorSignedIn()) return;
     setState(() => isBooking = true);
 
     // Calculate final price based on tier logic
