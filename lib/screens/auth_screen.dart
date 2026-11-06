@@ -123,7 +123,7 @@ class _AuthScreenState extends State<AuthScreen>
             _isEnteringPhoneAfterGoogle = false;
             _isLoading = false;
           });
-          _redirectUser(res);
+          await _redirectUser(res);
         } catch (e) {
           _showError(e.toString());
           setState(() => _isLoading = false);
@@ -237,14 +237,14 @@ class _AuthScreenState extends State<AuthScreen>
         
         if (isEmail) {
           final res = await _auth.signIn(identifier, _passC.text.trim());
-          _redirectUser(res);
+          await _redirectUser(res);
         } else {
           if (!identifier.startsWith('+')) {
             identifier = identifier.replaceFirst(RegExp(r'^0+'), '');
             identifier = '${_selectedCountry.phonePrefix}$identifier';
           }
           final res = await _auth.signInWithPhoneAndPassword(identifier, _passC.text.trim());
-          _redirectUser(res);
+          await _redirectUser(res);
         }
       } else {
         final res = await _auth.signUp(
@@ -255,7 +255,7 @@ class _AuthScreenState extends State<AuthScreen>
           countryCode: _selectedCountry.code,
         );
         if (res.session != null) {
-          _redirectUser(res);
+          await _redirectUser(res);
         } else {
           // Perfection Fix: Handle required email confirmation
           if (!mounted) return;
@@ -388,7 +388,7 @@ class _AuthScreenState extends State<AuthScreen>
       }
       try {
         final res = await _auth.signInWithPhoneAndPassword(phone, _passC.text.trim());
-        _redirectUser(res);
+        await _redirectUser(res);
       } catch (e) {
         _showError(e.toString());
       } finally {
@@ -459,7 +459,7 @@ class _AuthScreenState extends State<AuthScreen>
         password: _isLogin ? null : _passC.text.trim(),
         countryCode: _selectedCountry.code,
       );
-      _redirectUser(res);
+      await _redirectUser(res);
     } catch (e) {
       _showError(e.toString());
     } finally {
@@ -471,7 +471,7 @@ class _AuthScreenState extends State<AuthScreen>
     setState(() => _isLoading = true);
     try {
       final res = await _auth.signInWithGoogle();
-      _redirectUser(res);
+      await _redirectUser(res);
     } catch (e) {
       _showError(e.toString());
     } finally {
@@ -479,7 +479,7 @@ class _AuthScreenState extends State<AuthScreen>
     }
   }
 
-  void _redirectUser(AuthResponse res) {
+  Future<void> _redirectUser(AuthResponse res) async {
     if (res.session == null || !mounted) return;
 
     final user = res.session!.user;
