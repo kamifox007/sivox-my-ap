@@ -10,3 +10,18 @@ ALTER TABLE public.organizer_profiles
 UPDATE public.organizer_profiles
 SET business_type = 'club'
 WHERE business_type IS NULL;
+
+DROP POLICY IF EXISTS "Organizer Profile Owner Insert" ON public.organizer_profiles;
+CREATE POLICY "Organizer Profile Owner Insert"
+ON public.organizer_profiles
+FOR INSERT
+TO authenticated
+WITH CHECK (owner_id = auth.uid());
+
+DROP POLICY IF EXISTS "Organizer Profile Owner Update" ON public.organizer_profiles;
+CREATE POLICY "Organizer Profile Owner Update"
+ON public.organizer_profiles
+FOR UPDATE
+TO authenticated
+USING (owner_id = auth.uid())
+WITH CHECK (owner_id = auth.uid());
