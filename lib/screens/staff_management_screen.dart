@@ -108,8 +108,8 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
   RealtimeChannel? _staffChannel;
 
   void _setupRealtime() {
-    final userId = supabase.auth.currentUser?.id;
-    if (userId == null) return;
+    final organizerId = widget.clubId;
+    if (organizerId == null || organizerId.isEmpty) return;
 
     _staffChannel = supabase
         .channel('staff_updates')
@@ -120,7 +120,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
           filter: PostgresChangeFilter(
             type: PostgresChangeFilterType.eq,
             column: 'organizer_id',
-            value: userId,
+            value: organizerId,
           ),
           callback: (payload) {
             _fetchStaff(); // Reload on any change
@@ -147,11 +147,11 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
           .from('staff_assignments')
           .select('*, profiles:staff_id(full_name, phone_number)');
 
-      if (widget.clubId != null) {
-        query.eq('club_id', widget.clubId!);
-      } else {
-        query.eq('organizer_id', userId);
+      final organizerId = widget.clubId;
+      if (organizerId == null || organizerId.isEmpty) {
+        throw StateError('Missing organizer profile ID for staff management');
       }
+      query.eq('organizer_id', organizerId);
 
       final response = await query;
 
@@ -190,7 +190,11 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
     }
 
     final userId = supabase.auth.currentUser?.id;
-    if (userId == null) return;
+    final organizerId = widget.clubId;
+    if (userId == null || organizerId == null || organizerId.isEmpty) {
+      _showMsg('Unable to identify the selected organizer profile.', isError: true);
+      return;
+    }
 
     setState(() => _isLoading = true);
     try {
@@ -204,9 +208,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
       final res = await supabase
           .from('staff_assignments')
           .insert({
-            'organizer_id': userId,
-            'club_id': widget.clubId,
-            'club_name': widget.clubName ?? 'Sivox',
+            'organizer_id': organizerId,
             'role': _activeRole,
             'status': 'pending',
             'staff_id': staffId,
