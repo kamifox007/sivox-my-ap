@@ -97,11 +97,14 @@ class StaffService {
 
   Future<bool> acceptAssignment(String assignmentId) async {
     try {
-      await supabase
+      final updated = await supabase
           .from('staff_assignments')
           .update({'status': 'active'})
-          .eq('id', assignmentId);
-          
+          .eq('id', assignmentId)
+          .eq('status', 'pending')
+          .select('id');
+      if ((updated as List).isEmpty) return false;
+
       // Notify Organizer
       final assignment = await getAssignmentById(assignmentId);
       if (assignment != null && assignment['organizer_id'] != null) {
@@ -121,10 +124,13 @@ class StaffService {
 
   Future<bool> rejectAssignment(String assignmentId) async {
     try {
-      await supabase
+      final updated = await supabase
           .from('staff_assignments')
           .update({'status': 'rejected'})
-          .eq('id', assignmentId);
+          .eq('id', assignmentId)
+          .eq('status', 'pending')
+          .select('id');
+      if ((updated as List).isEmpty) return false;
 
       // Notify Organizer
       final assignment = await getAssignmentById(assignmentId);
