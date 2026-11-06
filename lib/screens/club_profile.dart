@@ -157,14 +157,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
         }
       }
 
-      if (_permanentImages.isEmpty) {
-        // MOCK DATA fallback for brand consistency
-        _permanentImages = [
-          'https://images.unsplash.com/photo-1566737236500-c8ac43014a67',
-          'https://images.unsplash.com/photo-1514525253361-bee8718a7412',
-          'https://images.unsplash.com/photo-1517457373958-b7bdd458ad20',
-        ];
-      }
+      // Keep the gallery empty when the organizer has not uploaded real images.
     } catch (e) {
       debugPrint('Error loading club profile: $e');
     } finally {
