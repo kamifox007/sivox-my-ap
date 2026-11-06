@@ -89,8 +89,8 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
     try {
       final response = await supabase
           .from('profiles')
-          .select('id, full_name, phone_number, avatar_url')
-          .or('phone_number.ilike.%$query%,full_name.ilike.%$query%')
+          .select('id, full_name, phone, avatar_url')
+          .or('phone.ilike.%$query%,full_name.ilike.%$query%')
           .limit(5);
 
       if (mounted) {
@@ -145,7 +145,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
     try {
       final query = supabase
           .from('staff_assignments')
-          .select('*, profiles:staff_id(full_name, phone_number)');
+          .select('*, profiles:staff_id(full_name, phone)');
 
       final organizerId = widget.clubId;
       if (organizerId == null || organizerId.isEmpty) {
@@ -158,7 +158,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
       setState(() {
         final List<StaffMember> fetched = (response as List).map((s) {
           final profile = s['profiles'] as Map<String, dynamic>?;
-          final fullName = profile?['full_name'] ?? profile?['phone_number'] ?? 'Assistant';
+          final fullName = profile?['full_name'] ?? profile?['phone'] ?? 'Assistant';
           final phone = profile?['phone_number'];
           
           return StaffMember(
