@@ -6,6 +6,8 @@ import 'package:my_app/screens/home_feed.dart';
 import 'package:my_app/screens/auth_screen.dart';
 import 'package:my_app/services/config_service.dart';
 import 'package:my_app/screens/maintenance_screen.dart';
+import 'package:my_app/screens/organizer_main_wrapper.dart';
+import 'package:my_app/screens/staff_hub_screen.dart';
 import 'dart:ui';
 
 class SplashScreen extends StatefulWidget {
@@ -57,13 +59,67 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     }
 
     // 3. Normal Flow
-    final session = Supabase.instance.client.auth.currentSession;
-    
+    final client = Supabase.instance.client;
+    final session = client.auth.currentSession;
+    Widget destination = const AuthScreen();
+
+    if (session != null) {
+      final user = session.user;
+      var role = (user.userMetadata?['role']?.toString() ?? '').toLowerCase();
+
+      // The database profile is the source of truth when metadata is stale.
+      try {
+        final profile = await client
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .maybeSingle();
+        final databaseRole = profile?['role']?.toString().toLowerCase();
+        if (databaseRole != null && databaseRole.isNotEmpty) {
+          role = databaseRole;
+        }
+      } catch (e) {
+        debugPrint('Could not resolve profile role: $e');
+      }
+
+      if (role == 'staff') {
+        destination = const StaffHubScreen();
+      } else if (['organizer', 'manager', 'owner', 'admin'].contains(role)) {
+        destination = const OrganizerMainWrapper();
+      } else {
+        // Recover portal routing for accounts whose role metadata was never set.
+        try {
+          final owned = await client
+              .from('organizer_profiles')
+              .select('id')
+              .eq('owner_id', user.id)
+              .limit(1);
+          if ((owned as List).isNotEmpty) {
+            destination = const OrganizerMainWrapper();
+          } else {
+            final assignments = await client
+                .from('staff_assignments')
+                .select('id')
+                .eq('staff_id', user.id)
+                .inFilter('status', ['pending', 'active', 'absent'])
+                .limit(1);
+            if ((assignments as List).isNotEmpty) {
+              destination = const StaffHubScreen();
+            } else {
+              destination = const HomeFeedScreen();
+            }
+          }
+        } catch (e) {
+          debugPrint('Could not resolve account portal: $e');
+          destination = const HomeFeedScreen();
+        }
+      }
+    }
+
     if (mounted) {
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => 
-            session != null ? const HomeFeedScreen() : const AuthScreen(),
+          pageBuilder: (context, animation, secondaryAnimation) => destination,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },
