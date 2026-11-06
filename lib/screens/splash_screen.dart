@@ -3,7 +3,6 @@ import 'package:my_app/theme/app_theme.dart';
 import 'package:my_app/services/translation_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:my_app/screens/home_feed.dart';
-import 'package:my_app/screens/auth_screen.dart';
 import 'package:my_app/services/config_service.dart';
 import 'package:my_app/screens/maintenance_screen.dart';
 import 'package:my_app/screens/organizer_main_wrapper.dart';
