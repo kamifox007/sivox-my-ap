@@ -223,7 +223,6 @@ class _NotificationTileState extends State<_NotificationTile> {
 
   @override
   Widget build(BuildContext context) {
-    final service = NotificationService();
     final notif = widget.notification;
     final isInvite = notif.type == 'staff_invitation';
     
