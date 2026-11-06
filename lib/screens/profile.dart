@@ -30,17 +30,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _showAccountSettings = false;
 
   Future<void> _checkStats() async {
-    final bookings = await BookingService().getUserBookings();
-    final followed = await Supabase.instance.client
-        .from('follows')
-        .select()
-        .eq('user_id', Supabase.instance.client.auth.currentUser!.id);
+    final client = Supabase.instance.client;
+    final user = client.auth.currentUser;
+    if (user == null) {
+      if (mounted) {
+        setState(() {
+          _bookingCount = 0;
+          _followingCount = 0;
+        });
+      }
+      return;
+    }
 
-    if (mounted) {
-      setState(() {
-        _bookingCount = bookings.length;
-        _followingCount = (followed as List).length;
-      });
+    try {
+      final bookings = await BookingService().getUserBookings();
+      final followed = await client
+          .from('follows')
+          .select('organizer_id')
+          .eq('user_id', user.id);
+
+      if (mounted) {
+        setState(() {
+          _bookingCount = bookings.length;
+          _followingCount = (followed as List).length;
+        });
+      }
+    } catch (e) {
+      debugPrint('Could not load visitor profile statistics: $e');
     }
   }
 
