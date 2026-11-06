@@ -493,7 +493,40 @@ class _AuthScreenState extends State<AuthScreen>
       return;
     }
 
-    final role = (user.userMetadata?['role']?.toString() ?? 'attendee').toLowerCase();
+    var role = 'attendee';
+    try {
+      final profile = await Supabase.instance.client
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .maybeSingle();
+      role = (profile?['role']?.toString() ?? 'attendee').toLowerCase();
+
+      if (role == 'attendee') {
+        final organizer = await Supabase.instance.client
+            .from('organizer_profiles')
+            .select('id')
+            .eq('owner_id', user.id)
+            .limit(1)
+            .maybeSingle();
+        if (organizer != null) {
+          role = 'organizer';
+        } else {
+          final assignment = await Supabase.instance.client
+              .from('staff_assignments')
+              .select('id')
+              .eq('staff_id', user.id)
+              .eq('status', 'active')
+              .limit(1)
+              .maybeSingle();
+          if (assignment != null) role = 'staff';
+        }
+      }
+    } catch (e) {
+      debugPrint('Could not resolve account role: $e');
+      role = 'attendee';
+    }
+    if (!mounted) return;
 
     Widget nextScreen;
     if (role == 'staff') {
