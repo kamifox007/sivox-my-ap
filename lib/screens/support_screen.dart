@@ -4,7 +4,6 @@ import 'package:my_app/services/support_service.dart';
 import 'package:my_app/services/translation_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:ui';
-import 'package:url_launcher/url_launcher.dart';
 
 class SupportScreen extends StatefulWidget {
   const SupportScreen({super.key});
@@ -91,7 +90,7 @@ class _SupportScreenState extends State<SupportScreen> {
     );
   }
 
-  Future<void> _launchWhatsApp() async {
+  void _launchWhatsApp() {
     // Do not send visitors to a placeholder phone number.
     _showContactUnavailable();
   }
