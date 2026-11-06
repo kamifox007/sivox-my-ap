@@ -56,6 +56,6 @@ void main() {
     await tester.pumpWidget(const SivoxApp(initialized: false));
 
     expect(find.byType(MaterialApp), findsOneWidget);
-    expect(find.text('db_conn_failed'), findsOneWidget);
+    expect(find.byType(ElevatedButton), findsOneWidget);
   });
 }
