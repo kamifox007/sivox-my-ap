@@ -603,6 +603,13 @@ class _HomeFeedScreenState extends State<HomeFeedScreen> with SingleTickerProvid
           isHeaderVisible: _isHeaderVisible,
           currentIndex: _currentIndex,
           onTabSelected: (index) {
+            if (index == 2 && _supabase.auth.currentUser == null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AuthScreen()),
+              );
+              return;
+            }
             setState(() => _currentIndex = index);
             if (index == 0) _initSequence();
           },
