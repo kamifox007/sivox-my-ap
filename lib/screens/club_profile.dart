@@ -24,6 +24,7 @@ import 'package:my_app/screens/create_event.dart';
 import 'package:my_app/screens/map_discovery.dart';
 import 'package:my_app/screens/event_manage_details.dart';
 import 'package:my_app/screens/event_details.dart';
+import 'package:my_app/screens/auth_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:my_app/screens/mission_matrix_screen.dart';
 import 'package:my_app/services/social_service.dart';
@@ -156,14 +157,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
         }
       }
 
-      if (_permanentImages.isEmpty) {
-        // MOCK DATA fallback for brand consistency
-        _permanentImages = [
-          'https://images.unsplash.com/photo-1566737236500-c8ac43014a67',
-          'https://images.unsplash.com/photo-1514525253361-bee8718a7412',
-          'https://images.unsplash.com/photo-1517457373958-b7bdd458ad20',
-        ];
-      }
+      // Keep the gallery empty when the organizer has not uploaded real images.
     } catch (e) {
       debugPrint('Error loading club profile: $e');
     } finally {
@@ -599,6 +593,23 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
 
 
 
+  bool _ensureVisitorSignedIn() {
+    if (_supabase.auth.currentUser != null) return true;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('يلزم تسجيل الدخول لاستخدام هذه الميزة'),
+        action: SnackBarAction(
+          label: 'تسجيل الدخول',
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AuthScreen()),
+          ),
+        ),
+      ),
+    );
+    return false;
+  }
+
   void _handleCallClub() async {
     final uri = Uri.parse('tel:+213555123456'); // Mock number
     if (await canLaunchUrl(uri)) {
@@ -612,6 +623,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
   }
 
   void _handleToggleFavorite() async {
+    if (!_ensureVisitorSignedIn()) return;
     setState(() {
       _isFavorited = !_isFavorited;
     });
@@ -1618,6 +1630,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
   }
 
   void _toggleFavoriteEvent(Event e) async {
+    if (!_ensureVisitorSignedIn()) return;
     final isFavorited = _favoritedEventIds.contains(e.id);
     
     setState(() {
@@ -1689,23 +1702,17 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
   }
 
   Future<void> _handleToggleFollow() async {
-    if (_isFollowingLoading) return;
-    
-    setState(() {
-      _isFollowingLoading = true;
-      // Optimistic update for UI feel
-      _isFollowing = !_isFollowing;
-      _followerCount += _isFollowing ? 1 : -1;
-    });
-    
-    final changed = await _followService.toggleFollow(widget.organizerId);
-    
-    // Refetch the real count to be accurate
+    if (_isFollowingLoading || !_ensureVisitorSignedIn()) return;
+
+    setState(() => _isFollowingLoading = true);
+    await _followService.toggleFollow(widget.organizerId);
+
+    final isFollowing = await _followService.isFollowing(widget.organizerId);
     final realCount = await _followService.getFollowerCount(widget.organizerId);
-    
+
     if (mounted) {
       setState(() {
-        _isFollowing = changed;
+        _isFollowing = isFollowing;
         _followerCount = realCount;
         _isFollowingLoading = false;
       });

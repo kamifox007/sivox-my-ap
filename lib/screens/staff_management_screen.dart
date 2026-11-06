@@ -89,8 +89,8 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
     try {
       final response = await supabase
           .from('profiles')
-          .select('id, full_name, phone_number, avatar_url')
-          .or('phone_number.ilike.%$query%,full_name.ilike.%$query%')
+          .select('id, full_name, phone, avatar_url')
+          .or('phone.ilike.%$query%,full_name.ilike.%$query%')
           .limit(5);
 
       if (mounted) {
@@ -108,8 +108,8 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
   RealtimeChannel? _staffChannel;
 
   void _setupRealtime() {
-    final userId = supabase.auth.currentUser?.id;
-    if (userId == null) return;
+    final organizerId = widget.clubId;
+    if (organizerId == null || organizerId.isEmpty) return;
 
     _staffChannel = supabase
         .channel('staff_updates')
@@ -120,7 +120,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
           filter: PostgresChangeFilter(
             type: PostgresChangeFilterType.eq,
             column: 'organizer_id',
-            value: userId,
+            value: organizerId,
           ),
           callback: (payload) {
             _fetchStaff(); // Reload on any change
@@ -145,21 +145,21 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
     try {
       final query = supabase
           .from('staff_assignments')
-          .select('*, profiles:staff_id(full_name, phone_number)');
+          .select('*, profiles:staff_id(full_name, phone)');
 
-      if (widget.clubId != null) {
-        query.eq('club_id', widget.clubId!);
-      } else {
-        query.eq('organizer_id', userId);
+      final organizerId = widget.clubId;
+      if (organizerId == null || organizerId.isEmpty) {
+        throw StateError('Missing organizer profile ID for staff management');
       }
+      query.eq('organizer_id', organizerId);
 
       final response = await query;
 
       setState(() {
         final List<StaffMember> fetched = (response as List).map((s) {
           final profile = s['profiles'] as Map<String, dynamic>?;
-          final fullName = profile?['full_name'] ?? profile?['phone_number'] ?? 'Assistant';
-          final phone = profile?['phone_number'];
+          final fullName = profile?['full_name'] ?? profile?['phone'] ?? 'Assistant';
+          final phone = profile?['phone'];
           
           return StaffMember(
             s['id'],
@@ -190,7 +190,11 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
     }
 
     final userId = supabase.auth.currentUser?.id;
-    if (userId == null) return;
+    final organizerId = widget.clubId;
+    if (userId == null || organizerId == null || organizerId.isEmpty) {
+      _showMsg('Unable to identify the selected organizer profile.', isError: true);
+      return;
+    }
 
     setState(() => _isLoading = true);
     try {
@@ -204,9 +208,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
       final res = await supabase
           .from('staff_assignments')
           .insert({
-            'organizer_id': userId,
-            'club_id': widget.clubId,
-            'club_name': widget.clubName ?? 'Sivox',
+            'organizer_id': organizerId,
             'role': _activeRole,
             'status': 'pending',
             'staff_id': staffId,
@@ -669,7 +671,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                       ),
                     ),
                     title: Text(user['full_name'] ?? 'User', style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
-                    subtitle: Text(user['phone_number'] ?? '', style: TextStyle(color: AppTheme.primary.withValues(alpha: 0.5), fontSize: 11, fontWeight: FontWeight.w600)),
+                    subtitle: Text(user['phone'] ?? '', style: TextStyle(color: AppTheme.primary.withValues(alpha: 0.5), fontSize: 11, fontWeight: FontWeight.w600)),
                     trailing: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(color: AppTheme.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
@@ -713,7 +715,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
               children: [
                 Text(_selectedUser!['full_name'] ?? 'User', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
                 const SizedBox(height: 4),
-                Text(_selectedUser!['phone_number'] ?? '', style: const TextStyle(color: Colors.white38, fontSize: 12)),
+                Text(_selectedUser!['phone'] ?? '', style: const TextStyle(color: Colors.white38, fontSize: 12)),
               ],
             ),
           ),

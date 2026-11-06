@@ -4,6 +4,7 @@ import 'package:my_app/screens/staff_dashboard_screen.dart';
 import 'package:my_app/theme/app_theme.dart';
 import 'package:my_app/screens/account_selector.dart';
 import 'package:my_app/screens/organizer_dashboard.dart';
+import 'package:my_app/screens/operational_ledger_hub.dart';
 
 class OrganizerMainWrapper extends StatefulWidget {
   const OrganizerMainWrapper({super.key});
@@ -28,7 +29,19 @@ class OrganizerMainWrapperState extends State<OrganizerMainWrapper> {
   }
 
   void setIndex(int index) {
-    // Keep to avoid compile errors from callers
+    if (!mounted || _selectedClubId == null) return;
+
+    // The organizer dashboard is the default control-center view.
+    // The old implementation was an empty stub, so drawer/archive taps did nothing.
+    if (index == 0) return;
+
+    if (index == 2) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => OperationalLedgerHub(clubId: _selectedClubId!),
+        ),
+      );
+    }
   }
 
   void selectClub(String id, String name, {String role = 'OWNER', String businessType = 'club'}) {

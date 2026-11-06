@@ -6,7 +6,7 @@ import 'package:my_app/theme/app_theme.dart';
 import 'package:my_app/services/translation_service.dart';
 import 'package:my_app/services/auth_service.dart';
 import 'package:my_app/screens/home_feed.dart';
-import 'package:my_app/screens/organizer_dashboard.dart';
+import 'package:my_app/screens/organizer_main_wrapper.dart';
 import 'package:my_app/screens/staff_hub_screen.dart';
 import 'package:my_app/services/localization_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
@@ -123,7 +123,7 @@ class _AuthScreenState extends State<AuthScreen>
             _isEnteringPhoneAfterGoogle = false;
             _isLoading = false;
           });
-          _redirectUser(res);
+          await _redirectUser(res);
         } catch (e) {
           _showError(e.toString());
           setState(() => _isLoading = false);
@@ -237,14 +237,14 @@ class _AuthScreenState extends State<AuthScreen>
         
         if (isEmail) {
           final res = await _auth.signIn(identifier, _passC.text.trim());
-          _redirectUser(res);
+          await _redirectUser(res);
         } else {
           if (!identifier.startsWith('+')) {
             identifier = identifier.replaceFirst(RegExp(r'^0+'), '');
             identifier = '${_selectedCountry.phonePrefix}$identifier';
           }
           final res = await _auth.signInWithPhoneAndPassword(identifier, _passC.text.trim());
-          _redirectUser(res);
+          await _redirectUser(res);
         }
       } else {
         final res = await _auth.signUp(
@@ -255,7 +255,7 @@ class _AuthScreenState extends State<AuthScreen>
           countryCode: _selectedCountry.code,
         );
         if (res.session != null) {
-          _redirectUser(res);
+          await _redirectUser(res);
         } else {
           // Perfection Fix: Handle required email confirmation
           if (!mounted) return;
@@ -388,7 +388,7 @@ class _AuthScreenState extends State<AuthScreen>
       }
       try {
         final res = await _auth.signInWithPhoneAndPassword(phone, _passC.text.trim());
-        _redirectUser(res);
+        await _redirectUser(res);
       } catch (e) {
         _showError(e.toString());
       } finally {
@@ -459,7 +459,7 @@ class _AuthScreenState extends State<AuthScreen>
         password: _isLogin ? null : _passC.text.trim(),
         countryCode: _selectedCountry.code,
       );
-      _redirectUser(res);
+      await _redirectUser(res);
     } catch (e) {
       _showError(e.toString());
     } finally {
@@ -471,7 +471,7 @@ class _AuthScreenState extends State<AuthScreen>
     setState(() => _isLoading = true);
     try {
       final res = await _auth.signInWithGoogle();
-      _redirectUser(res);
+      await _redirectUser(res);
     } catch (e) {
       _showError(e.toString());
     } finally {
@@ -479,7 +479,7 @@ class _AuthScreenState extends State<AuthScreen>
     }
   }
 
-  void _redirectUser(AuthResponse res) {
+  Future<void> _redirectUser(AuthResponse res) async {
     if (res.session == null || !mounted) return;
 
     final user = res.session!.user;
@@ -493,7 +493,40 @@ class _AuthScreenState extends State<AuthScreen>
       return;
     }
 
-    final role = (user.userMetadata?['role']?.toString() ?? 'attendee').toLowerCase();
+    var role = 'attendee';
+    try {
+      final profile = await Supabase.instance.client
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .maybeSingle();
+      role = (profile?['role']?.toString() ?? 'attendee').toLowerCase();
+
+      if (role == 'attendee') {
+        final organizer = await Supabase.instance.client
+            .from('organizer_profiles')
+            .select('id')
+            .eq('owner_id', user.id)
+            .limit(1)
+            .maybeSingle();
+        if (organizer != null) {
+          role = 'organizer';
+        } else {
+          final assignment = await Supabase.instance.client
+              .from('staff_assignments')
+              .select('id')
+              .eq('staff_id', user.id)
+              .eq('status', 'active')
+              .limit(1)
+              .maybeSingle();
+          if (assignment != null) role = 'staff';
+        }
+      }
+    } catch (e) {
+      debugPrint('Could not resolve account role: $e');
+      role = 'attendee';
+    }
+    if (!mounted) return;
 
     Widget nextScreen;
     if (role == 'staff') {
@@ -502,7 +535,7 @@ class _AuthScreenState extends State<AuthScreen>
         role == 'manager' ||
         role == 'owner' ||
         role == 'admin') {
-      nextScreen = const OrganizerDashboardScreen();
+      nextScreen = const OrganizerMainWrapper();
     } else {
       nextScreen = const HomeFeedScreen();
     }

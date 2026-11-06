@@ -131,12 +131,16 @@ class NotificationService {
   /// Marks a notification as read.
   Future<void> markAsRead(String notificationId) async {
     try {
-      await supabase
+      final updated = await supabase
           .from('notifications')
           .update({'is_read': true})
-          .eq('id', notificationId);
-          
-      if (unreadCount.value > 0) unreadCount.value--;
+          .eq('id', notificationId)
+          .eq('is_read', false)
+          .select('id');
+
+      if ((updated as List).isNotEmpty && unreadCount.value > 0) {
+        unreadCount.value--;
+      }
     } catch (e) {
       debugPrint('Error marking notification as read: $e');
     }

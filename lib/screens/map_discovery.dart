@@ -26,6 +26,7 @@ class _MapDiscoveryScreenState extends State<MapDiscoveryScreen> {
   List<Event> _filteredEvents = [];
   Set<Marker> _markers = {};
   bool _isLoading = true;
+  bool _hasLocationPermission = false;
   String _selectedFilter = 'all';
   final LatLng _initialPosition = const LatLng(36.7538, 3.0588); // Default to Algiers
   
@@ -178,30 +179,28 @@ class _MapDiscoveryScreenState extends State<MapDiscoveryScreen> {
 
     // 2. Fetch events in background
     // 2. Fetch events and clubs in parallel
-    Future.wait<dynamic>([
-      _eventService.getAllEvents(),
-      Supabase.instance.client.from('organizer_profiles').select().not('latitude', 'is', null),
-    ]).then((results) {
+    try {
+      final results = await Future.wait<dynamic>([
+        _eventService.getAllEvents(),
+        Supabase.instance.client.from('organizer_profiles').select().not('latitude', 'is', null),
+      ]);
       if (mounted) {
         final List<Event> events = results[0] as List<Event>;
         final List<dynamic> clubs = results[1] as List<dynamic>;
 
-        List<Event> allCombined = [...events];
-        
-        // Add clubs that don't have events active on the map already (optional deduplication)
-        for (var c in clubs) {
-          final clubId = c['id'].toString();
-          // Avoid double markers if event already exists for this club at same location
-          bool exists = events.any((e) => e.organizerId == clubId);
-          if (!exists) {
+        final List<Event> allCombined = [...events];
+        for (final club in clubs) {
+          final clubId = club['id'].toString();
+          final exists = events.any((event) => event.organizerId == clubId);
+          if (!exists && club['latitude'] is num && club['longitude'] is num) {
             allCombined.add(Event(
               id: 'club_$clubId',
-              title: c['name'] ?? 'Elite Club',
-              imageUrl: c['avatar_url'],
-              venue: c['name'],
-              category: (c['business_type'] ?? 'club').toString().toLowerCase(),
-              latitude: (c['latitude'] as num).toDouble(),
-              longitude: (c['longitude'] as num).toDouble(),
+              title: club['name'] ?? 'Elite Club',
+              imageUrl: club['avatar_url'],
+              venue: club['name'],
+              category: (club['business_type'] ?? 'club').toString().toLowerCase(),
+              latitude: (club['latitude'] as num).toDouble(),
+              longitude: (club['longitude'] as num).toDouble(),
               organizerId: clubId,
               price: 0,
               countryCode: 'DZ',
@@ -214,7 +213,9 @@ class _MapDiscoveryScreenState extends State<MapDiscoveryScreen> {
           _applyFilters();
         });
       }
-    });
+    } catch (e) {
+      debugPrint('Could not load map events and organizers: $e');
+    }
 
     // 3. Update to current location if available (background)
     Geolocator.checkPermission().then((permission) async {
@@ -222,6 +223,7 @@ class _MapDiscoveryScreenState extends State<MapDiscoveryScreen> {
         permission = await Geolocator.requestPermission();
       }
       if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
+        if (mounted) setState(() => _hasLocationPermission = true);
         final position = await Geolocator.getCurrentPosition(
           locationSettings: const LocationSettings(accuracy: LocationAccuracy.low),
         );
@@ -243,6 +245,7 @@ class _MapDiscoveryScreenState extends State<MapDiscoveryScreen> {
   Future<void> _generateMarkers() async {
     final query = _selectedFilter;
     final List<Event> filtered = _allEvents.where((e) {
+      if (e.latitude == null || e.longitude == null) return false;
       if (query == 'all') return true;
       return e.category?.toLowerCase() == query;
     }).toList();
@@ -324,7 +327,7 @@ class _MapDiscoveryScreenState extends State<MapDiscoveryScreen> {
                   ),
                   markers: _markers,
                   onMapCreated: (controller) => _mapController = controller,
-                  myLocationEnabled: true,
+                  myLocationEnabled: _hasLocationPermission,
                   myLocationButtonEnabled: false,
                   zoomControlsEnabled: false,
                   mapToolbarEnabled: false,
@@ -384,15 +387,35 @@ class _MapDiscoveryScreenState extends State<MapDiscoveryScreen> {
                   child: FloatingActionButton.small(
                     onPressed: () async {
                       try {
+                        var permission = await Geolocator.checkPermission();
+                        if (permission == LocationPermission.denied) {
+                          permission = await Geolocator.requestPermission();
+                        }
+                        if (permission != LocationPermission.whileInUse &&
+                            permission != LocationPermission.always) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('location_services_disabled'.tr)),
+                            );
+                          }
+                          return;
+                        }
+                        if (mounted) setState(() => _hasLocationPermission = true);
                         final pos = await Geolocator.getCurrentPosition(
                           locationSettings: const LocationSettings(
                             accuracy: LocationAccuracy.low,
                             timeLimit: Duration(seconds: 5),
                           ),
                         );
-                        _mapController?.animateCamera(CameraUpdate.newLatLngZoom(LatLng(pos.latitude, pos.longitude), 14));
+                        _mapController?.animateCamera(
+                          CameraUpdate.newLatLngZoom(LatLng(pos.latitude, pos.longitude), 14),
+                        );
                       } catch (e) {
-                        if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('location_services_disabled'.tr)));
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('location_services_disabled'.tr)),
+                          );
+                        }
                       }
                     },
                     backgroundColor: Colors.black.withValues(alpha: 0.8),

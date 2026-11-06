@@ -45,9 +45,9 @@ class StaffService {
       // Fetch assignment from database
       final response = await supabase
           .from('staff_assignments')
-          .select('*, events(title, venue, organizer_id)')
+          .select('*, events(title, venue, organizer_id), organizer_profiles(name)')
           .eq('staff_id', userId)
-          .or('status.eq.active,status.eq.pending')
+          .or('status.eq.active,status.eq.pending,status.eq.absent')
           .order('created_at', ascending: false)
           .limit(1)
           .maybeSingle();
@@ -97,11 +97,14 @@ class StaffService {
 
   Future<bool> acceptAssignment(String assignmentId) async {
     try {
-      await supabase
+      final updated = await supabase
           .from('staff_assignments')
           .update({'status': 'active'})
-          .eq('id', assignmentId);
-          
+          .eq('id', assignmentId)
+          .eq('status', 'pending')
+          .select('id');
+      if ((updated as List).isEmpty) return false;
+
       // Notify Organizer
       final assignment = await getAssignmentById(assignmentId);
       if (assignment != null && assignment['organizer_id'] != null) {
@@ -121,10 +124,13 @@ class StaffService {
 
   Future<bool> rejectAssignment(String assignmentId) async {
     try {
-      await supabase
+      final updated = await supabase
           .from('staff_assignments')
           .update({'status': 'rejected'})
-          .eq('id', assignmentId);
+          .eq('id', assignmentId)
+          .eq('status', 'pending')
+          .select('id');
+      if ((updated as List).isEmpty) return false;
 
       // Notify Organizer
       final assignment = await getAssignmentById(assignmentId);

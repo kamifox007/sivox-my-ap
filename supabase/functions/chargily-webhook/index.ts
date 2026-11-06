@@ -15,6 +15,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
  */
 async function verifySignature(signature: string, payload: string, secret: string): Promise<boolean> {
   try {
+    if (!secret || !/^[0-9a-fA-F]{64}$/.test(signature)) return false;
     const encoder = new TextEncoder();
     const keyData = encoder.encode(secret);
     const messageData = encoder.encode(payload);
@@ -56,6 +57,14 @@ serve(async (req) => {
   }
 
   try {
+    if (!CHARGILY_WEBHOOK_SECRET || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+      console.error("Chargily webhook secrets are not configured.");
+      return new Response(JSON.stringify({ error: "Webhook is not configured" }), {
+        status: 503,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     // 1. استخراج التوقيع الرقمي من الترويسة (Header)
     const signature = req.headers.get("Signature") || req.headers.get("signature");
     if (!signature) {
