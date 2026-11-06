@@ -65,9 +65,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     if (session != null) {
       final user = session.user;
-      var role = (user.userMetadata?['role']?.toString() ?? '').toLowerCase();
-
-      // The database profile is the source of truth when metadata is stale.
+      // Resolve privileged access from database records, never editable Auth metadata.
+      var role = 'attendee';
       try {
         final profile = await client
             .from('profiles')
