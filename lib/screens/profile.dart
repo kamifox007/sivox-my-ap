@@ -100,63 +100,106 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       const SizedBox(height: 12),
                       
-                      // 1. QUICK ACTIONS GRID
-                      GridView.count(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 1.2,
-                        children: [
+                      if (user == null) ...[
+                        _buildGuestAccessCard(),
+                        const SizedBox(height: 24),
+                        _buildGridCard(
+                          Icons.help_outline,
+                          'assistance'.tr,
+                          '',
+                          Colors.blueAccent,
+                          () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SupportScreen())),
+                        ),
+                        const SizedBox(height: 24),
+                        _buildSettingsTile(Icons.language_outlined, 'change_language'.tr, _showLanguagePicker),
+                        _buildSettingsTile(Icons.policy_outlined, 'privacy_policy'.tr, () {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              backgroundColor: const Color(0xFF1A1A1A),
+                              title: Text('privacy_policy'.tr, style: const TextStyle(color: Colors.white)),
+                              content: const Text(
+                                'This is the Sivox privacy policy. Your data is securely stored and never shared with third parties without your explicit consent.',
+                                style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.5),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx),
+                                  child: const Text('OK', style: TextStyle(color: AppTheme.primary)),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ] else ...[
+                        // 1. QUICK ACTIONS GRID
+                        GridView.count(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 16,
+                          childAspectRatio: 1.2,
+                          children: [
                             _buildGridCard(Icons.confirmation_num_outlined, 'passes'.tr, '($_bookingCount)', AppTheme.primary, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TicketsListScreen()))),
                             _buildGridCard(Icons.favorite_border_rounded, 'favorites'.tr, '', Colors.pinkAccent, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FavoritesScreen()))),
                             _buildGridCard(Icons.lock_clock_rounded, 'THE_VAULT'.tr, '', AppTheme.secondary, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const VaultScreen()))),
                             _buildGridCard(Icons.help_outline, 'assistance'.tr, '', Colors.blueAccent, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SupportScreen()))),
-                        ],
-                      ),
-                      const SizedBox(height: 32),
-
-                      // 2. PRO HUB (Large Banner)
-                      _buildProHubButton(),
-                      const SizedBox(height: 32),
-
-                      // 3. SETTINGS & ACCOUNT
-                      Text('SETTINGS & ACCOUNT'.tr.toUpperCase(), style: AppTheme.labelStyle.copyWith(color: AppTheme.primary, letterSpacing: 2)),
-                      const SizedBox(height: 16),
-                      Container(
-                        decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.02), borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withValues(alpha: 0.05))),
-                        child: Column(
-                            children: [
-                                _buildSettingsTile(Icons.manage_accounts_rounded, 'ACCOUNT_SETTINGS'.tr, () => setState(() => _showAccountSettings = !_showAccountSettings)),
-                                if (_showAccountSettings) ...[
-                                    _buildSettingsTile(Icons.lock_outline_rounded, 'change_password'.tr, _showChangePasswordDialog, isSub: true),
-                                    _buildSettingsTile(Icons.email_outlined, 'RECOVERY_EMAIL'.tr, _showAddEmailDialog, isSub: true),
-                                    _buildSettingsTile(Icons.delete_forever_outlined, 'DELETE_ACCOUNT'.tr, _showDeleteAccountFlow, isSub: true, color: Colors.redAccent),
-                                ],
-                                const Divider(color: Colors.white10, height: 1),
-                                _buildSwitchTile(Icons.notifications_none, 'push_notifications'.tr, _notifsEnabled, (v) => setState(() => _notifsEnabled = v)),
-                                const Divider(color: Colors.white10, height: 1),
-                                _buildSettingsTile(Icons.language_outlined, 'change_language'.tr, _showLanguagePicker),
-                                const Divider(color: Colors.white10, height: 1),
-                                _buildSettingsTile(Icons.policy_outlined, 'privacy_policy'.tr, () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (ctx) => AlertDialog(
-                                        backgroundColor: const Color(0xFF1A1A1A),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: AppTheme.primary.withValues(alpha: 0.2))),
-                                        title: Text('privacy_policy'.tr, style: const TextStyle(color: Colors.white)),
-                                        content: const Text('This is the AfterDark privacy policy.\nYour data is securely stored and never shared with third parties without your explicit consent.', style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.5)),
-                                        actions: [TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('OK', style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold)))],
-                                      ),
-                                    );
-                                }),
-                            ],
+                          ],
                         ),
-                      ),
-                      
-                      const SizedBox(height: 40),
-                      _buildLogoutBtn(),
+                        const SizedBox(height: 32),
+                        _buildProHubButton(),
+                        const SizedBox(height: 32),
+                        Text('SETTINGS & ACCOUNT'.tr.toUpperCase(), style: AppTheme.labelStyle.copyWith(color: AppTheme.primary, letterSpacing: 2)),
+                        const SizedBox(height: 16),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.02),
+                            borderRadius: BorderRadius.circular(24),
+                            border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                          ),
+                          child: Column(
+                            children: [
+                              _buildSettingsTile(Icons.manage_accounts_rounded, 'ACCOUNT_SETTINGS'.tr, () => setState(() => _showAccountSettings = !_showAccountSettings)),
+                              if (_showAccountSettings) ...[
+                                _buildSettingsTile(Icons.lock_outline_rounded, 'change_password'.tr, _showChangePasswordDialog, isSub: true),
+                                _buildSettingsTile(Icons.email_outlined, 'RECOVERY_EMAIL'.tr, _showAddEmailDialog, isSub: true),
+                                _buildSettingsTile(Icons.delete_forever_outlined, 'DELETE_ACCOUNT'.tr, _showDeleteAccountFlow, isSub: true, color: Colors.redAccent),
+                              ],
+                              const Divider(color: Colors.white10, height: 1),
+                              _buildSwitchTile(Icons.notifications_none, 'push_notifications'.tr, _notifsEnabled, (v) => setState(() => _notifsEnabled = v)),
+                              const Divider(color: Colors.white10, height: 1),
+                              _buildSettingsTile(Icons.language_outlined, 'change_language'.tr, _showLanguagePicker),
+                              const Divider(color: Colors.white10, height: 1),
+                              _buildSettingsTile(Icons.policy_outlined, 'privacy_policy'.tr, () {
+                                showDialog(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                    backgroundColor: const Color(0xFF1A1A1A),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(24),
+                                      side: BorderSide(color: AppTheme.primary.withValues(alpha: 0.2)),
+                                    ),
+                                    title: Text('privacy_policy'.tr, style: const TextStyle(color: Colors.white)),
+                                    content: const Text(
+                                      'This is the Sivox privacy policy. Your data is securely stored and never shared with third parties without your explicit consent.',
+                                      style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.5),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(ctx),
+                                        child: const Text('OK', style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold)),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        _buildLogoutBtn(),
+                      ],
                       const SizedBox(height: 12),
                       Center(child: Text('VERSION 1.0.6 - Sivox PRODUCTION', style: TextStyle(color: Colors.white.withValues(alpha: 0.05), fontSize: 10, letterSpacing: 2))),
                       const SizedBox(height: 40),
@@ -165,6 +208,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGuestAccessCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.03),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppTheme.primary.withValues(alpha: 0.25)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.person_outline_rounded, color: AppTheme.primary, size: 32),
+          const SizedBox(height: 14),
+          Text(
+            'استمتع بالتصفح كزائر',
+            style: AppTheme.headlineStyle.copyWith(fontSize: 20),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'يمكنك اكتشاف الفعاليات والمنظمين دون حساب. سجّل الدخول عند رغبتك في الحجز أو حفظ المفضلة أو متابعة المنظمين.',
+            style: TextStyle(color: Colors.white60, height: 1.5, fontSize: 13),
+          ),
+          const SizedBox(height: 18),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AuthScreen()),
+              ),
+              child: const Text('تسجيل الدخول / إنشاء حساب'),
+            ),
           ),
         ],
       ),
