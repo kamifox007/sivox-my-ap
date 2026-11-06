@@ -85,11 +85,15 @@ class _SupportScreenState extends State<SupportScreen> {
     }
   }
 
+  void _showContactUnavailable() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('This support contact is not configured yet.')),
+    );
+  }
+
   Future<void> _launchWhatsApp() async {
-    final url = Uri.parse("https://wa.me/213555000000"); // Placeholder
-    if (!await launchUrl(url)) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Could not launch WhatsApp")));
-    }
+    // Do not send visitors to a placeholder phone number.
+    _showContactUnavailable();
   }
 
   @override
@@ -267,7 +271,7 @@ class _SupportScreenState extends State<SupportScreen> {
             title: 'Email',
             subtitle: 'Official Inquiry',
             color: AppTheme.secondary,
-            onTap: () {},
+            onTap: _showContactUnavailable,
           ),
         ),
       ],
