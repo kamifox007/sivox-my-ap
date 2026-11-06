@@ -73,12 +73,17 @@ class _StaffHubScreenState extends State<StaffHubScreen> {
     try {
       final response = await supabase
           .from('staff_assignments')
-          .select('*, club:organizer_profiles(id, bio, rating)')
+          .select('*, club:organizer_profiles(id, name, bio, rating)')
           .eq('staff_id', userId)
           .order('created_at', ascending: false);
 
       setState(() {
-        _assignments = response as List;
+        _assignments = (response as List).map((row) {
+          final item = Map<String, dynamic>.from(row as Map);
+          final club = item['club'];
+          item['club_name'] = club is Map ? (club['name'] ?? 'Elite Club') : 'Elite Club';
+          return item;
+        }).toList();
         _isLoading = false;
       });
     } catch (e) {
