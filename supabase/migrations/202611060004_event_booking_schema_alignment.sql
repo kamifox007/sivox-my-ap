@@ -35,4 +35,6 @@ ALTER TABLE public.bookings
   ADD COLUMN IF NOT EXISTS walkin_serial TEXT,
   ADD COLUMN IF NOT EXISTS scanned_at_security TIMESTAMPTZ,
   ADD COLUMN IF NOT EXISTS scanned_at_payment TIMESTAMPTZ,
-  ADD COLUMN IF NOT EXISTS confirmed_by_manager UUID REFERENCES auth.users(id);
+  ADD COLUMN IF NOT EXISTS confirmed_by_manager UUID REFERENCES auth.users(id),
+  ADD COLUMN IF NOT EXISTS scanned_at TIMESTAMPTZ,
+  ADD COLUMN IF NOT EXISTS perk_granted_by UUID REFERENCES auth.users(id);
