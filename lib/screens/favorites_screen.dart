@@ -150,7 +150,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     final removed = await _favoriteService.removeFavorite(eventId: e.id);
                     if (!removed && mounted) {
                       setState(() {
-                        final insertAt = originalIndex.clamp(0, _faveEvents.length);
+                        final insertAt = originalIndex.clamp(0, _faveEvents.length).toInt();
                         _faveEvents.insert(insertAt, e);
                       });
                       ScaffoldMessenger.of(context).showSnackBar(
