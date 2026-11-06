@@ -159,7 +159,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
         final List<StaffMember> fetched = (response as List).map((s) {
           final profile = s['profiles'] as Map<String, dynamic>?;
           final fullName = profile?['full_name'] ?? profile?['phone'] ?? 'Assistant';
-          final phone = profile?['phone_number'];
+          final phone = profile?['phone'];
           
           return StaffMember(
             s['id'],
@@ -671,7 +671,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                       ),
                     ),
                     title: Text(user['full_name'] ?? 'User', style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
-                    subtitle: Text(user['phone_number'] ?? '', style: TextStyle(color: AppTheme.primary.withValues(alpha: 0.5), fontSize: 11, fontWeight: FontWeight.w600)),
+                    subtitle: Text(user['phone'] ?? '', style: TextStyle(color: AppTheme.primary.withValues(alpha: 0.5), fontSize: 11, fontWeight: FontWeight.w600)),
                     trailing: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(color: AppTheme.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
@@ -715,7 +715,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
               children: [
                 Text(_selectedUser!['full_name'] ?? 'User', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
                 const SizedBox(height: 4),
-                Text(_selectedUser!['phone_number'] ?? '', style: const TextStyle(color: Colors.white38, fontSize: 12)),
+                Text(_selectedUser!['phone'] ?? '', style: const TextStyle(color: Colors.white38, fontSize: 12)),
               ],
             ),
           ),
