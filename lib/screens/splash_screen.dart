@@ -61,7 +61,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     // 3. Normal Flow
     final client = Supabase.instance.client;
     final session = client.auth.currentSession;
-    Widget destination = const AuthScreen();
+    // Visitors can browse the public experience without creating an account.
+    Widget destination = const HomeFeedScreen();
 
     if (session != null) {
       final user = session.user;
