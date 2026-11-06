@@ -1192,8 +1192,12 @@ class _HomeFeedScreenState extends State<HomeFeedScreen> with SingleTickerProvid
                       top: 14, right: 14,
                       child: GestureDetector(
                         onTap: () async {
-                          await _favoriteService.toggleFavorite(e);
-                          if (mounted) {
+                          if (_supabase.auth.currentUser == null) {
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => const AuthScreen()));
+                            return;
+                          }
+                          final changed = await _favoriteService.toggleFavorite(e);
+                          if (changed && mounted) {
                             setState(() {
                               if (_faveIds.contains(e.id)) {
                                 _faveIds.remove(e.id);
@@ -1458,8 +1462,12 @@ class _HomeFeedScreenState extends State<HomeFeedScreen> with SingleTickerProvid
                         top: 14, right: 14,
                         child: GestureDetector(
                           onTap: () async {
-                            await _favoriteService.toggleFavorite(e);
-                            if (mounted) {
+                            if (_supabase.auth.currentUser == null) {
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => const AuthScreen()));
+                              return;
+                            }
+                            final changed = await _favoriteService.toggleFavorite(e);
+                            if (changed && mounted) {
                               setState(() {
                                 if (_faveIds.contains(e.id)) {
                                   _faveIds.remove(e.id);
