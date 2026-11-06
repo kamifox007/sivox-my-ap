@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:my_app/theme/app_theme.dart';
 import 'package:my_app/services/follow_service.dart';
 import 'package:my_app/services/translation_service.dart';
@@ -14,7 +15,7 @@ class FollowingScreen extends StatefulWidget {
 class _FollowingScreenState extends State<FollowingScreen> {
   final _followService = FollowService();
   bool _isLoading = true;
-  List<String> _followedOrganizers = [];
+  List<Map<String, dynamic>> _followedOrganizers = [];
 
   @override
   void initState() {
@@ -25,7 +26,26 @@ class _FollowingScreenState extends State<FollowingScreen> {
   Future<void> _loadFollowing() async {
     setState(() => _isLoading = true);
     try {
-      final list = await _followService.getFollowedOrganizers();
+      final userId = Supabase.instance.client.auth.currentUser?.id;
+      if (userId == null) {
+        if (mounted) setState(() {
+          _followedOrganizers = [];
+          _isLoading = false;
+        });
+        return;
+      }
+      final response = await Supabase.instance.client
+          .from('follows')
+          .select('organizer_id, organizer_profiles(id, name, avatar_url, profiles(full_name, avatar_url))')
+          .eq('user_id', userId)
+          .order('created_at', ascending: false);
+      final list = (response as List).map((row) {
+        final item = Map<String, dynamic>.from(row as Map);
+        final organizer = item['organizer_profiles'];
+        return organizer is Map
+            ? Map<String, dynamic>.from(organizer)
+            : <String, dynamic>{'id': item['organizer_id']};
+      }).toList();
       if (mounted) {
         setState(() {
           _followedOrganizers = list;
@@ -38,9 +58,9 @@ class _FollowingScreenState extends State<FollowingScreen> {
   }
 
   Future<void> _unfollow(String id) async {
-    final success = await _followService.toggleFollow(id);
-    if (success) {
-      setState(() => _followedOrganizers.remove(id));
+    final success = await _followService.unfollowOrganizer(id);
+    if (success && mounted) {
+      setState(() => _followedOrganizers.removeWhere((organizer) => organizer['id']?.toString() == id));
     }
   }
 
@@ -98,7 +118,13 @@ class _FollowingScreenState extends State<FollowingScreen> {
     );
   }
 
-  Widget _buildOrganizerCard(String id) {
+  Widget _buildOrganizerCard(Map<String, dynamic> organizer) {
+    final id = organizer['id']?.toString() ?? '';
+    final profile = organizer['profiles'] is Map
+        ? Map<String, dynamic>.from(organizer['profiles'] as Map)
+        : <String, dynamic>{};
+    final name = (organizer['name'] ?? profile['full_name'] ?? 'ORGANIZER').toString();
+    final avatarUrl = (organizer['avatar_url'] ?? profile['avatar_url'])?.toString();
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       child: ClipRRect(
@@ -114,7 +140,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
             ),
             child: Row(
               children: [
-                _avatar(id),
+                _avatar(avatarUrl),
                 const SizedBox(width: 20),
                 Expanded(
                   child: Column(
@@ -122,8 +148,8 @@ class _FollowingScreenState extends State<FollowingScreen> {
                     children: [
                       Text('ORGANIZER'.tr, style: TextStyle(color: AppTheme.primary, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
                       const SizedBox(height: 4),
-                      Text('Club Elite'.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1)),
-                      const Text('Official Partner', style: TextStyle(color: Colors.white24, fontSize: 10)),
+                      Text(name.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 1)),
+                      Text((organizer['business_type'] ?? 'ORGANIZER').toString().toUpperCase(), style: const TextStyle(color: Colors.white24, fontSize: 10)),
                     ],
                   ),
                 ),
@@ -136,14 +162,15 @@ class _FollowingScreenState extends State<FollowingScreen> {
     );
   }
 
-  Widget _avatar(String id) {
+  Widget _avatar(String? avatarUrl) {
     return Container(
       width: 56, height: 56,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(color: AppTheme.primary.withValues(alpha: 0.2)),
-        image: const DecorationImage(image: NetworkImage('https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=2574'), fit: BoxFit.cover),
+        image: avatarUrl != null && avatarUrl.isNotEmpty ? DecorationImage(image: NetworkImage(avatarUrl), fit: BoxFit.cover) : null,
       ),
+      child: avatarUrl == null || avatarUrl.isEmpty ? const Icon(Icons.nightlife, color: AppTheme.primary) : null,
     );
   }
 
