@@ -199,12 +199,12 @@ class SivoxApp extends StatelessWidget {
           },
           initialRoute: '/',
           routes: {
-            '/': (context) => const SplashScreen(),
-            '/login': (context) => const AuthScreen(),
-            '/home': (context) => const HomeFeedScreen(),
-            '/organizer': (context) => const OrganizerMainWrapper(),
-            '/staff': (context) => const OrganizerMainWrapper(),
-          },
+  '/': (context) => const SplashScreen(),
+  '/login': (context) => const AuthScreen(),
+  '/home': (context) => const HomeFeedScreen(),
+  '/organizer': (context) => const OrganizerMainWrapper(),
+  '/staff': (context) => const StaffHubScreen(),
+},
           onGenerateRoute: (settings) {
             // Handle staff invitations
             if (settings.name != null &&
