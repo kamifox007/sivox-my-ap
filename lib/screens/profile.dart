@@ -69,8 +69,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Supabase.instance.client.auth.currentUser;
-    final name = user?.userMetadata?['full_name'] ?? 'User';
-    final email = user?.email ?? 'anonymous@Sivox.app';
+    final name = user == null ? 'VISITOR' : (user.userMetadata?['full_name'] ?? 'User');
+    final email = user?.email ?? 'GUEST MODE';
     final phone = user?.userMetadata?['phone_number'] ?? '';
     final role = (user?.userMetadata?['role']?.toString() ?? 'attendee')
         .toLowerCase();
@@ -389,8 +389,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
                 const SizedBox(height: 16),
                 const SizedBox(height: 16),
-                _buildRatingAndStatsBar(3.0 + (_bookingCount * 0.1), role),
-                const SizedBox(height: 16),
+                if (user != null) ...[
+                  _buildRatingAndStatsBar(3.0 + (_bookingCount * 0.1), role),
+                  const SizedBox(height: 16),
+                ],
 
               ],
             ),
