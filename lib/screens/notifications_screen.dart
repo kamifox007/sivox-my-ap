@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:my_app/theme/app_theme.dart';
 import 'package:my_app/services/translation_service.dart';
 import 'package:my_app/services/notification_service.dart';
