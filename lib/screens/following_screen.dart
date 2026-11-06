@@ -28,10 +28,12 @@ class _FollowingScreenState extends State<FollowingScreen> {
     try {
       final userId = Supabase.instance.client.auth.currentUser?.id;
       if (userId == null) {
-        if (mounted) setState(() {
+        if (mounted) {
+          setState(() {
           _followedOrganizers = [];
           _isLoading = false;
-        });
+          });
+        }
         return;
       }
       final response = await Supabase.instance.client
