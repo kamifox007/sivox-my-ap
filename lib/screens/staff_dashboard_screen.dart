@@ -214,6 +214,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
                           builder: (context) => BookingManagementScreen(
                             clubId: widget.organizerId ?? _activeAssignment?['organizer_id']?.toString(),
                             eventId: widget.currentEventId ?? _activeAssignment?['event_id']?.toString(),
+                            allowCancellation: _activeAssignment?['permissions']?['can_cancel'] == true,
                           ),
                         ),
                       ),
