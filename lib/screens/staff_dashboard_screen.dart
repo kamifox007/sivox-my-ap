@@ -4,7 +4,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:my_app/theme/app_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:my_app/screens/scan_entry.dart';
-import 'package:my_app/screens/booking_management.dart';
+import 'package:my_app/screens/booking_management.dart' show BookingManagementScreen;
 // ignore: unused_import
 import 'package:my_app/services/translation_service.dart';
 import 'package:my_app/screens/profile.dart';
