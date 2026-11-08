@@ -118,15 +118,14 @@ class BookingService {
             'user_name': finalName,
             'ticket_type': 'Manual',
             'num_guests': numGuests,
-            'payment_status': 'confirmed',
+            'payment_status': 'pending',
             'qr_code': serial,
             'pass_id': serial,
             'guest_phone': finalPhone,
             'created_by': user.id,
             'is_walkin': true,
             'walkin_serial': serial,
-            'security_cleared': true,
-            'scanned_at_security': DateTime.now().toIso8601String(),
+            'security_cleared': false,
           })
           .select('*, events(*)')
           .single();
@@ -233,15 +232,11 @@ class BookingService {
       final serial = _generateTacticalSerial('RES');
       final userName = supabase.auth.currentUser?.userMetadata?['full_name'] ?? 'Attendee';
 
-      String finalStatus = paymentStatus;
-      if (event.requireCallConfirmation) {
-        finalStatus = 'pending_confirmation';
-      } else if (event.price > 0 && !event.payAtDoor) {
-        // 🔒 أمنياً: أي فعالية مدفوعة عبر الإنترنت يجب أن تبدأ بحالة 'pending' للتحقق من الدفع عبر الـ Webhook
-        finalStatus = 'pending';
-      } else if (event.payAtDoor || event.price == 0) {
-        finalStatus = 'confirmed';
-      }
+      // Every reservation remains pending until the organizer or an authorized
+      // delegate approves it. The call preference changes guest instructions,
+      // not the approval state.
+      final String finalStatus =
+          event.requireCallConfirmation ? 'pending_confirmation' : 'pending';
 
       final double totalOriginal = (event.price * numGuests);
       final double finalPrice = totalPricePaid ?? (totalOriginal - appliedDiscount).clamp(0, 999999).toDouble();
@@ -599,6 +594,8 @@ class BookingService {
 
   Future<bool> verifySecurityClearance(String bookingId) async {
     try {
+      // Security is stage one only: it is allowed only after booking approval.
+      // Conditional predicates make repeated/concurrent scans idempotent.
       final response = await supabase
           .from('bookings')
           .update({
@@ -606,9 +603,12 @@ class BookingService {
             'scanned_at_security': DateTime.now().toIso8601String(),
           })
           .eq('id', bookingId)
+          .eq('payment_status', 'confirmed')
+          .eq('security_cleared', false)
           .select('*, events(title, organizer_id)')
-          .single();
+          .maybeSingle();
 
+      if (response == null) return false;
       final String eventTitle = response['events']?['title'] ?? 'Event';
       final String? orgId = response['events']?['organizer_id'];
 
@@ -616,6 +616,15 @@ class BookingService {
         actionType: 'SECURITY_CLEARED',
         description: 'First-stage validation: Security passed for booking $bookingId',
         relatedEventId: response['event_id'],
+      );
+
+      // Notify the guest that stage one succeeded; this is not final attendance.
+      await _notifications.sendNotificationToUser(
+        userId: response['user_id'],
+        title: 'SECURITY_CHECK_PASSED'.tr,
+        body: 'Your ticket passed the security check for $eventTitle. Please proceed to the payment point.',
+        type: 'security',
+        metadata: {'booking_id': bookingId, 'event_id': response['event_id']},
       );
 
       // Notify Organizer and Staff
@@ -656,6 +665,8 @@ class BookingService {
   Future<bool> confirmManagerPayment(String bookingId) async {
     try {
       final managerId = supabase.auth.currentUser?.id;
+      // Stage two is the only final check-in. Require booking approval and
+      // prior security clearance; conditional updates prevent duplicate scans.
       final response = await supabase
           .from('bookings')
           .update({
@@ -666,9 +677,13 @@ class BookingService {
             'confirmed_by_manager': managerId,
           })
           .eq('id', bookingId)
-          .select('user_id, events(title, organizer_id)')
-          .single();
+          .eq('payment_status', 'confirmed')
+          .eq('security_cleared', true)
+          .eq('payment_confirmed', false)
+          .select('user_id, event_id, events(title, organizer_id)')
+          .maybeSingle();
 
+      if (response == null) return false;
       final String guestId = response['user_id'];
       final String eventTitle = response['events']?['title'] ?? 'Event';
       final String? organizerId = response['events']?['organizer_id'];
@@ -700,8 +715,11 @@ class BookingService {
           .from('bookings')
           .update({'payment_status': 'confirmed'})
           .eq('id', bookingId)
-          .select('user_id, events(title)')
-          .single();
+          .inFilter('payment_status', ['pending', 'pending_confirmation'])
+          .select('user_id, event_id, events(title)')
+          .maybeSingle();
+
+      if (response == null) return false;
 
       final String guestId = response['user_id'];
       final String eventTitle = response['events']?['title'] ?? 'Event';
@@ -711,6 +729,14 @@ class BookingService {
         title: 'TICKET APPROVED'.tr,
         body: 'The organizer has approved your request for $eventTitle!'.tr,
         type: 'booking',
+        metadata: {'booking_id': bookingId, 'event_id': response['event_id']},
+      );
+
+      await _audit.logAction(
+        actionType: 'BOOKING_APPROVED',
+        description: 'Booking $bookingId approved for $eventTitle',
+        relatedEventId: response['event_id']?.toString(),
+        metadata: {'booking_id': bookingId, 'guest_id': guestId},
       );
 
       return true;
