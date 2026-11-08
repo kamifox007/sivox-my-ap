@@ -241,7 +241,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
                         eventId: widget.currentEventId ?? _activeAssignment?['event_id']?.toString(),
                       ))),
                     ),
-                  if (_activeAssignment?['role'] == 'role_manager' || _activeAssignment?['permissions']?['can_generate'] == true)
+                  if (_activeAssignment?['permissions']?['can_generate'] == true)
                     _buildToolCard(
                       context,
                       icon: Icons.qr_code_2_rounded,
