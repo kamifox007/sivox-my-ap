@@ -557,16 +557,27 @@ class BookingService {
 
   Future<bool> markAsLate(String bookingId) async {
     try {
+      // A late acceptance is still a final payment/entry action. It must
+      // follow organizer approval and security clearance, and records payment
+      // exactly like the normal second-stage scan.
+      final now = DateTime.now().toIso8601String();
       final response = await supabase
           .from('bookings')
           .update({
             'payment_status': 'late_accepted',
-            'scanned_at': DateTime.now().toIso8601String(),
+            'payment_confirmed': true,
+            'scanned_at_payment': now,
+            'scanned_at': now,
+            'confirmed_by_manager': supabase.auth.currentUser?.id,
           })
           .eq('id', bookingId)
-          .select('user_id, events(title, organizer_id)')
-          .single();
+          .eq('payment_status', 'confirmed')
+          .eq('security_cleared', true)
+          .eq('payment_confirmed', false)
+          .select('user_id, event_id, events(title, organizer_id)')
+          .maybeSingle();
 
+      if (response == null) return false;
       final String guestId = response['user_id'];
       final String eventTitle = response['events']?['title'] ?? 'Event';
       final String? organizerId = response['events']?['organizer_id'];
@@ -583,7 +594,8 @@ class BookingService {
       await _audit.logAction(
         actionType: 'LATE_ENTRY_ACCEPTED',
         description: 'Late guest allowed by staff',
-        relatedEventId: response['events']?['id'],
+        relatedEventId: response['event_id'] ?? response['events']?['id'],
+        metadata: {'booking_id': bookingId, 'payment_confirmed': true},
       );
 
       return true;
