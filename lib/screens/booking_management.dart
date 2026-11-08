@@ -87,7 +87,7 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('
+            content: Text(approved.toString() + ' / ${pending.length} bookings approved'),
             backgroundColor: AppTheme.primary,
           ),
         );
