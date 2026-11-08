@@ -137,20 +137,21 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
       // member may have multiple assignments, so never use an unscoped
       // maybeSingle() query.
       if (widget.organizerId != null) {
-        var assignmentQuery = supabase
+        final assignments = await supabase
             .from('staff_assignments')
-            .select('role, permissions')
+            .select('role, permissions, event_id')
             .eq('staff_id', user.id)
             .eq('organizer_id', widget.organizerId!)
-            .eq('status', 'active');
-        if (widget.eventId != null) {
-          assignmentQuery = assignmentQuery.eq('event_id', widget.eventId!);
-        }
-        final assignments = await assignmentQuery
-            .order('created_at', ascending: false)
-            .limit(1);
-        if ((assignments as List).isNotEmpty) {
-          final assignment = assignments.first as Map<String, dynamic>;
+            .eq('status', 'active')
+            .order('created_at', ascending: false);
+        final eligibleAssignments = (assignments as List)
+            .where((item) =>
+                widget.eventId == null ||
+                item['event_id'] == null ||
+                item['event_id'].toString() == widget.eventId)
+            .toList();
+        if (eligibleAssignments.isNotEmpty) {
+          final assignment = eligibleAssignments.first as Map<String, dynamic>;
           final rawPermissions = assignment['permissions'] as Map? ?? {};
           if (!mounted) return;
           setState(() {
@@ -369,6 +370,32 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
         subtitle: '${booking.userName}\n${booking.cancellationReason ?? 'No reason provided'}', 
         isSuccess: false, 
         booking: booking
+      );
+      return;
+    }
+
+    // Pending bookings cannot pass either scanner stage.
+    if (booking.paymentStatus != 'confirmed') {
+      _showResultSheet(
+        icon: Icons.hourglass_empty,
+        iconColor: Colors.orange,
+        title: 'BOOKING_PENDING_APPROVAL'.tr,
+        subtitle: 'This booking must be approved before entry processing.'.tr,
+        isSuccess: false,
+        booking: booking,
+      );
+      return;
+    }
+
+    // Final payment/entry scan is valid only after security clearance.
+    if (_currentMode == ScannerMode.payment && !booking.securityCleared) {
+      _showResultSheet(
+        icon: Icons.security,
+        iconColor: Colors.redAccent,
+        title: 'SECURITY_PENDING_WARNING'.tr,
+        subtitle: 'ASK_GUEST_TO_GO_TO_SECURITY'.tr,
+        isSuccess: false,
+        booking: booking,
       );
       return;
     }
