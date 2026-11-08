@@ -348,7 +348,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
     }
 
     // 2. STATUS CHECK
-    if (booking.paymentStatus == 'used') {
+    if (booking.paymentStatus == 'used' || booking.paymentStatus == 'late_accepted') {
       final scanTimeStr = booking.scannedAt ?? booking.scannedAtSecurity;
       final scanTime = scanTimeStr != null
           ? DateFormat('HH:mm').format(DateTime.parse(scanTimeStr))
