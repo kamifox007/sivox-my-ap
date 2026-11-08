@@ -69,7 +69,9 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
       return;
     }
 
-    final ok = await _bookingService.updateBookingStatus(id, status);
+    final ok = status == 'confirmed'
+        ? await _bookingService.approveBooking(id)
+        : await _bookingService.updateBookingStatus(id, status);
     if (ok) {
       final booking = _bookings.firstWhere((b) => b.id == id);
       await _auditService.logAction(
@@ -339,28 +341,7 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
               ],
             ),
           
-          if (b.paymentStatus == 'confirmed' && !b.paymentConfirmed)
-            Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    final ok = await _bookingService.confirmManagerPayment(b.id);
-                    if (ok) {
-                      _loadData();
-                    }
-                  },
-                  icon: const Icon(Icons.check_circle_outline, size: 16),
-                  label: Text('CONFIRM_PAYMENT'.tr.toUpperCase()),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.secondary.withValues(alpha: 0.15),
-                    foregroundColor: AppTheme.secondary,
-                    side: const BorderSide(color: AppTheme.secondary),
-                  ),
-                ),
-              ),
-            ),
+
         ],
       ),
     );
