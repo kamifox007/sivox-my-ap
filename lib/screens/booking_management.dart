@@ -10,7 +10,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class BookingManagementScreen extends StatefulWidget {
   final String? clubId;
   final String? eventId;
-  const BookingManagementScreen({super.key, this.clubId, this.eventId});
+  final bool allowCancellation;
+  const BookingManagementScreen({
+    super.key,
+    this.clubId,
+    this.eventId,
+    this.allowCancellation = true,
+  });
 
   @override
   State<BookingManagementScreen> createState() =>
@@ -367,17 +373,19 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
                         child: Text('confirm'.tr.toUpperCase()),
                       ),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () => _updateStatus(b.id, 'cancelled'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.redAccent,
-                          foregroundColor: Colors.white,
+                    if (widget.allowCancellation) ...[
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => _updateStatus(b.id, 'cancelled'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.redAccent,
+                            foregroundColor: Colors.white,
+                          ),
+                          child: Text('reject'.tr.toUpperCase()),
                         ),
-                        child: Text('reject'.tr.toUpperCase()),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ],
