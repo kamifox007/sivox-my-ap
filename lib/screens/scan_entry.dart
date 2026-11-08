@@ -38,6 +38,8 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
 
   bool _isProcessing = false;
   bool _isActionProcessing = false; // For buttons in sheets
+  bool _permissionsLoaded = false;
+  bool _isVerifiedOrganizer = false;
   bool _torchOn = false;
   int _scannedToday = 0;
   int _totalCapacity = 0;
@@ -49,7 +51,9 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
   // Permissions State
   String _staffRole = 'role_security';
   Map<String, bool> _staffPerms = {
-    'can_scan': true,
+    'can_scan': false,
+    'can_confirm_payment': false,
+    'can_confirm_booking': false,
     'can_cancel': false,
     'can_generate': false,
   };
@@ -86,41 +90,82 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
   Future<void> _loadPermissions() async {
     final user = supabase.auth.currentUser;
     if (user == null) {
+      if (mounted) setState(() => _permissionsLoaded = true);
       return;
     }
 
-    final role = (user.userMetadata?['role']?.toString() ?? 'attendee').toLowerCase();
-    if (role == 'staff') {
-      final response = await supabase
-          .from('staff_assignments')
-          .select('role, permissions')
-          .eq('staff_id', user.id)
-          .maybeSingle();
-
-      if (response != null && response['permissions'] != null) {
-        setState(() {
-          _staffRole = response['role'] ?? 'role_security';
-          _staffPerms = Map<String, bool>.from(response['permissions']);
-          _staffName = user.userMetadata?['full_name'] ?? 'Staff';
-        });
+    try {
+      // Organizer access is verified against event ownership, not merely a
+      // client-editable user metadata role.
+      bool isOwner = false;
+      if (widget.organizerId == null || widget.organizerId == user.id) {
+        var eventQuery = supabase
+            .from('events')
+            .select('id')
+            .eq('organizer_id', user.id);
+        if (widget.eventId != null) {
+          eventQuery = eventQuery.eq('id', widget.eventId!);
+        }
+        final ownedEvents = await eventQuery.limit(1);
+        isOwner = (ownedEvents as List).isNotEmpty;
       }
-    } else {
-      // Organizers have all perms
-      setState(() {
-        _staffName = user.userMetadata?['full_name'] ?? 'Organizer';
-        _staffRole = 'role_manager';
-        _staffPerms = {
-          'can_scan': true,
-          'can_cancel': true,
-          'can_generate': true,
-          'can_view_stats': true,
-          'can_manage_guests': true,
-          'can_view_logs': true,
-          'can_block_guest': true,
-          'can_eject_guest': true,
-          'can_mark_late': true,
-        };
-      });
+
+      if (isOwner) {
+        if (!mounted) return;
+        setState(() {
+          _isVerifiedOrganizer = true;
+          _staffName = user.userMetadata?['full_name'] ?? 'Organizer';
+          _staffRole = 'role_manager';
+          _staffPerms = {
+            'can_scan': true,
+            'can_confirm_payment': true,
+            'can_confirm_booking': true,
+            'can_cancel': true,
+            'can_generate': true,
+            'can_view_stats': true,
+            'can_manage_guests': true,
+            'can_view_logs': true,
+            'can_block_guest': true,
+            'can_eject_guest': true,
+            'can_mark_late': true,
+          };
+        });
+        return;
+      }
+
+      // Resolve the active assignment for this organizer/event only. A staff
+      // member may have multiple assignments, so never use an unscoped
+      // maybeSingle() query.
+      if (widget.organizerId != null) {
+        var assignmentQuery = supabase
+            .from('staff_assignments')
+            .select('role, permissions')
+            .eq('staff_id', user.id)
+            .eq('organizer_id', widget.organizerId!)
+            .eq('status', 'active');
+        if (widget.eventId != null) {
+          assignmentQuery = assignmentQuery.eq('event_id', widget.eventId!);
+        }
+        final assignments = await assignmentQuery
+            .order('created_at', ascending: false)
+            .limit(1);
+        if ((assignments as List).isNotEmpty) {
+          final assignment = assignments.first as Map<String, dynamic>;
+          final rawPermissions = assignment['permissions'] as Map? ?? {};
+          if (!mounted) return;
+          setState(() {
+            _staffRole = assignment['role']?.toString() ?? 'role_security';
+            _staffPerms = rawPermissions.map<String, bool>(
+              (key, value) => MapEntry(key.toString(), value == true),
+            );
+            _staffName = user.userMetadata?['full_name'] ?? 'Staff';
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint('Permission loading failed: $e');
+    } finally {
+      if (mounted) setState(() => _permissionsLoaded = true);
     }
   }
 
@@ -250,6 +295,38 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
   }
 
   Future<void> _processBookingResult(Booking booking) async {
+    if (!_permissionsLoaded) {
+      _showResultSheet(
+        icon: Icons.lock_outline,
+        iconColor: Colors.orange,
+        title: 'PERMISSIONS_LOADING'.tr,
+        subtitle: 'Please wait while access is verified.'.tr,
+        isSuccess: false,
+      );
+      return;
+    }
+    final canUseMode = _isVerifiedOrganizer ||
+        (_currentMode == ScannerMode.security
+            ? _staffPerms['can_scan'] == true
+            : _staffPerms['can_confirm_payment'] == true);
+    if (!canUseMode) {
+      await _auditService.logAction(
+        actionType: 'SCANNER_ACCESS_DENIED',
+        description: 'Scanner access denied for mode $_currentMode',
+        relatedEventId: booking.eventId,
+        metadata: {'booking_id': booking.id, 'mode': _currentMode.name},
+      );
+      _showResultSheet(
+        icon: Icons.lock_outline,
+        iconColor: Colors.redAccent,
+        title: 'ACCESS_DENIED'.tr,
+        subtitle: 'You do not have permission for this scanner task.'.tr,
+        isSuccess: false,
+        booking: booking,
+      );
+      return;
+    }
+
     // 1. BLACKLIST CHECK
     final isBlocked = await _enforcementService.isBlacklisted(
       clubId: widget.organizerId ?? '', 
@@ -855,14 +932,14 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
 
   Widget _modeTab(ScannerMode mode, IconData icon, String label) {
     bool sel = _currentMode == mode;
-    final userRole = (supabase.auth.currentUser?.userMetadata?['role']?.toString() ?? '').toLowerCase();
-    final isOrganizer = userRole == 'organizer' || userRole == 'admin' || userRole == 'owner' || supabase.auth.currentUser?.id == widget.organizerId;
-    final isSecurity = _staffRole == 'role_security';
-    final isManager = _staffRole == 'role_manager' || isOrganizer;
-    
-    // TACTICAL LOCKING: Enforcement of roles
-    bool isLocked = (mode == ScannerMode.security && !isSecurity && !isManager) || 
-                    (mode == ScannerMode.payment && !isManager);
+    final isOrganizer = _isVerifiedOrganizer;
+    final canAccessMode = isOrganizer ||
+        (mode == ScannerMode.security
+            ? _staffPerms['can_scan'] == true
+            : _staffPerms['can_confirm_payment'] == true);
+
+    // Permission flags, not role labels, authorize the operational task.
+    final bool isLocked = !canAccessMode;
 
     return Expanded(
       child: GestureDetector(
