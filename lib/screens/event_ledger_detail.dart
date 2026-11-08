@@ -22,14 +22,41 @@ class _EventLedgerDetailScreenState extends State<EventLedgerDetailScreen> {
   List<Booking> _generatedBookings = []; // NEW
   Map<String, int> _tacticalStats = {'ejections': 0, 'blocks': 0, 'refusals': 0};
   int _currentTab = 0; // 0: Timeline, 1: Generated
+  RealtimeChannel? _ledgerChannel;
 
   @override
   void initState() {
     super.initState();
     _loadTacticalData();
+    _subscribeToLedgerUpdates();
+  }
+
+  void _subscribeToLedgerUpdates() {
+    final supabase = Supabase.instance.client;
+    _ledgerChannel = supabase
+        .channel('event-ledger-${widget.event.id}')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.all,
+          schema: 'public',
+          table: 'staff_logs',
+          filter: PostgresChangeFilter(
+            type: PostgresChangeFilterType.eq,
+            column: 'related_event_id',
+            value: widget.event.id,
+          ),
+          callback: (_) => _loadTacticalData(),
+        )
+        .subscribe();
+  }
+
+  @override
+  void dispose() {
+    _ledgerChannel?.unsubscribe();
+    super.dispose();
   }
 
   Future<void> _loadTacticalData() async {
+    if (!mounted) return;
     setState(() => _isLoading = true);
     try {
       final logs = await _auditService.getLogs(eventId: widget.event.id);
