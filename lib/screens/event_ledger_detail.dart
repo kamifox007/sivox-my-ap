@@ -147,8 +147,9 @@ class _EventLedgerDetailScreenState extends State<EventLedgerDetailScreen> {
           onPressed: () => _showHelp(),
         ),
         IconButton(
-          icon: const Icon(Icons.delete_sweep_outlined, color: Colors.redAccent),
-          onPressed: _confirmClearLedger,
+          icon: const Icon(Icons.refresh_rounded, color: Colors.white24),
+          tooltip: 'Refresh',
+          onPressed: _loadTacticalData,
         ),
       ],
     );
@@ -191,31 +192,6 @@ class _EventLedgerDetailScreenState extends State<EventLedgerDetailScreen> {
           Icon(Icons.history_outlined, size: 48, color: Colors.white.withValues(alpha: 0.05)),
           const SizedBox(height: 16),
           const Text('NO TACTICAL LOGS RECORDED', style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 2)),
-        ],
-      ),
-    );
-  }
-
-  void _confirmClearLedger() {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF141414),
-        title: Text('CLEAR_LOGS'.tr),
-        content: Text('Are you sure you want to permanently delete all records for this event? This action cannot be undone.'),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: Text('cancel'.tr, style: const TextStyle(color: Colors.white24))),
-          TextButton(
-            onPressed: () async {
-              final success = await _auditService.clearLogs(widget.event.id);
-              if (!mounted) return;
-              if (success && ctx.mounted) {
-                Navigator.pop(ctx);
-                _loadTacticalData();
-              }
-            },
-            child: Text('confirm'.tr, style: const TextStyle(color: Colors.redAccent)),
-          ),
         ],
       ),
     );
