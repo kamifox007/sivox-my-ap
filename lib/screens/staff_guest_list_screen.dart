@@ -95,17 +95,6 @@ class _StaffGuestListScreenState extends State<StaffGuestListScreen> {
     });
   }
 
-  Future<void> _manualCheckIn(Booking booking) async {
-    // Guest-list access must not bypass the security + payment QR workflow.
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Use the QR scanner to complete security and payment check-in.'.tr),
-        backgroundColor: AppTheme.secondary,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
