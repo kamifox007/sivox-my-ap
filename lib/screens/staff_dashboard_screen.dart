@@ -185,7 +185,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
                       label: 'QR_SCANNER'.tr,
                       color: AppTheme.primary,
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ScanEntryScreen(
-                        organizerId: widget.organizerId,
+                        organizerId: widget.organizerId ?? _activeAssignment?['organizer_id']?.toString(),
                         eventId: widget.currentEventId ?? _activeAssignment?['event_id']?.toString(),
                       ))),
                     ),
