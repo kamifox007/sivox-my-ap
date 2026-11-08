@@ -24,6 +24,7 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
   final supabase = Supabase.instance.client;
 
   bool _isLoading = true;
+  bool _isBulkApproving = false;
   List<Booking> _bookings = [];
   String _selectedFilter = 'pending';
 
@@ -60,6 +61,34 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
       } else {
         setState(() => _isLoading = false);
       }
+    }
+  }
+
+  Future<void> _approveAllPending() async {
+    if (_isBulkApproving) return;
+    final pending = _bookings
+        .where((b) => b.paymentStatus == 'pending' ||
+            b.paymentStatus == 'pending_confirmation')
+        .toList();
+    if (pending.isEmpty) return;
+
+    setState(() => _isBulkApproving = true);
+    int approved = 0;
+    try {
+      for (final booking in pending) {
+        if (await _bookingService.approveBooking(booking.id)) approved++;
+      }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${approved} / ${pending.length} bookings approved'),
+            backgroundColor: AppTheme.primary,
+          ),
+        );
+        await _loadData();
+      }
+    } finally {
+      if (mounted) setState(() => _isBulkApproving = false);
     }
   }
 
@@ -188,6 +217,19 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         actions: [
+          if (_bookings.any((b) => b.paymentStatus == 'pending' ||
+              b.paymentStatus == 'pending_confirmation'))
+            IconButton(
+              tooltip: 'APPROVE_ALL'.tr,
+              icon: _isBulkApproving
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.done_all_rounded, color: AppTheme.primary),
+              onPressed: _isBulkApproving ? null : _approveAllPending,
+            ),
           IconButton(
             icon: const Icon(Icons.help_outline_rounded, color: Colors.white24, size: 20),
             onPressed: () => _showHelp(),
