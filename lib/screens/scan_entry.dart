@@ -98,16 +98,35 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
       // Organizer access is verified against event ownership, not merely a
       // client-editable user metadata role.
       bool isOwner = false;
-      if (widget.organizerId == null || widget.organizerId == user.id) {
-        var eventQuery = supabase
+      String? organizerProfileId = widget.organizerId;
+      if (organizerProfileId != null) {
+        final organizerProfile = await supabase
+            .from('organizer_profiles')
+            .select('id')
+            .eq('id', organizerProfileId)
+            .eq('owner_id', user.id)
+            .maybeSingle();
+        isOwner = organizerProfile != null;
+      } else {
+        final ownedProfiles = await supabase
+            .from('organizer_profiles')
+            .select('id')
+            .eq('owner_id', user.id)
+            .limit(1);
+        if ((ownedProfiles as List).isNotEmpty) {
+          organizerProfileId = ownedProfiles.first['id']?.toString();
+          isOwner = organizerProfileId != null;
+        }
+      }
+
+      if (isOwner && widget.eventId != null) {
+        final ownedEvent = await supabase
             .from('events')
             .select('id')
-            .eq('organizer_id', user.id);
-        if (widget.eventId != null) {
-          eventQuery = eventQuery.eq('id', widget.eventId!);
-        }
-        final ownedEvents = await eventQuery.limit(1);
-        isOwner = (ownedEvents as List).isNotEmpty;
+            .eq('id', widget.eventId!)
+            .eq('organizer_id', organizerProfileId!)
+            .maybeSingle();
+        isOwner = ownedEvent != null;
       }
 
       if (isOwner) {
