@@ -69,6 +69,7 @@ class _EventLedgerDetailScreenState extends State<EventLedgerDetailScreen> {
           .eq('event_id', widget.event.id)
           .eq('is_walkin', true);
       
+      if (!mounted) return;
       setState(() {
         _logs = logs;
         _tacticalStats = stats;
