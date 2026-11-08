@@ -96,13 +96,14 @@ class _StaffGuestListScreenState extends State<StaffGuestListScreen> {
   }
 
   Future<void> _manualCheckIn(Booking booking) async {
-    final success = await _bookingService.updateBookingStatus(booking.id, 'used');
-    if (success && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('checked_in_success'.tr), backgroundColor: AppTheme.primary),
-      );
-      _loadBookings();
-    }
+    // Guest-list access must not bypass the security + payment QR workflow.
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Use the QR scanner to complete security and payment check-in.'.tr),
+        backgroundColor: AppTheme.secondary,
+      ),
+    );
   }
 
   @override
