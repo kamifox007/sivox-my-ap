@@ -469,16 +469,7 @@ Generated: ${DateTime.now().toIso8601String()}
               ),
             ],
           ),
-          trailing: isMyLog
-              ? IconButton(
-                  icon: const Icon(
-                    Icons.delete_outline,
-                    color: Colors.white24,
-                    size: 16,
-                  ),
-                  onPressed: () => _handleDelete(log['id'].toString()),
-                )
-              : null,
+          trailing: null,
         );
       },
     );
@@ -556,31 +547,4 @@ Generated: ${DateTime.now().toIso8601String()}
     );
   }
 
-  Future<void> _handleDelete(String logId) async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.surfaceContainer,
-        title: Text('DELETE_LOG'.tr, style: const TextStyle(color: Colors.white)),
-        content: Text(
-          'DELETE_LOG_CONFIRM'.tr,
-          style: const TextStyle(color: Colors.white70),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text('CANCEL'.tr),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text('DELETE'.tr, style: const TextStyle(color: Colors.redAccent)),
-          ),
-        ],
-      ),
-    );
-    if (confirm == true) {
-      await _auditService.deleteLog(logId);
-      _loadLogs();
-    }
-  }
 }
