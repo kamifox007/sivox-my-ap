@@ -283,14 +283,17 @@ class BookingService {
 
       if (result.event?.organizerId != null) {
         final bool isPendingConf = result.paymentStatus == 'pending_confirmation';
-        await _notifications.sendNotificationToUser( 
-          userId: result.event!.organizerId!,
+        await _notifications.sendBookingStageNotification(
+          bookingId: result.id,
           title: isPendingConf ? 'BOOKING_ACTION_REQUIRED'.tr : 'New Booking!'.tr,
-          body: isPendingConf 
+          body: isPendingConf
               ? 'BOOKING_PENDING_CALL_BODY'.trArgs([result.userName])
               : '${result.userName} just booked for ${result.event?.title}'.tr,
           type: 'booking',
-          metadata: {'booking_id': result.id, 'event_id': eventId},
+          metadata: {'event_id': eventId},
+          notifyGuest: false,
+          notifyOrganizer: true,
+          notifyStaff: false,
         );
 
         // Motivational Milestone
@@ -298,11 +301,14 @@ class BookingService {
           final double ratio = (totalPersons + numGuests) / maxCapacity;
           final double oldRatio = totalPersons / maxCapacity;
           if ((ratio >= 0.5 && oldRatio < 0.5) || (ratio >= 0.9 && oldRatio < 0.9) || (ratio >= 1.0 && oldRatio < 1.0)) {
-            await _notifications.sendNotificationToUser(
-              userId: result.event!.organizerId!,
+            await _notifications.sendBookingStageNotification(
+              bookingId: result.id,
               title: 'EVENT_MILESTONE'.tr,
               body: 'MILESTONE_BODY'.trArgs([(ratio * 100).toInt().toString(), result.event!.title]),
               type: 'milestone',
+              notifyGuest: false,
+              notifyOrganizer: true,
+              notifyStaff: false,
             );
           }
         }
@@ -593,7 +599,7 @@ class BookingService {
             .maybeSingle();
         final guestName = userData?['full_name'] ?? 'Visitor';
         await _notifyOrganizerOfArrival(
-          organizerId,
+          bookingId,
           guestName,
           eventTitle,
           isFollower,
@@ -634,45 +640,27 @@ class BookingService {
         metadata: {'booking_id': bookingId, 'guest_id': guestId, 'assignment_id': assignmentId},
       );
 
-      await _notifications.sendNotificationToUser(
-        userId: guestId,
+      await _notifications.sendBookingStageNotification(
+        bookingId: bookingId,
         title: 'SECURITY_CHECK_PASSED'.tr,
         body: 'Your ticket passed the security check for $eventTitle. Please proceed to the payment point.',
         type: 'security',
-        metadata: {'booking_id': bookingId, 'event_id': eventId},
+        metadata: {'guest_id': guestId},
+        notifyGuest: true,
+        notifyOrganizer: false,
+        notifyStaff: false,
       );
 
-      if (organizerId != null) {
-        await _notifications.sendNotificationToUser(
-          userId: organizerId,
-          title: 'SECURITY_CHECK_PASSED'.tr,
-          body: 'SECURITY_CHECK_BODY'.trArgs([guestName, eventTitle]),
-          type: 'security',
-          metadata: {'booking_id': bookingId, 'event_id': eventId},
-        );
-
-        final staffRes = await supabase
-            .from('staff_assignments')
-            .select('staff_id, event_id, permissions')
-            .eq('organizer_id', organizerId)
-            .eq('status', 'active');
-        final staffList = (staffRes as List).where((staff) {
-          final assignedEvent = staff['event_id']?.toString();
-          final permissions = staff['permissions'] as Map? ?? {};
-          return (assignedEvent == null || assignedEvent == eventId) &&
-              permissions['can_scan'] == true;
-        });
-        for (final staff in staffList) {
-          final String staffId = staff['staff_id'].toString();
-          await _notifications.sendNotificationToUser(
-            userId: staffId,
-            title: 'SECURITY_CHECK_PASSED'.tr,
-            body: 'SECURITY_CHECK_BODY'.trArgs([guestName, eventTitle]),
-            type: 'security',
-            metadata: {'booking_id': bookingId, 'event_id': eventId},
-          );
-        }
-      }
+      await _notifications.sendBookingStageNotification(
+        bookingId: bookingId,
+        title: 'SECURITY_CHECK_PASSED'.tr,
+        body: 'SECURITY_CHECK_BODY'.trArgs([guestName, eventTitle]),
+        type: 'security',
+        metadata: {'guest_id': guestId},
+        notifyGuest: false,
+        notifyOrganizer: true,
+        notifyStaff: true,
+      );
       return true;
     } catch (e) {
       return false;
@@ -739,12 +727,15 @@ class BookingService {
       final String eventTitle = response['event_title']?.toString() ?? 'Event';
       final String? eventId = response['event_id']?.toString();
 
-      await _notifications.sendNotificationToUser(
-        userId: guestId,
+      await _notifications.sendBookingStageNotification(
+        bookingId: bookingId,
         title: 'TICKET APPROVED'.tr,
         body: 'The organizer has approved your request for $eventTitle!'.tr,
         type: 'booking',
-        metadata: {'booking_id': bookingId, 'event_id': eventId},
+        metadata: {'event_id': eventId},
+        notifyGuest: true,
+        notifyOrganizer: false,
+        notifyStaff: false,
       );
 
       await _audit.logAction(
@@ -783,11 +774,15 @@ class BookingService {
       final String guestId = response['user_id'];
       final String eventTitle = response['events']?['title'] ?? 'Event';
 
-      await _notifications.sendNotificationToUser(
-        userId: guestId,
+      await _notifications.sendBookingStageNotification(
+        bookingId: bookingId,
         title: 'TICKET CANCELLED'.tr,
         body: 'Your ticket for $eventTitle has been cancelled.'.tr,
-        type: 'booking',
+        type: 'booking_cancel',
+        metadata: {'reason': reason ?? 'User requested'},
+        notifyGuest: true,
+        notifyOrganizer: true,
+        notifyStaff: true,
       );
 
       await _audit.logAction(
