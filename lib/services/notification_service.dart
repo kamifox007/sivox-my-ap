@@ -215,6 +215,33 @@ class NotificationService {
     }
   }
 
+  /// Sends booking-stage notifications through a permission-checked database RPC.
+  Future<void> sendBookingStageNotification({
+    required String bookingId,
+    required String title,
+    required String body,
+    required String type,
+    Map<String, dynamic>? metadata,
+    bool notifyGuest = true,
+    bool notifyOrganizer = true,
+    bool notifyStaff = false,
+  }) async {
+    try {
+      await supabase.rpc('send_booking_stage_notification', params: {
+        'p_booking_id': bookingId,
+        'p_title': title,
+        'p_body': body,
+        'p_type': type,
+        'p_metadata': metadata ?? <String, dynamic>{},
+        'p_notify_guest': notifyGuest,
+        'p_notify_organizer': notifyOrganizer,
+        'p_notify_staff': notifyStaff,
+      });
+    } catch (e) {
+      debugPrint('Error sending booking-stage notification: $e');
+    }
+  }
+
   /// Sends a notification to a specific user (fallback, works only if auth.uid() == userId).
   Future<void> sendNotificationToUser({
     required String userId,
