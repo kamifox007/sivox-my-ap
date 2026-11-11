@@ -36,10 +36,13 @@ WITH CHECK (
         )
         OR EXISTS (
           SELECT 1
-          FROM public.staff_assignments sa
-          WHERE sa.event_id = event_id
+          FROM public.events e
+          JOIN public.staff_assignments sa
+            ON sa.organizer_id = e.organizer_id
+          WHERE e.id = event_id
             AND sa.staff_id = auth.uid()
             AND sa.status = 'active'
+            AND (sa.event_id = e.id OR sa.event_id IS NULL)
             AND COALESCE(sa.permissions ->> 'can_generate', 'false') = 'true'
         )
       )
