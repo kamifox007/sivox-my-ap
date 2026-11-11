@@ -317,3 +317,111 @@ WITH CHECK (
     )
   )
 );
+
+-- Keep blacklist reads available to authorized security scanners, but require
+-- the separate can_block_guest permission for every blacklist mutation.
+ALTER TABLE public.blacklist ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Organizers/Staff Can Manage Blacklist" ON public.blacklist;
+DROP POLICY IF EXISTS "Sivox blacklist read authorized" ON public.blacklist;
+DROP POLICY IF EXISTS "Sivox blacklist insert authorized" ON public.blacklist;
+DROP POLICY IF EXISTS "Sivox blacklist update authorized" ON public.blacklist;
+DROP POLICY IF EXISTS "Sivox blacklist delete authorized" ON public.blacklist;
+
+CREATE POLICY "Sivox blacklist read authorized"
+ON public.blacklist
+FOR SELECT
+TO authenticated
+USING (
+  auth.uid() = user_id
+  OR EXISTS (
+    SELECT 1
+    FROM public.organizer_profiles op
+    WHERE op.id = club_id AND op.owner_id = auth.uid()
+  )
+  OR EXISTS (
+    SELECT 1
+    FROM public.staff_assignments sa
+    WHERE sa.organizer_id = club_id
+      AND sa.staff_id = auth.uid()
+      AND sa.status = 'active'
+      AND (
+        COALESCE(sa.permissions ->> 'can_scan', 'false') = 'true'
+        OR COALESCE(sa.permissions ->> 'can_block_guest', 'false') = 'true'
+      )
+  )
+);
+
+CREATE POLICY "Sivox blacklist insert authorized"
+ON public.blacklist
+FOR INSERT
+TO authenticated
+WITH CHECK (
+  EXISTS (
+    SELECT 1
+    FROM public.organizer_profiles op
+    WHERE op.id = club_id AND op.owner_id = auth.uid()
+  )
+  OR EXISTS (
+    SELECT 1
+    FROM public.staff_assignments sa
+    WHERE sa.organizer_id = club_id
+      AND sa.staff_id = auth.uid()
+      AND sa.status = 'active'
+      AND COALESCE(sa.permissions ->> 'can_block_guest', 'false') = 'true'
+  )
+);
+
+CREATE POLICY "Sivox blacklist update authorized"
+ON public.blacklist
+FOR UPDATE
+TO authenticated
+USING (
+  EXISTS (
+    SELECT 1
+    FROM public.organizer_profiles op
+    WHERE op.id = club_id AND op.owner_id = auth.uid()
+  )
+  OR EXISTS (
+    SELECT 1
+    FROM public.staff_assignments sa
+    WHERE sa.organizer_id = club_id
+      AND sa.staff_id = auth.uid()
+      AND sa.status = 'active'
+      AND COALESCE(sa.permissions ->> 'can_block_guest', 'false') = 'true'
+  )
+)
+WITH CHECK (
+  EXISTS (
+    SELECT 1
+    FROM public.organizer_profiles op
+    WHERE op.id = club_id AND op.owner_id = auth.uid()
+  )
+  OR EXISTS (
+    SELECT 1
+    FROM public.staff_assignments sa
+    WHERE sa.organizer_id = club_id
+      AND sa.staff_id = auth.uid()
+      AND sa.status = 'active'
+      AND COALESCE(sa.permissions ->> 'can_block_guest', 'false') = 'true'
+  )
+);
+
+CREATE POLICY "Sivox blacklist delete authorized"
+ON public.blacklist
+FOR DELETE
+TO authenticated
+USING (
+  EXISTS (
+    SELECT 1
+    FROM public.organizer_profiles op
+    WHERE op.id = club_id AND op.owner_id = auth.uid()
+  )
+  OR EXISTS (
+    SELECT 1
+    FROM public.staff_assignments sa
+    WHERE sa.organizer_id = club_id
+      AND sa.staff_id = auth.uid()
+      AND sa.status = 'active'
+      AND COALESCE(sa.permissions ->> 'can_block_guest', 'false') = 'true'
+  )
+);
