@@ -560,7 +560,7 @@ class BookingService {
     return null;
   }
 
-  Future<bool> markAsLate(String bookingId) async {
+  Future<bool> markAsLate(String bookingId, {String? assignmentId}) async {
     try {
       final response = await _callBookingStageRpc(
         'accept_booking_late_entry',
@@ -598,7 +598,7 @@ class BookingService {
         actionType: 'LATE_ENTRY_ACCEPTED',
         description: 'Late guest allowed by staff',
         relatedEventId: response['event_id']?.toString(),
-        metadata: {'booking_id': bookingId, 'payment_confirmed': true},
+        metadata: {'booking_id': bookingId, 'payment_confirmed': true, 'assignment_id': assignmentId},
       );
       return true;
     } catch (e) {
@@ -606,7 +606,7 @@ class BookingService {
     }
   }
 
-  Future<bool> verifySecurityClearance(String bookingId) async {
+  Future<bool> verifySecurityClearance(String bookingId, {String? assignmentId}) async {
     try {
       final response = await _callBookingStageRpc(
         'verify_booking_security_clearance',
@@ -625,7 +625,7 @@ class BookingService {
         actionType: 'SECURITY_CLEARED',
         description: 'First-stage validation: Security passed for booking $bookingId',
         relatedEventId: eventId,
-        metadata: {'booking_id': bookingId, 'guest_id': guestId},
+        metadata: {'booking_id': bookingId, 'guest_id': guestId, 'assignment_id': assignmentId},
       );
 
       await _notifications.sendNotificationToUser(
@@ -673,7 +673,7 @@ class BookingService {
     }
   }
 
-  Future<bool> confirmManagerPayment(String bookingId) async {
+  Future<bool> confirmManagerPayment(String bookingId, {String? assignmentId}) async {
     try {
       final managerId = supabase.auth.currentUser?.id;
       final response = await _callBookingStageRpc(
@@ -720,7 +720,7 @@ class BookingService {
     }
   }
 
-  Future<bool> approveBooking(String bookingId) async {
+  Future<bool> approveBooking(String bookingId, {String? assignmentId}) async {
     try {
       final response = await _callBookingStageRpc(
         'approve_event_booking',
@@ -745,7 +745,7 @@ class BookingService {
         actionType: 'BOOKING_APPROVED',
         description: 'Booking $bookingId approved for $eventTitle',
         relatedEventId: eventId,
-        metadata: {'booking_id': bookingId, 'guest_id': guestId},
+        metadata: {'booking_id': bookingId, 'guest_id': guestId, 'assignment_id': assignmentId},
       );
 
       final bookingData = await supabase
