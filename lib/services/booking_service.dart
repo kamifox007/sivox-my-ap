@@ -735,34 +735,31 @@ class BookingService {
 
   Future<bool> approveBooking(String bookingId) async {
     try {
-      final response = await supabase
-          .from('bookings')
-          .update({'payment_status': 'confirmed'})
-          .eq('id', bookingId)
-          .inFilter('payment_status', ['pending', 'pending_confirmation'])
-          .select('user_id, event_id, events(title)')
-          .maybeSingle();
-
+      final response = await _callBookingStageRpc(
+        'approve_event_booking',
+        bookingId,
+      );
       if (response == null) return false;
 
-      final String guestId = response['user_id'];
-      final String eventTitle = response['events']?['title'] ?? 'Event';
+      final String? guestId = response['user_id']?.toString();
+      if (guestId == null || guestId.isEmpty) return false;
+      final String eventTitle = response['event_title']?.toString() ?? 'Event';
+      final String? eventId = response['event_id']?.toString();
 
       await _notifications.sendNotificationToUser(
         userId: guestId,
         title: 'TICKET APPROVED'.tr,
         body: 'The organizer has approved your request for $eventTitle!'.tr,
         type: 'booking',
-        metadata: {'booking_id': bookingId, 'event_id': response['event_id']},
+        metadata: {'booking_id': bookingId, 'event_id': eventId},
       );
 
       await _audit.logAction(
         actionType: 'BOOKING_APPROVED',
         description: 'Booking $bookingId approved for $eventTitle',
-        relatedEventId: response['event_id']?.toString(),
+        relatedEventId: eventId,
         metadata: {'booking_id': bookingId, 'guest_id': guestId},
       );
-
       return true;
     } catch (e) {
       return false;
