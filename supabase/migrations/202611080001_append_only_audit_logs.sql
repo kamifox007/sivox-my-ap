@@ -37,3 +37,32 @@ BEGIN
   END LOOP;
 END;
 $$;
+
+-- The application writes metadata with every audit entry. Add it to the legacy
+-- central log and to optional role streams when those tables exist.
+ALTER TABLE public.staff_logs
+  ADD COLUMN IF NOT EXISTS metadata JSONB NOT NULL DEFAULT '{}'::jsonb;
+
+DO $$
+DECLARE
+  table_name text;
+BEGIN
+  FOREACH table_name IN ARRAY ARRAY['organizer_ledger', 'worker_logs', 'visitor_logs']
+  LOOP
+    IF to_regclass(format('public.%I', table_name)) IS NOT NULL THEN
+      EXECUTE format(
+        'ALTER TABLE public.%I ADD COLUMN IF NOT EXISTS metadata JSONB NOT NULL DEFAULT %L::jsonb',
+        table_name,
+        '{}'
+      );
+    END IF;
+  END LOOP;
+END;
+$$;
+
+DROP POLICY IF EXISTS "Sivox authenticated audit insert" ON public.staff_logs;
+CREATE POLICY "Sivox authenticated audit insert"
+ON public.staff_logs
+FOR INSERT
+TO authenticated
+WITH CHECK (user_id = auth.uid());
