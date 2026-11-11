@@ -17,7 +17,13 @@ import 'package:my_app/screens/organizer_main_wrapper.dart';
 class ScanEntryScreen extends StatefulWidget {
   final String? organizerId;
   final String? eventId;
-  const ScanEntryScreen({super.key, this.organizerId, this.eventId});
+  final String? assignmentId;
+  const ScanEntryScreen({
+    super.key,
+    this.organizerId,
+    this.eventId,
+    this.assignmentId,
+  });
 
   @override
   State<ScanEntryScreen> createState() => _ScanEntryScreenState();
@@ -155,32 +161,45 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
       // Resolve the active assignment for this organizer/event only. A staff
       // member may have multiple assignments, so never use an unscoped
       // maybeSingle() query.
+      var assignmentQuery = supabase
+          .from('staff_assignments')
+          .select('id, organizer_id, role, permissions, event_id')
+          .eq('staff_id', user.id)
+          .eq('status', 'active');
+      if (widget.assignmentId != null) {
+        assignmentQuery = assignmentQuery.eq('id', widget.assignmentId!);
+      }
       if (widget.organizerId != null) {
-        final assignments = await supabase
-            .from('staff_assignments')
-            .select('role, permissions, event_id')
-            .eq('staff_id', user.id)
-            .eq('organizer_id', widget.organizerId!)
-            .eq('status', 'active')
-            .order('created_at', ascending: false);
-        final eligibleAssignments = (assignments as List)
-            .where((item) =>
-                widget.eventId == null ||
-                item['event_id'] == null ||
-                item['event_id'].toString() == widget.eventId)
-            .toList();
-        if (eligibleAssignments.isNotEmpty) {
-          final assignment = eligibleAssignments.first as Map<String, dynamic>;
-          final rawPermissions = assignment['permissions'] as Map? ?? {};
-          if (!mounted) return;
-          setState(() {
-            _staffRole = assignment['role']?.toString() ?? 'role_security';
-            _staffPerms = rawPermissions.map<String, bool>(
-              (key, value) => MapEntry(key.toString(), value == true),
-            );
-            _staffName = user.userMetadata?['full_name'] ?? 'Staff';
-          });
-        }
+        assignmentQuery = assignmentQuery.eq('organizer_id', widget.organizerId!);
+      }
+
+      final assignments = await assignmentQuery.order(
+        'created_at',
+        ascending: false,
+      );
+      final eligibleAssignments = (assignments as List)
+          .where((item) =>
+              widget.eventId == null ||
+              item['event_id'] == null ||
+              item['event_id'].toString() == widget.eventId)
+          .toList()
+        ..sort((a, b) {
+          final aSpecific = a['event_id']?.toString() == widget.eventId;
+          final bSpecific = b['event_id']?.toString() == widget.eventId;
+          return (bSpecific ? 1 : 0).compareTo(aSpecific ? 1 : 0);
+        });
+
+      if (eligibleAssignments.isNotEmpty) {
+        final assignment = eligibleAssignments.first as Map<String, dynamic>;
+        final rawPermissions = assignment['permissions'] as Map? ?? {};
+        if (!mounted) return;
+        setState(() {
+          _staffRole = assignment['role']?.toString() ?? 'role_security';
+          _staffPerms = rawPermissions.map<String, bool>(
+            (key, value) => MapEntry(key.toString(), value == true),
+          );
+          _staffName = user.userMetadata?['full_name'] ?? 'Staff';
+        });
       }
     } catch (e) {
       debugPrint('Permission loading failed: $e');
@@ -264,12 +283,12 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
         _showResultSheet(icon: Icons.search_off, iconColor: Colors.orange, title: 'no_booking_found'.tr, subtitle: 'check_phone_again'.tr, isSuccess: false);
       } else {
         final booking = Booking.fromMap(response);
-        _processBookingResult(booking);
+        await _processBookingResult(booking);
       }
     } catch (e) {
       _showError(e.toString());
     } finally {
-      setState(() => _isProcessing = false);
+      if (mounted) setState(() => _isProcessing = false);
     }
   }
 
