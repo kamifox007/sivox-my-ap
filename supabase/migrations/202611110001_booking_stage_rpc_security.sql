@@ -42,6 +42,29 @@ SECURITY DEFINER
 SET search_path = public, pg_temp
 AS $$
 BEGIN
+  IF OLD.payment_status = 'confirmed'
+     AND NEW.payment_status IN ('pending', 'pending_confirmation') THEN
+    RAISE EXCEPTION 'BOOKING_APPROVAL_CANNOT_BE_REVERSED' USING ERRCODE = '55000';
+  END IF;
+
+  IF OLD.payment_status IN ('used', 'late_accepted')
+     AND NEW.payment_status IS DISTINCT FROM OLD.payment_status THEN
+    RAISE EXCEPTION 'BOOKING_ATTENDANCE_IS_FINAL' USING ERRCODE = '55000';
+  END IF;
+
+  IF OLD.security_cleared = TRUE AND NEW.security_cleared = FALSE THEN
+    RAISE EXCEPTION 'BOOKING_SECURITY_CLEARANCE_IS_FINAL' USING ERRCODE = '55000';
+  END IF;
+
+  IF OLD.payment_confirmed = TRUE AND NEW.payment_confirmed = FALSE THEN
+    RAISE EXCEPTION 'BOOKING_PAYMENT_CONFIRMATION_IS_FINAL' USING ERRCODE = '55000';
+  END IF;
+
+  IF OLD.confirmed_by_manager IS NOT NULL
+     AND NEW.confirmed_by_manager IS DISTINCT FROM OLD.confirmed_by_manager THEN
+    RAISE EXCEPTION 'BOOKING_PAYMENT_ACTOR_IS_FINAL' USING ERRCODE = '55000';
+  END IF;
+
   IF OLD.payment_status IN ('pending', 'pending_confirmation')
      AND NEW.payment_status = 'confirmed'
      AND NOT public.has_event_staff_permission(OLD.event_id, 'can_confirm_booking') THEN
