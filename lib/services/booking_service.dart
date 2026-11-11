@@ -629,7 +629,6 @@ class BookingService {
       final String? guestId = response['user_id']?.toString();
       if (guestId == null || guestId.isEmpty) return false;
       final String eventTitle = response['event_title']?.toString() ?? 'Event';
-      final String? organizerId = response['organizer_id']?.toString();
       final String? eventId = response['event_id']?.toString();
       final String guestName = response['user_name']?.toString() ?? 'Guest';
 
@@ -695,7 +694,7 @@ class BookingService {
             .maybeSingle();
         final guestName = userData?['full_name'] ?? 'Visitor';
         await _notifyOrganizerOfArrival(
-          organizerId,
+          bookingId,
           guestName,
           eventTitle,
           isFollower,
@@ -779,7 +778,7 @@ class BookingService {
         title: 'TICKET CANCELLED'.tr,
         body: 'Your ticket for $eventTitle has been cancelled.'.tr,
         type: 'booking_cancel',
-        metadata: {'reason': reason ?? 'User requested'},
+        metadata: {'reason': reason ?? 'User requested', 'guest_id': guestId},
         notifyGuest: true,
         notifyOrganizer: true,
         notifyStaff: true,
