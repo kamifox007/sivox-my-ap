@@ -383,6 +383,90 @@ class BookingService {
     }
   }
 
+  Future<bool> updateBookingStatus(
+    String bookingId,
+    String status, {
+    String? staffId,
+    String? eventId,
+    String? reason,
+  }) async {
+    // Critical booking transitions must use the permission-checked database
+    // functions; never perform these status changes with a direct client UPDATE.
+    if (status == 'confirmed') return approveBooking(bookingId);
+    if (status == 'used') return confirmManagerPayment(bookingId);
+    if (status == 'late_accepted') return markAsLate(bookingId);
+
+    try {
+      final Map<String, dynamic> updateData = {'payment_status': status};
+      if (reason != null) updateData['cancellation_reason'] = reason;
+
+      final response = await supabase
+          .from('bookings')
+          .update(updateData)
+          .eq('id', bookingId)
+          .select('user_id, user_name, event_id, events(title)')
+          .single();
+
+      final String guestId = response['user_id'].toString();
+      final String guestName = response['user_name'] ?? 'Attendee';
+      final String eventTitle = response['events']?['title'] ?? 'Event';
+
+      await _notifyBookingGuest(bookingId, guestId, status, eventTitle);
+      await _audit.logAction(
+        actionType: 'STATUS_UPDATE',
+        description: '$status confirmation for $guestName'.toUpperCase(),
+        relatedEventId: (eventId ?? response['event_id'])?.toString(),
+        metadata: {'booking_id': bookingId, 'staff_id': staffId},
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> approveRequest(
+    String bookingId, {
+    String? staffId,
+    String? eventId,
+  }) async {
+    return approveBooking(bookingId);
+  }
+
+  Future<void> _scheduleEventReminders(Booking result) async {
+    // dateTime is checked for robustness
+    final eventTimeStr = result.event?.dateTime;
+    if (eventTimeStr == null) return;
+
+    try {
+      final eventDate = DateTime.parse(eventTimeStr);
+      final now = DateTime.now();
+
+      final reminderDate12 = eventDate.subtract(const Duration(hours: 12));
+      if (reminderDate12.isAfter(now)) {
+        await NotificationService.scheduleReminder(
+          id: result.id.hashCode,
+          title: 'REMINDER_12H_TITLE'.trArgs([result.event!.title]),
+          body: 'REMINDER_12H_BODY'.tr,
+          scheduledDate: reminderDate12,
+        );
+      }
+
+      final reminderDate3 = eventDate.subtract(const Duration(hours: 3));
+      if (reminderDate3.isAfter(now)) {
+        await NotificationService.scheduleReminder(
+          id: result.id.hashCode + 1,
+          title: 'REMINDER_3H_TITLE'.trArgs([result.event!.title]),
+          body: 'REMINDER_3H_BODY'.tr,
+          scheduledDate: reminderDate3,
+        );
+      }
+    } catch (_) {}
+  }
+
+  Future<bool> declineRequest(String bookingId, {String? staffId, String? eventId, String? reason}) async {
+    return updateBookingStatus(bookingId, 'cancelled', staffId: staffId, eventId: eventId, reason: reason);
+  }
+
   Future<void> _notifyBookingGuest(
     String bookingId,
     String userId,
