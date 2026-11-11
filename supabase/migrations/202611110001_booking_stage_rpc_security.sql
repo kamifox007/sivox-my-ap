@@ -48,6 +48,19 @@ BEGIN
     RAISE EXCEPTION 'BOOKING_APPROVAL_FORBIDDEN' USING ERRCODE = '42501';
   END IF;
 
+  IF NEW.payment_status = 'cancelled'
+     AND OLD.payment_status IS DISTINCT FROM 'cancelled'
+     AND OLD.user_id IS DISTINCT FROM auth.uid()
+     AND NOT public.has_event_staff_permission(OLD.event_id, 'can_cancel') THEN
+    RAISE EXCEPTION 'BOOKING_CANCELLATION_FORBIDDEN' USING ERRCODE = '42501';
+  END IF;
+
+  IF NEW.payment_status = 'ejected'
+     AND OLD.payment_status IS DISTINCT FROM 'ejected'
+     AND NOT public.has_event_staff_permission(OLD.event_id, 'can_eject_guest') THEN
+    RAISE EXCEPTION 'BOOKING_EJECTION_FORBIDDEN' USING ERRCODE = '42501';
+  END IF;
+
   IF NEW.security_cleared IS DISTINCT FROM OLD.security_cleared
      AND NEW.security_cleared = TRUE THEN
     IF OLD.payment_status <> 'confirmed'
