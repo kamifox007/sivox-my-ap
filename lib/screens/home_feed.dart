@@ -1052,7 +1052,7 @@ class _HomeFeedScreenState extends State<HomeFeedScreen> with SingleTickerProvid
           final cat = _categories[index];
           final catId = cat['id'] as String;
           final catLabel = cat['label'] as String? ?? catId;
-          final catIcon = cat['icon'] as IconData?;
+          final catIcon = cat['icon'] as FaIconData?;
           final sel = _selectedCategory == catId;
           return GestureDetector(
             onTap: () async {

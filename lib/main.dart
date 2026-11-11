@@ -17,6 +17,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+String _safeStackTrace(StackTrace? stack) {
+  final value = stack?.toString() ?? '';
+  return value.length > 1000 ? value.substring(0, 1000) : value;
+}
+
 class SecureLocalStorage extends LocalStorage {
   const SecureLocalStorage();
 
@@ -79,7 +84,7 @@ void main() async {
         description: 'Flutter Framework Error: ${details.exceptionAsString()}',
         metadata: {
           'library': details.library ?? 'unknown',
-          'stack': details.stack?.toString().substring(0, 1000) ?? '',
+          'stack': _safeStackTrace(details.stack),
         },
       );
     } catch (_) {}
@@ -95,7 +100,7 @@ void main() async {
         actionType: 'CLIENT_CRASH_ASYNC',
         description: 'Async Error: $error',
         metadata: {
-          'stack': stack.toString().substring(0, 1000),
+          'stack': _safeStackTrace(stack),
         },
       );
     } catch (_) {}

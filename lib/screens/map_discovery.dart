@@ -363,7 +363,7 @@ class _MapDiscoveryScreenState extends State<MapDiscoveryScreen> {
                               ),
                               child: Row(
                                 children: [
-                                  Icon(opt['icon'], color: isSel ? Colors.black : Colors.white60, size: 18),
+                                  FaIcon(opt['icon'], color: isSel ? Colors.black : Colors.white60, size: 18),
                                   if (isSel) ...[
                                     const SizedBox(width: 8),
                                     Text(opt['label'].toString().tr, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 11)),
