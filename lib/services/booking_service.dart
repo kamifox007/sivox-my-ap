@@ -771,7 +771,7 @@ class BookingService {
             'cancellation_reason': reason ?? 'User requested',
           })
           .eq('id', bookingId)
-          .select('user_id, events(title)')
+          .select('user_id, event_id, events(title)')
           .single();
 
       final String guestId = response['user_id'];
@@ -787,7 +787,8 @@ class BookingService {
       await _audit.logAction(
         actionType: 'BOOKING_CANCELLED',
         description: 'Booking $bookingId cancelled. Reason: ${reason ?? "User requested"}',
-        relatedEventId: eventId,
+        relatedEventId: (eventId ?? response['event_id'])?.toString(),
+        metadata: {'booking_id': bookingId},
       );
 
       return true;
