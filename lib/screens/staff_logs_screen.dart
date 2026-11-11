@@ -402,7 +402,6 @@ Generated: ${DateTime.now().toIso8601String()}
           timeStr = DateFormat('HH:mm').format(date);
         }
 
-        final isMyLog = log['user_id'] == _currentUserId;
         final isManual =
             log['action_type'] == 'MANUAL_BOOKING' ||
             log['action_type'] == 'ON_SITE_GENERATION';
