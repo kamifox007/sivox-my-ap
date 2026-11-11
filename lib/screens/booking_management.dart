@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/theme/app_theme.dart';
 import 'package:my_app/services/translation_service.dart';
-import 'package:my_app/services/audit_service.dart';
 import 'package:my_app/services/booking_service.dart';
 import 'package:my_app/services/event_service.dart';
 import 'package:my_app/models/booking.dart';
@@ -26,7 +25,6 @@ class BookingManagementScreen extends StatefulWidget {
 class _BookingManagementScreenState extends State<BookingManagementScreen> {
   final _bookingService = BookingService();
   final _eventService = EventService();
-  final _auditService = AuditService();
   final supabase = Supabase.instance.client;
 
   bool _isLoading = true;
@@ -108,13 +106,6 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
         ? await _bookingService.approveBooking(id)
         : await _bookingService.updateBookingStatus(id, status);
     if (ok) {
-      final booking = _bookings.firstWhere((b) => b.id == id);
-      await _auditService.logAction(
-        actionType: 'CONFIRM_BOOKING',
-        description: 'Confirmed booking for ${booking.userName}',
-        relatedEventId: booking.eventId,
-      );
-
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -158,13 +149,6 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
                     reason: reason.tr,
                   );
                   if (ok) {
-                    final booking = _bookings.firstWhere((b) => b.id == id);
-                    await _auditService.logAction(
-                      actionType: 'CANCEL_BOOKING',
-                      description:
-                          'Cancelled: ${booking.userName} - Reason: ${reason.tr}',
-                      relatedEventId: booking.eventId,
-                    );
                     _loadData();
                   }
                 },
