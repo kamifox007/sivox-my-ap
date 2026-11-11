@@ -93,6 +93,15 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
     }
   }
 
+  Map<String, dynamic> _auditMetadata([
+    Map<String, dynamic> details = const {},
+  ]) {
+    return {
+      'assignment_id': widget.assignmentId,
+      ...details,
+    };
+  }
+
   Future<void> _loadPermissions() async {
     final user = supabase.auth.currentUser;
     if (user == null) {
@@ -353,7 +362,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
         actionType: 'SCANNER_ACCESS_DENIED',
         description: 'Scanner access denied for mode $_currentMode',
         relatedEventId: booking.eventId,
-        metadata: {'booking_id': booking.id, 'mode': _currentMode.name},
+        metadata: _auditMetadata({'booking_id': booking.id, 'mode': _currentMode.name}),
       );
       _showResultSheet(
         icon: Icons.lock_outline,
@@ -454,7 +463,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
             actionType: 'SECURITY_ENTRY',
             description: 'SEC_ENTRY (Auto) | Guest: ${booking.userName} | Guests: ${booking.numGuests}',
             relatedEventId: booking.eventId,
-            metadata: {'guest_id': booking.userId, 'num_guests': booking.numGuests}
+            metadata: _auditMetadata({'guest_id': booking.userId, 'num_guests': booking.numGuests})
           );
         }
       }
@@ -486,7 +495,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
             actionType: 'MANAGER_CHECKIN',
             description: 'MGR_CHECKIN (Auto) | Guest: ${booking.userName} | Guests: ${booking.numGuests}',
             relatedEventId: booking.eventId,
-            metadata: {'guest_id': booking.userId, 'num_guests': booking.numGuests}
+            metadata: _auditMetadata({'guest_id': booking.userId, 'num_guests': booking.numGuests})
           );
           if (mounted) {
             setState(() {
@@ -643,7 +652,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
                               actionType: 'SECURITY_ENTRY',
                               description: 'SEC_ENTRY | Guest: ${booking.userName} | Guests: ${booking.numGuests}',
                               relatedEventId: booking.eventId,
-                              metadata: {'guest_id': booking.userId, 'num_guests': booking.numGuests}
+                              metadata: _auditMetadata({'guest_id': booking.userId, 'num_guests': booking.numGuests})
                             );
                           }
                         } else {
@@ -653,7 +662,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
                               actionType: 'MANAGER_CHECKIN',
                               description: 'MGR_CHECKIN | Guest: ${booking.userName} | Guests: ${booking.numGuests}',
                               relatedEventId: booking.eventId,
-                              metadata: {'guest_id': booking.userId, 'num_guests': booking.numGuests}
+                              metadata: _auditMetadata({'guest_id': booking.userId, 'num_guests': booking.numGuests})
                             );
                           }
                         }
@@ -703,7 +712,8 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
                                   await _auditService.logAction(
                                     actionType: 'LATE_ACCEPTED', 
                                     description: 'LATE_ACC | Guest: ${booking.userName}', 
-                                    relatedEventId: booking.eventId
+                                    relatedEventId: booking.eventId,
+                                    metadata: _auditMetadata({'booking_id': booking.id}),
                                   );
                                   setState(() => _scannedToday += booking.numGuests);
                                   if (ctx.mounted) Navigator.pop(ctx);
@@ -839,7 +849,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
     try {
       final ok = await _enforcementService.ejectGuest(bookingId: booking.id, reason: 'reason_security'.tr);
       if (ok && mounted) {
-        await _auditService.logAction(actionType: 'SECURITY_EJECT', description: 'User ${booking.userName} ejected from event.', relatedEventId: booking.eventId);
+        await _auditService.logAction(actionType: 'SECURITY_EJECT', description: 'User ${booking.userName} ejected from event.', relatedEventId: booking.eventId, metadata: _auditMetadata({'booking_id': booking.id}));
         if (ctx.mounted) Navigator.pop(ctx);
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -856,7 +866,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
     try {
       final ok = await _enforcementService.addToBlacklist(clubId: widget.organizerId ?? '', phone: booking.guestPhone, userId: booking.userId, reason: 'reason_security'.tr);
       if (ok && mounted) {
-        await _auditService.logAction(actionType: 'SECURITY_BLOCK', description: 'User ${booking.userName} added to permanent blacklist.', relatedEventId: booking.eventId);
+        await _auditService.logAction(actionType: 'SECURITY_BLOCK', description: 'User ${booking.userName} added to permanent blacklist.', relatedEventId: booking.eventId, metadata: _auditMetadata({'booking_id': booking.id}));
         if (ctx.mounted) Navigator.pop(ctx);
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -928,6 +938,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
                 ? 'Manual Pass | ID: $passId | Mode: $_currentMode'
                 : 'Phone Entry | ID: $passId | Mode: $_currentMode',
             relatedEventId: _lastEventId,
+            metadata: _auditMetadata({'pass_id': passId}),
           );
           
           if (!mounted) return;
@@ -1465,6 +1476,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
                         actionType: 'MANUAL_TICKET',
                         description: 'INSTANT TICKET | SN: ${booking.qrCode} | PASS: $passId | Guests: ${booking.numGuests}',
                         relatedEventId: _lastEventId,
+                        metadata: _auditMetadata({'booking_id': booking.id, 'pass_id': passId}),
                       );
                       
                       if (mounted) {
