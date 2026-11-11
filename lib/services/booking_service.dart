@@ -411,16 +411,7 @@ class BookingService {
     String? staffId,
     String? eventId,
   }) async {
-    final success = await approveBooking(bookingId);
-    if (success) {
-      final booking = await supabase
-          .from('bookings')
-          .select('*, events(*)')
-          .eq('id', bookingId)
-          .single();
-      await _scheduleEventReminders(Booking.fromMap(booking));
-    }
-    return success;
+    return approveBooking(bookingId);
   }
 
   Future<void> _scheduleEventReminders(Booking result) async {
@@ -756,6 +747,15 @@ class BookingService {
         relatedEventId: eventId,
         metadata: {'booking_id': bookingId, 'guest_id': guestId},
       );
+
+      final bookingData = await supabase
+          .from('bookings')
+          .select('*, events(*)')
+          .eq('id', bookingId)
+          .maybeSingle();
+      if (bookingData != null) {
+        await _scheduleEventReminders(Booking.fromMap(bookingData));
+      }
       return true;
     } catch (e) {
       return false;
