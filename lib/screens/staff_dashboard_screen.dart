@@ -54,7 +54,10 @@ class _StaffDashboardState extends State<StaffDashboard> {
 
   Future<void> _initShiftData() async {
     final shift = await _shiftService.getCurrentShift();
-    final assignment = await _staffService.getActiveAssignment();
+    final fetchedAssignment = await _staffService.getActiveAssignment();
+    final assignment = fetchedAssignment?['status'] == 'active'
+        ? fetchedAssignment
+        : null;
     if (mounted) {
       setState(() {
         _currentShift = shift;
@@ -189,6 +192,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ScanEntryScreen(
                         organizerId: widget.organizerId ?? _activeAssignment?['organizer_id']?.toString(),
                         eventId: widget.currentEventId ?? _activeAssignment?['event_id']?.toString(),
+                        assignmentId: _activeAssignment?['id']?.toString(),
                       ))),
                     ),
                   if (_activeAssignment?['permissions']?['can_manage_guests'] == true)
