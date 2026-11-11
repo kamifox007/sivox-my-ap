@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS public.worker_logs (
   role TEXT,
   action_type TEXT,
   description TEXT,
-  related_event_id UUID,
+  related_event_id UUID REFERENCES public.events(id) ON DELETE SET NULL,
   metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS public.visitor_logs (
   role TEXT,
   action_type TEXT,
   description TEXT,
-  related_event_id UUID,
+  related_event_id UUID REFERENCES public.events(id) ON DELETE SET NULL,
   metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
