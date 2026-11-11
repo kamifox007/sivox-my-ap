@@ -646,7 +646,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
                       try {
                         bool success = false;
                         if (_currentMode == ScannerMode.security) {
-                          success = await _bookingService.verifySecurityClearance(booking.id);
+                          success = await _bookingService.verifySecurityClearance(booking.id, assignmentId: widget.assignmentId);
                           if (success) {
                             await _auditService.logAction(
                               actionType: 'SECURITY_ENTRY',
@@ -656,7 +656,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
                             );
                           }
                         } else {
-                          success = await _bookingService.confirmManagerPayment(booking.id);
+                          success = await _bookingService.confirmManagerPayment(booking.id, assignmentId: widget.assignmentId);
                           if (success) {
                             await _auditService.logAction(
                               actionType: 'MANAGER_CHECKIN',
@@ -923,9 +923,9 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
     try {
       bool ok = false;
       if (_currentMode == ScannerMode.security) {
-        ok = await _bookingService.verifySecurityClearance(_foundBooking!.id);
+        ok = await _bookingService.verifySecurityClearance(_foundBooking!.id, assignmentId: widget.assignmentId);
       } else {
-        ok = await _bookingService.confirmManagerPayment(_foundBooking!.id);
+        ok = await _bookingService.confirmManagerPayment(_foundBooking!.id, assignmentId: widget.assignmentId);
       }
 
       if (ok) {
