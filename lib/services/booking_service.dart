@@ -344,13 +344,23 @@ class BookingService {
       if (targetUser == null || targetUser['id'] == fromUser.id) return false;
       final String targetId = targetUser['id'].toString();
 
+      final bookingInfo = await supabase
+          .from('bookings')
+          .select('events(title)')
+          .eq('id', bookingId)
+          .eq('user_id', fromUser.id)
+          .maybeSingle();
+      if (bookingInfo == null) return false;
+      final String eventTitle =
+          bookingInfo['events']?['title']?.toString() ?? 'Event';
+
       final dynamic result = await supabase.rpc(
         'transfer_booking_ticket',
         params: {
           'p_booking_id': bookingId,
           'p_target_user_id': targetId,
           'p_title': 'TICKET_RECEIVED_TITLE'.tr,
-          'p_body': 'TICKET_RECEIVED_BODY'.trArgs(['your event']),
+          'p_body': 'TICKET_RECEIVED_BODY'.trArgs([eventTitle]),
         },
       );
 
