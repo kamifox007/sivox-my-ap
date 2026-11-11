@@ -456,7 +456,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
       bool success = true;
       Booking displayBooking = booking;
       if (!booking.securityCleared) {
-        success = await _bookingService.verifySecurityClearance(booking.id);
+        success = await _bookingService.verifySecurityClearance(booking.id, assignmentId: widget.assignmentId);
         if (success) {
           displayBooking = booking.copyWith(securityCleared: true);
           await _auditService.logAction(
@@ -489,7 +489,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
         );
       } else {
         // Auto confirm if not late
-        bool success = await _bookingService.confirmManagerPayment(booking.id);
+        bool success = await _bookingService.confirmManagerPayment(booking.id, assignmentId: widget.assignmentId);
         if (success) {
           await _auditService.logAction(
             actionType: 'MANAGER_CHECKIN',
@@ -707,7 +707,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
                             onPressed: _isActionProcessing ? null : () async {
                               setState(() => _isActionProcessing = true);
                               try {
-                                final success = await _bookingService.markAsLate(booking.id);
+                                final success = await _bookingService.markAsLate(booking.id, assignmentId: widget.assignmentId);
                                 if (success && mounted) {
                                   await _auditService.logAction(
                                     actionType: 'LATE_ACCEPTED', 
