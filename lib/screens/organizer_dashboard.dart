@@ -18,7 +18,7 @@ import 'package:my_app/screens/club_profile.dart';
 import 'package:my_app/screens/notifications_screen.dart';
 import 'package:my_app/screens/club_management_hub.dart';
 import 'package:my_app/screens/organizer_main_wrapper.dart';
-import 'package:my_app/screens/booking_management.dart';
+import 'package:my_app/screens/booking_management.dart' show BookingManagementScreen;
 import 'package:my_app/screens/marketing_engine_screen.dart';
 import 'package:my_app/screens/broadcast_screen.dart';
 import 'package:my_app/screens/mission_matrix_screen.dart';
