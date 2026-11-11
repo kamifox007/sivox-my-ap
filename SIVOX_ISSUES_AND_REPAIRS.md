@@ -17,6 +17,8 @@ Last reviewed: 2026-11-11
 | SIV-010 | Error reporting | Error handlers truncated stack traces with `substring(0, 1000)` without checking length; short traces could throw a second error. | Medium | Fixed on working branch; CI pending | `lib/main.dart` now uses `_safeStackTrace` for nullable and short traces. |
 | SIV-011 | Booking check-in transitions | Security clearance and manager payment confirmation previously updated bookings by ID alone, without guarding expected prior state or detecting a no-row update. | Critical | Fixed on working branch; CI pending | `lib/services/booking_service.dart` now requires confirmed/not-yet-cleared for security and confirmed/cleared/not-yet-paid for manager confirmation; both check for a returned row. Database RLS/RPC enforcement remains unverified. |
 
+| SIV-012 | Flutter analyzer / theme | Android CI `flutter analyze` failed because `CupertinoPageTransitionsBuilder` was referenced without importing its Cupertino library. | Medium | Fixed on working branch; rerun pending | `lib/theme/app_theme.dart` now imports `package:flutter/cupertino.dart`; verify latest CI before closing. |
+
 ## Change discipline
 - Every repair must be tied to a root cause and a focused diff.
 - Keep historical behavior unless evidence shows it is defective.
