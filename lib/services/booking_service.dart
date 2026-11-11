@@ -337,122 +337,42 @@ class BookingService {
 
       final targetUser = await supabase
           .from('profiles')
-          .select('id, full_name')
+          .select('id')
           .eq('phone', targetPhone.trim())
           .maybeSingle();
 
       if (targetUser == null || targetUser['id'] == fromUser.id) return false;
-      final String toId = targetUser['id'];
-      
-      final response = await supabase
-          .from('bookings')
-          .update({'user_id': toId, 'user_name': targetUser['full_name']})
-          .eq('id', bookingId)
-          .select('events(title)')
-          .single();
-      
-      final String eventTitle = response['events']?['title'] ?? 'Event';
+      final String targetId = targetUser['id'].toString();
 
-      await _notifications.sendNotificationToUser(
-        userId: toId,
-        title: 'TICKET_RECEIVED_TITLE'.tr,
-        body: 'TICKET_RECEIVED_BODY'.trArgs([eventTitle]),
-        type: 'booking',
+      final dynamic result = await supabase.rpc(
+        'transfer_booking_ticket',
+        params: {
+          'p_booking_id': bookingId,
+          'p_target_user_id': targetId,
+          'p_title': 'TICKET_RECEIVED_TITLE'.tr,
+          'p_body': 'TICKET_RECEIVED_BODY'.trArgs(['your event']),
+        },
       );
+
+      if (result is! List || result.isEmpty) return false;
+      final transferred = Map<String, dynamic>.from(result.first as Map);
+      final String? eventId = transferred['event_id']?.toString();
+      final String eventTitle =
+          transferred['event_title']?.toString() ?? 'Event';
 
       await _audit.logAction(
         actionType: 'TICKET_TRANSFERRED',
-        description: 'Ticket $bookingId moved from ${fromUser.id} to $toId',
-      );
-
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<bool> updateBookingStatus(
-    String bookingId,
-    String status, {
-    String? staffId,
-    String? eventId,
-    String? reason,
-  }) async {
-    // Critical booking transitions must use the permission-checked database
-    // functions; never perform these status changes with a direct client UPDATE.
-    if (status == 'confirmed') return approveBooking(bookingId);
-    if (status == 'used') return confirmManagerPayment(bookingId);
-    if (status == 'late_accepted') return markAsLate(bookingId);
-
-    try {
-      final Map<String, dynamic> updateData = {'payment_status': status};
-      if (reason != null) updateData['cancellation_reason'] = reason;
-
-      final response = await supabase
-          .from('bookings')
-          .update(updateData)
-          .eq('id', bookingId)
-          .select('user_id, user_name, event_id, events(title)')
-          .single();
-
-      final String guestId = response['user_id'].toString();
-      final String guestName = response['user_name'] ?? 'Attendee';
-      final String eventTitle = response['events']?['title'] ?? 'Event';
-
-      await _notifyBookingGuest(bookingId, guestId, status, eventTitle);
-      await _audit.logAction(
-        actionType: 'STATUS_UPDATE',
-        description: '$status confirmation for $guestName'.toUpperCase(),
-        relatedEventId: (eventId ?? response['event_id'])?.toString(),
-        metadata: {'booking_id': bookingId, 'staff_id': staffId},
+        description: 'Ticket $bookingId moved from ${fromUser.id} to $targetId',
+        relatedEventId: eventId,
+        metadata: {
+          'booking_id': bookingId,
+          'target_user_id': targetId,
+        },
       );
       return true;
     } catch (e) {
       return false;
     }
-  }
-
-  Future<bool> approveRequest(
-    String bookingId, {
-    String? staffId,
-    String? eventId,
-  }) async {
-    return approveBooking(bookingId);
-  }
-
-  Future<void> _scheduleEventReminders(Booking result) async {
-    // dateTime is checked for robustness
-    final eventTimeStr = result.event?.dateTime;
-    if (eventTimeStr == null) return;
-
-    try {
-      final eventDate = DateTime.parse(eventTimeStr);
-      final now = DateTime.now();
-
-      final reminderDate12 = eventDate.subtract(const Duration(hours: 12));
-      if (reminderDate12.isAfter(now)) {
-        await NotificationService.scheduleReminder(
-          id: result.id.hashCode,
-          title: 'REMINDER_12H_TITLE'.trArgs([result.event!.title]),
-          body: 'REMINDER_12H_BODY'.tr,
-          scheduledDate: reminderDate12,
-        );
-      }
-
-      final reminderDate3 = eventDate.subtract(const Duration(hours: 3));
-      if (reminderDate3.isAfter(now)) {
-        await NotificationService.scheduleReminder(
-          id: result.id.hashCode + 1,
-          title: 'REMINDER_3H_TITLE'.trArgs([result.event!.title]),
-          body: 'REMINDER_3H_BODY'.tr,
-          scheduledDate: reminderDate3,
-        );
-      }
-    } catch (_) {}
-  }
-
-  Future<bool> declineRequest(String bookingId, {String? staffId, String? eventId, String? reason}) async {
-    return updateBookingStatus(bookingId, 'cancelled', staffId: staffId, eventId: eventId, reason: reason);
   }
 
   Future<void> _notifyBookingGuest(
