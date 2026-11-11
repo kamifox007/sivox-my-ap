@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS public.organizer_ledger (
   role TEXT,
   action_type TEXT,
   description TEXT,
-  related_event_id UUID,
+  related_event_id UUID REFERENCES public.events(id) ON DELETE SET NULL,
   metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -224,6 +224,52 @@ BEGIN
         WHERE conrelid = to_regclass(format('public.%I', table_name))
           AND contype = 'f'
           AND pg_get_constraintdef(oid) ILIKE 'FOREIGN KEY (user_id)%'
+      LOOP
+        replacement_definition := regexp_replace(
+          fk.definition,
+          'ON DELETE CASCADE',
+          'ON DELETE SET NULL',
+          'i'
+        );
+        IF replacement_definition IS DISTINCT FROM fk.definition THEN
+          EXECUTE format(
+            'ALTER TABLE public.%I DROP CONSTRAINT %I',
+            table_name,
+            fk.conname
+          );
+          EXECUTE format(
+            'ALTER TABLE public.%I ADD CONSTRAINT %I %s',
+            table_name,
+            fk.conname,
+            replacement_definition
+          );
+        END IF;
+      END LOOP;
+    END IF;
+  END LOOP;
+END;
+$$;
+
+-- Event deletion should detach the reference, not delete or block audit history.
+DO $$
+DECLARE
+  table_name text;
+  fk record;
+  replacement_definition text;
+BEGIN
+  FOREACH table_name IN ARRAY ARRAY[
+    'organizer_ledger',
+    'worker_logs',
+    'visitor_logs'
+  ]
+  LOOP
+    IF to_regclass(format('public.%I', table_name)) IS NOT NULL THEN
+      FOR fk IN
+        SELECT conname, pg_get_constraintdef(oid) AS definition
+        FROM pg_constraint
+        WHERE conrelid = to_regclass(format('public.%I', table_name))
+          AND contype = 'f'
+          AND pg_get_constraintdef(oid) ILIKE 'FOREIGN KEY (related_event_id)%'
       LOOP
         replacement_definition := regexp_replace(
           fk.definition,
