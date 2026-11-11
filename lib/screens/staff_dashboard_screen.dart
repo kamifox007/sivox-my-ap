@@ -206,7 +206,8 @@ class _StaffDashboardState extends State<StaffDashboard> {
                         eventId: widget.currentEventId ?? _activeAssignment?['event_id']?.toString(),
                       ))),
                     ),
-                  if (_activeAssignment?['permissions']?['can_confirm_booking'] == true)
+                  if (_activeAssignment?['permissions']?['can_confirm_booking'] == true ||
+                      _activeAssignment?['permissions']?['can_cancel'] == true)
                     _buildToolCard(
                       context,
                       icon: Icons.fact_check_outlined,
@@ -219,6 +220,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
                             clubId: widget.organizerId ?? _activeAssignment?['organizer_id']?.toString(),
                             eventId: widget.currentEventId ?? _activeAssignment?['event_id']?.toString(),
                             allowCancellation: _activeAssignment?['permissions']?['can_cancel'] == true,
+                            allowApproval: _activeAssignment?['permissions']?['can_confirm_booking'] == true,
                             assignmentId: _activeAssignment?['id']?.toString(),
                           ),
                         ),
