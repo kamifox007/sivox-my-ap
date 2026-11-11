@@ -393,7 +393,7 @@ class BookingService {
       final String guestName = response['user_name'] ?? 'Attendee';
       final String eventTitle = response['events']?['title'] ?? 'Event';
 
-      await _notifyBookingGuest(guestId, status, eventTitle);
+      await _notifyBookingGuest(bookingId, guestId, status, eventTitle);
       await _audit.logAction(
         actionType: 'STATUS_UPDATE',
         description: '$status confirmation for $guestName'.toUpperCase(),
@@ -449,14 +449,24 @@ class BookingService {
     return updateBookingStatus(bookingId, 'cancelled', staffId: staffId, eventId: eventId, reason: reason);
   }
 
-  Future<void> _notifyBookingGuest(String userId, String status, String eventTitle) async {
+  Future<void> _notifyBookingGuest(
+    String bookingId,
+    String userId,
+    String status,
+    String eventTitle,
+  ) async {
     String title = '';
     String body = '';
+    String notificationType = 'booking';
 
     try {
       String guestName = ' زائر ';
       if (status == 'used' || status == 'late_accepted') {
-        final userData = await supabase.from('profiles').select('full_name').eq('id', userId).maybeSingle();
+        final userData = await supabase
+            .from('profiles')
+            .select('full_name')
+            .eq('id', userId)
+            .maybeSingle();
         if (userData != null) guestName = userData['full_name'];
       }
 
@@ -472,58 +482,54 @@ class BookingService {
         case 'cancelled':
           title = 'TICKET_REJECTED'.tr;
           body = 'declined_notice_body'.trArgs([eventTitle]);
+          notificationType = 'booking_cancel';
           break;
         case 'used':
         case 'late_accepted':
           title = 'welcome_visitor_title'.trArgs([guestName]);
           body = 'welcome_visitor_body'.trArgs([eventTitle]);
+          notificationType =
+              status == 'late_accepted' ? 'late' : 'presence';
+          break;
+        case 'ejected':
+          title = 'TICKET_REJECTED'.tr;
+          body = 'Your ticket for $eventTitle has been revoked.'.tr;
+          notificationType = 'ejected';
           break;
       }
 
       if (title.isNotEmpty) {
-        await _notifications.sendNotificationToUser(
-          userId: userId,
+        await _notifications.sendBookingStageNotification(
+          bookingId: bookingId,
           title: title,
           body: body,
-          type: 'booking',
+          type: notificationType,
+          metadata: {'status': status},
+          notifyGuest: true,
+          notifyOrganizer: false,
+          notifyStaff: false,
         );
       }
     } catch (_) {}
   }
 
-  Future<void> _notifyOrganizerOfArrival(String organizerId, String guestName, String eventTitle, bool isFollower) async {
-    try {
-      final String prefix = isFollower ? '💎 VIP FOLLOWED' : '👤 VISITOR';
-      
-      // Notify Organizer
-      await _notifications.sendNotificationToUser(
-        userId: organizerId,
-        title: '$prefix ARRIVED'.tr,
-        body: '$guestName ${'has_arrived_at'.tr} $eventTitle',
-        type: 'presence',
-        metadata: {'guest_name': guestName, 'is_vip': isFollower},
-      );
-
-      // Notify Staff (Managers and Security)
-      final staffRes = await supabase
-          .from('staff_assignments')
-          .select('staff_id')
-          .eq('organizer_id', organizerId)
-          .eq('status', 'active')
-          .neq('staff_id', organizerId);
-      
-      final staffList = staffRes as List;
-      for (var staff in staffList) {
-        final String staffId = staff['staff_id'];
-        await _notifications.sendNotificationToUser(
-          userId: staffId,
-          title: '$prefix ARRIVED'.tr,
-          body: '$guestName ${'has_arrived_at'.tr} $eventTitle',
-          type: 'presence',
-          metadata: {'guest_name': guestName, 'is_vip': isFollower},
-        );
-      }
-    } catch (_) {}
+  Future<void> _notifyOrganizerOfArrival(
+    String bookingId,
+    String guestName,
+    String eventTitle,
+    bool isFollower,
+  ) async {
+    final String prefix = isFollower ? '💎 VIP FOLLOWED' : '👤 VISITOR';
+    await _notifications.sendBookingStageNotification(
+      bookingId: bookingId,
+      title: '$prefix ARRIVED'.tr,
+      body: '$guestName ${'has_arrived_at'.tr} $eventTitle',
+      type: 'presence',
+      metadata: {'guest_name': guestName, 'is_vip': isFollower},
+      notifyGuest: false,
+      notifyOrganizer: true,
+      notifyStaff: true,
+    );
   }
 
   Future<bool> markAsUsed(String bookingId, {String? tableNumber}) async {
@@ -573,7 +579,7 @@ class BookingService {
       final String eventTitle = response['event_title']?.toString() ?? 'Event';
       final String? organizerId = response['organizer_id']?.toString();
 
-      await _notifyBookingGuest(guestId, 'late_accepted', eventTitle);
+      await _notifyBookingGuest(bookingId, guestId, 'late_accepted', eventTitle);
 
       if (organizerId != null) {
         final isFollower = await _followService.isFollowing(
@@ -687,7 +693,7 @@ class BookingService {
       final String eventTitle = response['event_title']?.toString() ?? 'Event';
       final String? organizerId = response['organizer_id']?.toString();
 
-      await _notifyBookingGuest(guestId, 'used', eventTitle);
+      await _notifyBookingGuest(bookingId, guestId, 'used', eventTitle);
 
       if (organizerId != null) {
         final isFollower = await _followService.isFollowing(
