@@ -10,12 +10,14 @@ class BookingManagementScreen extends StatefulWidget {
   final String? clubId;
   final String? eventId;
   final bool allowCancellation;
+  final bool allowApproval;
   final String? assignmentId;
   const BookingManagementScreen({
     super.key,
     this.clubId,
     this.eventId,
     this.allowCancellation = true,
+    this.allowApproval = true,
     this.assignmentId,
   });
 
@@ -99,6 +101,8 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
   }
 
   Future<void> _updateStatus(String id, String status) async {
+    if (status == 'confirmed' && !widget.allowApproval) return;
+    if (status == 'cancelled' && !widget.allowCancellation) return;
     if (status == 'cancelled') {
       _showCancelReasonDialog(id);
       return;
@@ -209,7 +213,7 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         actions: [
-          if (_bookings.any((b) => b.paymentStatus == 'pending' ||
+          if (widget.allowApproval && _bookings.any((b) => b.paymentStatus == 'pending' ||
               b.paymentStatus == 'pending_confirmation'))
             IconButton(
               tooltip: 'APPROVE_ALL'.tr,
@@ -347,33 +351,35 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
                       ],
                     ),
                   ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () => _updateStatus(b.id, 'confirmed'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.greenAccent,
-                          foregroundColor: Colors.black,
-                        ),
-                        child: Text('confirm'.tr.toUpperCase()),
-                      ),
-                    ),
-                    if (widget.allowCancellation) ...[
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () => _updateStatus(b.id, 'cancelled'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.redAccent,
-                            foregroundColor: Colors.white,
+                if (widget.allowApproval || widget.allowCancellation)
+                  Row(
+                    children: [
+                      if (widget.allowApproval)
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => _updateStatus(b.id, 'confirmed'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.greenAccent,
+                              foregroundColor: Colors.black,
+                            ),
+                            child: Text('confirm'.tr.toUpperCase()),
                           ),
-                          child: Text('reject'.tr.toUpperCase()),
                         ),
-                      ),
+                      if (widget.allowApproval && widget.allowCancellation)
+                        const SizedBox(width: 12),
+                      if (widget.allowCancellation)
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => _updateStatus(b.id, 'cancelled'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.redAccent,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: Text('reject'.tr.toUpperCase()),
+                          ),
+                        ),
                     ],
-                  ],
-                ),
+                  ),
               ],
             ),
           
