@@ -606,8 +606,12 @@ class BookingService {
             'scanned_at_security': DateTime.now().toIso8601String(),
           })
           .eq('id', bookingId)
+          .eq('payment_status', 'confirmed')
+          .eq('security_cleared', false)
           .select('*, events(title, organizer_id)')
-          .single();
+          .maybeSingle();
+
+      if (response == null) return false;
 
       final String eventTitle = response['events']?['title'] ?? 'Event';
       final String? orgId = response['events']?['organizer_id'];
@@ -666,8 +670,13 @@ class BookingService {
             'confirmed_by_manager': managerId,
           })
           .eq('id', bookingId)
+          .eq('payment_status', 'confirmed')
+          .eq('security_cleared', true)
+          .eq('payment_confirmed', false)
           .select('user_id, events(title, organizer_id)')
-          .single();
+          .maybeSingle();
+
+      if (response == null) return false;
 
       final String guestId = response['user_id'];
       final String eventTitle = response['events']?['title'] ?? 'Event';
