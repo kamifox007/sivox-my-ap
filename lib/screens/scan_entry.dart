@@ -329,7 +329,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
     } catch (e) {
       _showError(e.toString());
     } finally {
-      setState(() => _isProcessing = false);
+      if (mounted) setState(() => _isProcessing = false);
     }
   }
 
