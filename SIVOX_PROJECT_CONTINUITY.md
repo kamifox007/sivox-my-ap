@@ -6,6 +6,8 @@ Baseline branch: `main`
 Baseline commit: `8b2cdb86f5b23e2238439f0b1f17a6f84e52846d`
 Latest working commit at initial documentation: `d796d1ca611ac4254385eea413ed4a19fb019eef`
 
+Subsequent audit commits: stack-trace guard in `lib/main.dart` and phone-normalization tests in `test/auth_service_test.dart` (see branch history and changelog).
+
 ## Product and platform scope
 SIVOX is an existing Flutter/Dart application using Supabase/PostgreSQL, Firebase, Google Sign-In, QR scanning/generation, maps/location, notifications, PDF/printing, localization, storage, and related Flutter packages. This list is based on the checked-in dependency manifest and source files; it is not a complete feature certification.
 
@@ -36,6 +38,12 @@ Current authorized target: **Android only**. Do not build, sign, test, or publis
 5. Only a single widget smoke test was found under `test/`; no `integration_test/` directory was found in the inspected main tree.
 6. The main tree did not contain Supabase SQL migrations. RPC names and RLS policies therefore cannot be certified from repository migrations alone.
 7. The current app initialization has fallback Supabase URL and publishable key values in source. Assess configuration behavior and failure modes before changing startup semantics.
+
+## PR #2 review disposition
+- PR #2 changes authentication role routing, booking state transitions, ticket transfer, notification fan-out, and introduces multiple Supabase SQL migrations plus auth tests.
+- The stack-trace truncation helper is a narrow, independently confirmed safe candidate and has been ported.
+- The phone-normalization tests are a narrow candidate and have been added.
+- Booking/payment/ticket/RLS migrations and role-routing changes were not ported: they alter security-sensitive state transitions and depend on database schema, policies, RPC signatures, and runtime behavior not yet independently certified. Never apply these migrations to production as part of this audit.
 
 ## Current work
 - Branch: `repair/android-staff-assignment-guards-2026-11-11`
