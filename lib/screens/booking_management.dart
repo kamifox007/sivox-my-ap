@@ -10,11 +10,13 @@ class BookingManagementScreen extends StatefulWidget {
   final String? clubId;
   final String? eventId;
   final bool allowCancellation;
+  final String? assignmentId;
   const BookingManagementScreen({
     super.key,
     this.clubId,
     this.eventId,
     this.allowCancellation = true,
+    this.assignmentId,
   });
 
   @override
@@ -80,7 +82,7 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
     int approved = 0;
     try {
       for (final booking in pending) {
-        if (await _bookingService.approveBooking(booking.id)) approved++;
+        if (await _bookingService.approveBooking(booking.id, assignmentId: widget.assignmentId)) approved++;
       }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -103,7 +105,7 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
     }
 
     final ok = status == 'confirmed'
-        ? await _bookingService.approveBooking(id)
+        ? await _bookingService.approveBooking(id, assignmentId: widget.assignmentId)
         : await _bookingService.updateBookingStatus(id, status);
     if (ok) {
       if (mounted) {
