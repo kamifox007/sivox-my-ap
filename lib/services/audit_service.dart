@@ -15,44 +15,44 @@ class AuditService {
     String? relatedEventId,
     Map<String, dynamic>? metadata,
   }) async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    final userName = user.userMetadata?['full_name'] ?? 'TERMINAL_OPERATOR';
+    final role = (user.userMetadata?['role']?.toString() ?? 'visitor').toLowerCase();
+
+    String targetTable = tableWorker;
+    if (role == 'organizer' || role == 'admin' || role == 'owner') {
+      targetTable = tableOrganizer;
+    } else if (role == 'visitor' || role == 'attendee') {
+      targetTable = tableVisitor;
+    }
+
+    final payload = <String, dynamic>{
+      'user_id': user.id,
+      'user_name': userName,
+      'role': role,
+      'action_type': actionType,
+      'description': description,
+      'related_event_id': relatedEventId,
+      'metadata': metadata ?? <String, dynamic>{},
+    };
+
+    // The central staff stream is written first so an optional role-specific
+    // table cannot prevent the main audit trail from being recorded.
     try {
-      final user = supabase.auth.currentUser;
-      if (user == null) return;
-      
-      final userName = user.userMetadata?['full_name'] ?? 'TERMINAL_OPERATOR';
-      final role = (user.userMetadata?['role']?.toString() ?? 'visitor').toLowerCase();
+      await supabase.from('staff_logs').insert(payload);
+    } catch (_) {
+      // Keep operational flows responsive; database policies still enforce access.
+      return;
+    }
 
-      // ROUTING LOGIC: Determine which "Private Database" to use
-      String targetTable = tableWorker; // Default
-      if (role == 'organizer' || role == 'admin' || role == 'owner') {
-        targetTable = tableOrganizer;
-      } else if (role == 'visitor' || role == 'attendee') {
-        targetTable = tableVisitor;
+    if (targetTable != 'staff_logs') {
+      try {
+        await supabase.from(targetTable).insert(payload);
+      } catch (_) {
+        // Role-specific streams are optional during the phased schema migration.
       }
-
-      await supabase.from(targetTable).insert({
-        'user_id': user.id,
-        'user_name': userName,
-        'role': role,
-        'action_type': actionType,
-        'description': description,
-        'related_event_id': relatedEventId,
-        'metadata': metadata ?? {},
-      });
-      
-      // Mirroring to legacy staff_logs for backward compatibility during phased migration
-      await supabase.from('staff_logs').insert({
-        'user_id': user.id,
-        'user_name': userName,
-        'role': role,
-        'action_type': actionType,
-        'description': description,
-        'related_event_id': relatedEventId,
-        'metadata': metadata ?? {},
-      });
-
-    } catch (e) {
-      // Slient failure for logs to prevent UI blocking
     }
   }
 
