@@ -245,10 +245,10 @@ BEGIN
       LOOP
         replacement_definition := regexp_replace(
           fk.definition,
-          'ON DELETE CASCADE',
-          'ON DELETE SET NULL',
+          ' ON DELETE (CASCADE|RESTRICT|NO ACTION|SET DEFAULT|SET NULL)',
+          '',
           'i'
-        );
+        ) || ' ON DELETE SET NULL';
         IF replacement_definition IS DISTINCT FROM fk.definition THEN
           EXECUTE format(
             'ALTER TABLE public.%I ALTER COLUMN user_id DROP NOT NULL',
@@ -299,10 +299,10 @@ BEGIN
       LOOP
         replacement_definition := regexp_replace(
           fk.definition,
-          'ON DELETE CASCADE',
-          'ON DELETE SET NULL',
+          ' ON DELETE (CASCADE|RESTRICT|NO ACTION|SET DEFAULT|SET NULL)',
+          '',
           'i'
-        );
+        ) || ' ON DELETE SET NULL';
         IF replacement_definition IS DISTINCT FROM fk.definition THEN
           EXECUTE format(
             'ALTER TABLE public.%I DROP CONSTRAINT %I',
