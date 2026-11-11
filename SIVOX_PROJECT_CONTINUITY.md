@@ -39,6 +39,9 @@ Current authorized target: **Android only**. Do not build, sign, test, or publis
 6. The main tree did not contain Supabase SQL migrations. RPC names and RLS policies therefore cannot be certified from repository migrations alone.
 7. The current app initialization has fallback Supabase URL and publishable key values in source. Assess configuration behavior and failure modes before changing startup semantics.
 
+## Additional confirmed booking-state finding
+- `BookingService.verifySecurityClearance` and `confirmManagerPayment` previously updated by booking ID without checking the expected prior state. The working branch now guards the transitions (`confirmed` and not yet cleared; then `confirmed` + cleared + not yet payment-confirmed) and returns false when no row was changed. This is client-side defense-in-depth only; database RLS/RPC enforcement still requires schema verification.
+
 ## PR #2 review disposition
 - PR #2 changes authentication role routing, booking state transitions, ticket transfer, notification fan-out, and introduces multiple Supabase SQL migrations plus auth tests.
 - The stack-trace truncation helper is a narrow, independently confirmed safe candidate and has been ported.
