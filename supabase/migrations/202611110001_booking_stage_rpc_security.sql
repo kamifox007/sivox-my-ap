@@ -78,6 +78,16 @@ BEGIN
     RAISE EXCEPTION 'BOOKING_CANCELLATION_FORBIDDEN' USING ERRCODE = '42501';
   END IF;
 
+  IF NEW.payment_status = 'cancelled'
+     AND OLD.user_id = auth.uid()
+     AND (
+       (to_jsonb(NEW) - ARRAY['payment_status', 'cancellation_reason'])
+       IS DISTINCT FROM
+       (to_jsonb(OLD) - ARRAY['payment_status', 'cancellation_reason'])
+     ) THEN
+    RAISE EXCEPTION 'GUEST_CANCELLATION_FIELDS_FORBIDDEN' USING ERRCODE = '42501';
+  END IF;
+
   IF NEW.payment_status = 'ejected'
      AND OLD.payment_status IS DISTINCT FROM 'ejected'
      AND NOT public.has_event_staff_permission(OLD.event_id, 'can_eject_guest') THEN
@@ -551,3 +561,19 @@ REVOKE ALL ON FUNCTION public.send_booking_stage_notification(
 GRANT EXECUTE ON FUNCTION public.send_booking_stage_notification(
   uuid, text, text, text, jsonb, boolean, boolean, boolean
 ) TO authenticated;
+
+-- A guest may cancel only their own pending/approved booking. Staff cancellation
+-- remains governed by the existing staff update policy and can_cancel trigger.
+DROP POLICY IF EXISTS "Sivox guests can cancel own bookings" ON public.bookings;
+CREATE POLICY "Sivox guests can cancel own bookings"
+ON public.bookings
+FOR UPDATE
+TO authenticated
+USING (
+  user_id = auth.uid()
+  AND payment_status IN ('pending', 'pending_confirmation', 'confirmed')
+)
+WITH CHECK (
+  user_id = auth.uid()
+  AND payment_status = 'cancelled'
+);
