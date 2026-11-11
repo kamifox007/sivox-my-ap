@@ -46,10 +46,19 @@ AS $$
 BEGIN
   -- Account deletion may null the actor foreign key. Permit only that
   -- single-column anonymizing FK action; every other update/delete is blocked.
-  IF TG_OP = 'UPDATE'
-     AND (to_jsonb(OLD) ->> 'user_id') IS NOT NULL
-     AND (to_jsonb(NEW) ->> 'user_id') IS NULL
-     AND (to_jsonb(NEW) - 'user_id') = (to_jsonb(OLD) - 'user_id') THEN
+  IF TG_OP = 'UPDATE' AND (
+       (
+         (to_jsonb(OLD) ->> 'user_id') IS NOT NULL
+         AND (to_jsonb(NEW) ->> 'user_id') IS NULL
+         AND (to_jsonb(NEW) - 'user_id') = (to_jsonb(OLD) - 'user_id')
+       )
+       OR
+       (
+         (to_jsonb(OLD) ->> 'related_event_id') IS NOT NULL
+         AND (to_jsonb(NEW) ->> 'related_event_id') IS NULL
+         AND (to_jsonb(NEW) - 'related_event_id') = (to_jsonb(OLD) - 'related_event_id')
+       )
+     ) THEN
     RETURN NEW;
   END IF;
 
