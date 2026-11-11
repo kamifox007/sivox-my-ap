@@ -138,7 +138,7 @@ class BookingService {
         relatedEventId: eventId,
       );
 
-      await _scheduleEventReminders(result);
+      // Manual reservations remain pending; reminders are scheduled after approval.
       return result;
     } catch (e) {
       return null;
