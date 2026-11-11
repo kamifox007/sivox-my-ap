@@ -295,3 +295,22 @@ BEGIN
   END LOOP;
 END;
 $$;
+
+-- PostgREST needs this relationship for visitor history's events(title, image_url) select.
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conrelid = 'public.visitor_logs'::regclass
+      AND contype = 'f'
+      AND pg_get_constraintdef(oid) ILIKE 'FOREIGN KEY (related_event_id)%'
+  ) THEN
+    ALTER TABLE public.visitor_logs
+      ADD CONSTRAINT visitor_logs_related_event_id_fkey
+      FOREIGN KEY (related_event_id)
+      REFERENCES public.events(id)
+      ON DELETE SET NULL;
+  END IF;
+END;
+$$;
