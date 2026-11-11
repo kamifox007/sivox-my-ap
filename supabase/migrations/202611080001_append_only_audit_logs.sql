@@ -66,3 +66,51 @@ ON public.staff_logs
 FOR INSERT
 TO authenticated
 WITH CHECK (user_id = auth.uid());
+
+-- Keep audit rows when an account is deleted. Null the actor FK rather than
+-- cascading a DELETE into an append-only operational log.
+DO $$
+DECLARE
+  table_name text;
+  fk record;
+  replacement_definition text;
+BEGIN
+  FOREACH table_name IN ARRAY ARRAY[
+    'staff_logs',
+    'organizer_ledger',
+    'worker_logs',
+    'visitor_logs'
+  ]
+  LOOP
+    IF to_regclass(format('public.%I', table_name)) IS NOT NULL THEN
+      FOR fk IN
+        SELECT conname, pg_get_constraintdef(oid) AS definition
+        FROM pg_constraint
+        WHERE conrelid = to_regclass(format('public.%I', table_name))
+          AND contype = 'f'
+          AND pg_get_constraintdef(oid) ILIKE 'FOREIGN KEY (user_id)%'
+      LOOP
+        replacement_definition := regexp_replace(
+          fk.definition,
+          'ON DELETE CASCADE',
+          'ON DELETE SET NULL',
+          'i'
+        );
+        IF replacement_definition IS DISTINCT FROM fk.definition THEN
+          EXECUTE format(
+            'ALTER TABLE public.%I DROP CONSTRAINT %I',
+            table_name,
+            fk.conname
+          );
+          EXECUTE format(
+            'ALTER TABLE public.%I ADD CONSTRAINT %I %s',
+            table_name,
+            fk.conname,
+            replacement_definition
+          );
+        END IF;
+      END LOOP;
+    END IF;
+  END LOOP;
+END;
+$$;
