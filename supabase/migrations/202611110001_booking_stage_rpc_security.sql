@@ -236,3 +236,58 @@ GRANT EXECUTE ON FUNCTION public.approve_event_booking(uuid) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.verify_booking_security_clearance(uuid) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.confirm_booking_manager_payment(uuid) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.accept_booking_late_entry(uuid) TO authenticated;
+
+-- Replace the earlier insert policy so even free and pay-at-door reservations
+-- stay pending until the separate organizer/staff approval RPC succeeds.
+DROP POLICY IF EXISTS "Users can create own bookings" ON public.bookings;
+CREATE POLICY "Users can create own bookings"
+ON public.bookings
+FOR INSERT
+TO authenticated
+WITH CHECK (
+  user_id = auth.uid()
+  AND (
+    (
+      created_by IS NULL
+      AND (
+        (
+          COALESCE(
+            (SELECT e.require_call_confirmation FROM public.events e WHERE e.id = event_id),
+            FALSE
+          )
+          AND payment_status = 'pending_confirmation'
+        )
+        OR
+        (
+          NOT COALESCE(
+            (SELECT e.require_call_confirmation FROM public.events e WHERE e.id = event_id),
+            FALSE
+          )
+          AND payment_status = 'pending'
+        )
+      )
+    )
+    OR
+    (
+      created_by = auth.uid()
+      AND payment_status = 'pending'
+      AND COALESCE(security_cleared, FALSE) = FALSE
+      AND (
+        EXISTS (
+          SELECT 1
+          FROM public.events e
+          JOIN public.organizer_profiles op ON op.id = e.organizer_id
+          WHERE e.id = event_id AND op.owner_id = auth.uid()
+        )
+        OR EXISTS (
+          SELECT 1
+          FROM public.staff_assignments sa
+          WHERE sa.event_id = event_id
+            AND sa.staff_id = auth.uid()
+            AND sa.status = 'active'
+            AND COALESCE(sa.permissions ->> 'can_generate', 'false') = 'true'
+        )
+      )
+    )
+  )
+);
