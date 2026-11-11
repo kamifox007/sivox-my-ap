@@ -452,3 +452,102 @@ USING (
       )
   )
 );
+
+-- Securely fan out booking-stage notifications. The caller can notify only
+-- the guest, event owner, and active staff entitled to the corresponding task.
+CREATE OR REPLACE FUNCTION public.send_booking_stage_notification(
+  p_booking_id uuid,
+  p_title text,
+  p_body text,
+  p_type text,
+  p_metadata jsonb DEFAULT '{}'::jsonb,
+  p_notify_guest boolean DEFAULT TRUE,
+  p_notify_organizer boolean DEFAULT TRUE,
+  p_notify_staff boolean DEFAULT FALSE
+)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+  v_guest_id uuid;
+  v_event_id uuid;
+  v_organizer_id uuid;
+  v_owner_id uuid;
+  v_permission text;
+  v_metadata jsonb;
+  v_send_guest boolean := p_notify_guest;
+  v_send_staff boolean := p_notify_staff;
+BEGIN
+  SELECT b.user_id, b.event_id, e.organizer_id, op.owner_id
+  INTO v_guest_id, v_event_id, v_organizer_id, v_owner_id
+  FROM public.bookings b
+  JOIN public.events e ON e.id = b.event_id
+  JOIN public.organizer_profiles op ON op.id = e.organizer_id
+  WHERE b.id = p_booking_id;
+
+  IF NOT FOUND OR auth.uid() IS NULL THEN
+    RAISE EXCEPTION 'BOOKING_NOTIFICATION_NOT_AUTHORIZED' USING ERRCODE = '42501';
+  END IF;
+
+  v_metadata := COALESCE(p_metadata, '{}'::jsonb)
+    || jsonb_build_object('booking_id', p_booking_id, 'event_id', v_event_id);
+
+  IF auth.uid() = v_guest_id THEN
+    -- A guest may notify only the event owner about their own booking.
+    v_send_guest := FALSE;
+    v_send_staff := FALSE;
+    IF NOT p_notify_organizer THEN
+      RETURN;
+    END IF;
+  ELSE
+    v_permission := CASE p_type
+      WHEN 'security' THEN 'can_scan'
+      WHEN 'presence' THEN 'can_confirm_payment'
+      WHEN 'booking' THEN 'can_confirm_booking'
+      WHEN 'booking_cancel' THEN 'can_cancel'
+      WHEN 'late' THEN 'can_mark_late'
+      WHEN 'ejected' THEN 'can_eject_guest'
+      ELSE 'can_scan'
+    END;
+
+    IF NOT public.has_event_staff_permission(v_event_id, v_permission) THEN
+      RAISE EXCEPTION 'BOOKING_NOTIFICATION_NOT_AUTHORIZED' USING ERRCODE = '42501';
+    END IF;
+
+    IF p_type = 'late'
+       AND NOT public.has_event_staff_permission(v_event_id, 'can_confirm_payment') THEN
+      RAISE EXCEPTION 'BOOKING_NOTIFICATION_NOT_AUTHORIZED' USING ERRCODE = '42501';
+    END IF;
+  END IF;
+
+  IF v_send_guest AND v_guest_id IS DISTINCT FROM auth.uid() THEN
+    INSERT INTO public.notifications (user_id, title, body, type, metadata, is_read)
+    VALUES (v_guest_id, p_title, p_body, p_type, v_metadata, FALSE);
+  END IF;
+
+  IF p_notify_organizer AND v_owner_id IS DISTINCT FROM auth.uid() THEN
+    INSERT INTO public.notifications (user_id, title, body, type, metadata, is_read)
+    VALUES (v_owner_id, p_title, p_body, p_type, v_metadata, FALSE);
+  END IF;
+
+  IF v_send_staff THEN
+    INSERT INTO public.notifications (user_id, title, body, type, metadata, is_read)
+    SELECT DISTINCT sa.staff_id, p_title, p_body, p_type, v_metadata, FALSE
+    FROM public.staff_assignments sa
+    WHERE sa.organizer_id = v_organizer_id
+      AND sa.status = 'active'
+      AND (sa.event_id = v_event_id OR sa.event_id IS NULL)
+      AND sa.staff_id <> auth.uid()
+      AND COALESCE(sa.permissions ->> v_permission, 'false') = 'true';
+  END IF;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION public.send_booking_stage_notification(
+  uuid, text, text, text, jsonb, boolean, boolean, boolean
+) FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.send_booking_stage_notification(
+  uuid, text, text, text, jsonb, boolean, boolean, boolean
+) TO authenticated;
