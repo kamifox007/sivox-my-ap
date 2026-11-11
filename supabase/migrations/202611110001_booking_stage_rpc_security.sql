@@ -42,6 +42,16 @@ SECURITY DEFINER
 SET search_path = public, pg_temp
 AS $$
 BEGIN
+  IF NEW.user_id IS DISTINCT FROM OLD.user_id THEN
+    IF current_setting('app.ticket_transfer', TRUE) IS DISTINCT FROM 'on'
+       OR OLD.user_id IS DISTINCT FROM auth.uid()
+       OR OLD.payment_status NOT IN ('pending', 'pending_confirmation', 'confirmed')
+       OR OLD.security_cleared IS TRUE
+       OR OLD.payment_confirmed IS TRUE THEN
+      RAISE EXCEPTION 'BOOKING_TRANSFER_FORBIDDEN' USING ERRCODE = '42501';
+    END IF;
+  END IF;
+
   IF OLD.payment_status = 'confirmed'
      AND NEW.payment_status IN ('pending', 'pending_confirmation') THEN
     RAISE EXCEPTION 'BOOKING_APPROVAL_CANNOT_BE_REVERSED' USING ERRCODE = '55000';
@@ -577,3 +587,66 @@ WITH CHECK (
   user_id = auth.uid()
   AND payment_status = 'cancelled'
 );
+
+-- Ticket transfer is a single authenticated-owner operation. It also creates
+-- the recipient notification in the same database transaction.
+CREATE OR REPLACE FUNCTION public.transfer_booking_ticket(
+  p_booking_id uuid,
+  p_target_user_id uuid,
+  p_title text,
+  p_body text
+)
+RETURNS TABLE (event_id uuid, event_title text, target_user_id uuid)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+  v_event_id uuid;
+  v_event_title text;
+  v_target_user_id uuid;
+BEGIN
+  IF auth.uid() IS NULL OR p_target_user_id IS NULL
+     OR p_target_user_id = auth.uid()
+     OR NOT EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = p_target_user_id) THEN
+    RAISE EXCEPTION 'BOOKING_TRANSFER_NOT_AUTHORIZED' USING ERRCODE = '42501';
+  END IF;
+
+  PERFORM set_config('app.ticket_transfer', 'on', TRUE);
+
+  UPDATE public.bookings b
+  SET user_id = p_target_user_id
+  WHERE b.id = p_booking_id
+    AND b.user_id = auth.uid()
+    AND b.payment_status IN ('pending', 'pending_confirmation', 'confirmed')
+    AND COALESCE(b.security_cleared, FALSE) = FALSE
+    AND COALESCE(b.payment_confirmed, FALSE) = FALSE
+  RETURNING b.event_id, b.user_id
+  INTO v_event_id, v_target_user_id;
+
+  IF NOT FOUND THEN RETURN; END IF;
+
+  SELECT e.title INTO v_event_title
+  FROM public.events e
+  WHERE e.id = v_event_id;
+
+  INSERT INTO public.notifications (
+    user_id, title, body, type, metadata, is_read
+  )
+  VALUES (
+    v_target_user_id,
+    p_title,
+    p_body,
+    'booking',
+    jsonb_build_object('booking_id', p_booking_id, 'event_id', v_event_id),
+    FALSE
+  );
+
+  RETURN QUERY SELECT v_event_id, v_event_title, v_target_user_id;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION public.transfer_booking_ticket(uuid, uuid, text, text)
+  FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.transfer_booking_ticket(uuid, uuid, text, text)
+  TO authenticated;
