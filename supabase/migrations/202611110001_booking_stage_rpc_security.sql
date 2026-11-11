@@ -469,6 +469,7 @@ USING (
         OR COALESCE(sa.permissions ->> 'can_confirm_booking', 'false') = 'true'
         OR COALESCE(sa.permissions ->> 'can_manage_guests', 'false') = 'true'
         OR COALESCE(sa.permissions ->> 'can_view_stats', 'false') = 'true'
+        OR COALESCE(sa.permissions ->> 'can_cancel', 'false') = 'true'
       )
   )
 );
