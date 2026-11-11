@@ -242,6 +242,14 @@ BEGIN
         );
         IF replacement_definition IS DISTINCT FROM fk.definition THEN
           EXECUTE format(
+            'ALTER TABLE public.%I ALTER COLUMN user_id DROP NOT NULL',
+            table_name
+          );
+          EXECUTE format(
+            'ALTER TABLE public.%I ALTER COLUMN related_event_id DROP NOT NULL',
+            table_name
+          );
+          EXECUTE format(
             'ALTER TABLE public.%I DROP CONSTRAINT %I',
             table_name,
             fk.conname
