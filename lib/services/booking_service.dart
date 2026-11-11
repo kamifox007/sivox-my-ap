@@ -357,8 +357,6 @@ class BookingService {
       if (result is! List || result.isEmpty) return false;
       final transferred = Map<String, dynamic>.from(result.first as Map);
       final String? eventId = transferred['event_id']?.toString();
-      final String eventTitle =
-          transferred['event_title']?.toString() ?? 'Event';
 
       await _audit.logAction(
         actionType: 'TICKET_TRANSFERRED',
