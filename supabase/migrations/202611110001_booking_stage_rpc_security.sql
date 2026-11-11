@@ -425,3 +425,30 @@ USING (
       AND COALESCE(sa.permissions ->> 'can_block_guest', 'false') = 'true'
   )
 );
+
+-- Staff may read event bookings only when their active assignment grants an
+-- operational permission that needs booking visibility.
+DROP POLICY IF EXISTS "Sivox authorized staff booking read" ON public.bookings;
+CREATE POLICY "Sivox authorized staff booking read"
+ON public.bookings
+FOR SELECT
+TO authenticated
+USING (
+  EXISTS (
+    SELECT 1
+    FROM public.events e
+    JOIN public.staff_assignments sa
+      ON sa.organizer_id = e.organizer_id
+    WHERE e.id = bookings.event_id
+      AND sa.staff_id = auth.uid()
+      AND sa.status = 'active'
+      AND (sa.event_id = e.id OR sa.event_id IS NULL)
+      AND (
+        COALESCE(sa.permissions ->> 'can_scan', 'false') = 'true'
+        OR COALESCE(sa.permissions ->> 'can_confirm_payment', 'false') = 'true'
+        OR COALESCE(sa.permissions ->> 'can_confirm_booking', 'false') = 'true'
+        OR COALESCE(sa.permissions ->> 'can_manage_guests', 'false') = 'true'
+        OR COALESCE(sa.permissions ->> 'can_view_stats', 'false') = 'true'
+      )
+  )
+);
