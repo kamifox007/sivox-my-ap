@@ -1,5 +1,43 @@
 -- Preserve operational audit history. This migration is additive and must be
 -- reviewed before being applied to any Supabase environment.
+-- Ensure the role-specific streams expected by AuditService exist on a fresh install.
+-- No user foreign keys are used here so account deletion cannot cascade into audit history.
+CREATE TABLE IF NOT EXISTS public.organizer_ledger (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID,
+  user_name TEXT,
+  role TEXT,
+  action_type TEXT,
+  description TEXT,
+  related_event_id UUID,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.worker_logs (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID,
+  user_name TEXT,
+  role TEXT,
+  action_type TEXT,
+  description TEXT,
+  related_event_id UUID,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.visitor_logs (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID,
+  user_name TEXT,
+  role TEXT,
+  action_type TEXT,
+  description TEXT,
+  related_event_id UUID,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE OR REPLACE FUNCTION public.prevent_audit_log_mutation()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -60,9 +98,106 @@ BEGIN
 END;
 $$;
 
+-- Apply least-privilege access to the central and role-specific audit streams.
+ALTER TABLE public.staff_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.organizer_ledger ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.worker_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.visitor_logs ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Staff Logs Access" ON public.staff_logs;
+DROP POLICY IF EXISTS "Organizers can see logs for their events" ON public.staff_logs;
+DROP POLICY IF EXISTS "Sivox audit read own or authorized team" ON public.staff_logs;
+CREATE POLICY "Sivox audit read own or authorized team"
+ON public.staff_logs
+FOR SELECT
+TO authenticated
+USING (
+  user_id = auth.uid()
+  OR EXISTS (
+    SELECT 1
+    FROM public.events e
+    JOIN public.organizer_profiles op ON op.id = e.organizer_id
+    WHERE e.id = related_event_id AND op.owner_id = auth.uid()
+  )
+  OR EXISTS (
+    SELECT 1
+    FROM public.staff_assignments sa
+    WHERE sa.staff_id = auth.uid()
+      AND sa.status = 'active'
+      AND (sa.event_id = related_event_id OR sa.event_id IS NULL)
+      AND COALESCE(sa.permissions ->> 'can_view_logs', 'false') = 'true'
+  )
+);
+
 DROP POLICY IF EXISTS "Sivox authenticated audit insert" ON public.staff_logs;
 CREATE POLICY "Sivox authenticated audit insert"
 ON public.staff_logs
+FOR INSERT
+TO authenticated
+WITH CHECK (user_id = auth.uid());
+
+DROP POLICY IF EXISTS "Sivox organizer_ledger read own or event owner" ON public.organizer_ledger;
+CREATE POLICY "Sivox organizer_ledger read own or event owner"
+ON public.organizer_ledger
+FOR SELECT
+TO authenticated
+USING (
+  user_id = auth.uid()
+  OR EXISTS (
+    SELECT 1
+    FROM public.events e
+    JOIN public.organizer_profiles op ON op.id = e.organizer_id
+    WHERE e.id = related_event_id AND op.owner_id = auth.uid()
+  )
+);
+
+DROP POLICY IF EXISTS "Sivox organizer_ledger insert own" ON public.organizer_ledger;
+CREATE POLICY "Sivox organizer_ledger insert own"
+ON public.organizer_ledger
+FOR INSERT
+TO authenticated
+WITH CHECK (user_id = auth.uid());
+
+DROP POLICY IF EXISTS "Sivox worker_logs read own or event owner" ON public.worker_logs;
+CREATE POLICY "Sivox worker_logs read own or event owner"
+ON public.worker_logs
+FOR SELECT
+TO authenticated
+USING (
+  user_id = auth.uid()
+  OR EXISTS (
+    SELECT 1
+    FROM public.events e
+    JOIN public.organizer_profiles op ON op.id = e.organizer_id
+    WHERE e.id = related_event_id AND op.owner_id = auth.uid()
+  )
+);
+
+DROP POLICY IF EXISTS "Sivox worker_logs insert own" ON public.worker_logs;
+CREATE POLICY "Sivox worker_logs insert own"
+ON public.worker_logs
+FOR INSERT
+TO authenticated
+WITH CHECK (user_id = auth.uid());
+
+DROP POLICY IF EXISTS "Sivox visitor_logs read own or event owner" ON public.visitor_logs;
+CREATE POLICY "Sivox visitor_logs read own or event owner"
+ON public.visitor_logs
+FOR SELECT
+TO authenticated
+USING (
+  user_id = auth.uid()
+  OR EXISTS (
+    SELECT 1
+    FROM public.events e
+    JOIN public.organizer_profiles op ON op.id = e.organizer_id
+    WHERE e.id = related_event_id AND op.owner_id = auth.uid()
+  )
+);
+
+DROP POLICY IF EXISTS "Sivox visitor_logs insert own" ON public.visitor_logs;
+CREATE POLICY "Sivox visitor_logs insert own"
+ON public.visitor_logs
 FOR INSERT
 TO authenticated
 WITH CHECK (user_id = auth.uid());
