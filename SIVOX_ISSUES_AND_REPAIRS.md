@@ -15,6 +15,7 @@ Last reviewed: 2026-11-11
 | SIV-009 | Booking/QR/RLS | Full end-to-end booking, payment, QR and role-policy correctness has not yet been verified. | Critical | Open | PR #2 contains proposed booking-stage RPCs, ticket transfer, notification fan-out and RLS migrations; do not port or apply until dependencies, policy interactions and schema are independently validated against an isolated database. |
 
 | SIV-010 | Error reporting | Error handlers truncated stack traces with `substring(0, 1000)` without checking length; short traces could throw a second error. | Medium | Fixed on working branch; CI pending | `lib/main.dart` now uses `_safeStackTrace` for nullable and short traces. |
+| SIV-011 | Booking check-in transitions | Security clearance and manager payment confirmation previously updated bookings by ID alone, without guarding expected prior state or detecting a no-row update. | Critical | Fixed on working branch; CI pending | `lib/services/booking_service.dart` now requires confirmed/not-yet-cleared for security and confirmed/cleared/not-yet-paid for manager confirmation; both check for a returned row. Database RLS/RPC enforcement remains unverified. |
 
 ## Change discipline
 - Every repair must be tied to a root cause and a focused diff.
