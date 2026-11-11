@@ -527,7 +527,7 @@ BEGIN
     VALUES (v_guest_id, p_title, p_body, p_type, v_metadata, FALSE);
   END IF;
 
-  IF p_notify_organizer AND v_owner_id IS DISTINCT FROM auth.uid() THEN
+  IF p_notify_organizer AND v_owner_id IS NOT NULL AND v_owner_id IS DISTINCT FROM auth.uid() THEN
     INSERT INTO public.notifications (user_id, title, body, type, metadata, is_read)
     VALUES (v_owner_id, p_title, p_body, p_type, v_metadata, FALSE);
   END IF;
