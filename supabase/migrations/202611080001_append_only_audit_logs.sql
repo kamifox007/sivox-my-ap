@@ -44,6 +44,15 @@ LANGUAGE plpgsql
 SET search_path = public
 AS $$
 BEGIN
+  -- Account deletion may null the actor foreign key. Permit only that
+  -- single-column anonymizing FK action; every other update/delete is blocked.
+  IF TG_OP = 'UPDATE'
+     AND (to_jsonb(OLD) ->> 'user_id') IS NOT NULL
+     AND (to_jsonb(NEW) ->> 'user_id') IS NULL
+     AND (to_jsonb(NEW) - 'user_id') = (to_jsonb(OLD) - 'user_id') THEN
+    RETURN NEW;
+  END IF;
+
   RAISE EXCEPTION 'Operational audit records are append-only; UPDATE and DELETE are not allowed.'
     USING ERRCODE = '55000';
 END;
