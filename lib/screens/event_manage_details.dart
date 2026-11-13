@@ -123,7 +123,19 @@ class _EventManageDetailsScreenState extends State<EventManageDetailsScreen> {
   Future<void> _loadTrustedRole() async {
     final user = supabase.auth.currentUser;
     if (user == null) return;
-    final role = await ProfileService().getTrustedRole(user);
+
+    var role = await ProfileService().getTrustedRole(user);
+    final organizerId = widget.event.organizerId;
+    if (organizerId != null && organizerId.isNotEmpty) {
+      final ownedProfile = await supabase
+          .from('organizer_profiles')
+          .select('id')
+          .eq('id', organizerId)
+          .eq('user_id', user.id)
+          .maybeSingle();
+      if (ownedProfile != null) role = 'organizer';
+    }
+
     if (mounted) setState(() => _trustedRole = role);
   }
 
@@ -176,21 +188,24 @@ class _EventManageDetailsScreenState extends State<EventManageDetailsScreen> {
             title: Text('TACTICAL_OPS_CENTER'.tr.toUpperCase(), style: AppTheme.headlineStyle.copyWith(fontSize: 16, letterSpacing: 2, color: AppTheme.primary)),
             centerTitle: true,
             actions: [
-              IconButton(
-                icon: const Icon(Icons.delete_outline_rounded, color: Colors.redAccent),
-                onPressed: _deleteEvent,
-                tooltip: 'delete_event'.tr,
-              ),
-              IconButton(
-                icon: const Icon(Icons.edit_note_rounded, color: AppTheme.primary),
-                onPressed: () => _editEvent(bookings),
-                tooltip: 'edit_event'.tr,
-              ),
-              IconButton(
-                icon: const Icon(Icons.picture_as_pdf_outlined, color: Colors.white70),
-                onPressed: _exportReport,
-                tooltip: 'export_pdf'.tr,
-              ),
+              if (isAuthorized)
+                IconButton(
+                  icon: const Icon(Icons.delete_outline_rounded, color: Colors.redAccent),
+                  onPressed: _deleteEvent,
+                  tooltip: 'delete_event'.tr,
+                ),
+              if (isAuthorized)
+                IconButton(
+                  icon: const Icon(Icons.edit_note_rounded, color: AppTheme.primary),
+                  onPressed: () => _editEvent(bookings),
+                  tooltip: 'edit_event'.tr,
+                ),
+              if (isAuthorized)
+                IconButton(
+                  icon: const Icon(Icons.picture_as_pdf_outlined, color: Colors.white70),
+                  onPressed: _exportReport,
+                  tooltip: 'export_pdf'.tr,
+                ),
               IconButton(icon: const Icon(Icons.refresh, color: Colors.white38), onPressed: _refreshData),
             ],
           ),
@@ -294,7 +309,7 @@ class _EventManageDetailsScreenState extends State<EventManageDetailsScreen> {
         GestureDetector(
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => ScanEntryScreen(
-              organizerId: supabase.auth.currentUser?.id,
+              organizerId: widget.event.organizerId,
               eventId: widget.event.id,
             )));
           },
@@ -635,9 +650,11 @@ class _EventManageDetailsScreenState extends State<EventManageDetailsScreen> {
           MaterialButton(
             onPressed: () async {
               if (message.isEmpty) return;
+              final organizerId = widget.event.organizerId;
+              if (organizerId == null || organizerId.isEmpty) return;
               final ns = _notificationService;
               await ns.notifyFollowers(
-                organizerId: supabase.auth.currentUser!.id,
+                organizerId: organizerId,
                 title: 'OFFICIAL_ANNOUNCEMENT'.trArgs([widget.event.title]),
                 body: message,
                 type: 'announcement',
@@ -859,7 +876,7 @@ class _EventManageDetailsScreenState extends State<EventManageDetailsScreen> {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (_) => MissionMatrixScreen(
-                  organizerId: supabase.auth.currentUser?.id,
+                  organizerId: widget.event.organizerId,
                   eventId: widget.event.id,
                 )));
               },
@@ -938,9 +955,11 @@ class _EventManageDetailsScreenState extends State<EventManageDetailsScreen> {
               MaterialButton(
                 onPressed: () async {
                   if (discount.isEmpty) return;
+                  final organizerId = widget.event.organizerId;
+                  if (organizerId == null || organizerId.isEmpty) return;
                   final ns = _notificationService;
                   await ns.notifyDiscountFlash(
-                    organizerId: supabase.auth.currentUser!.id,
+                    organizerId: organizerId,
                     eventTitle: widget.event.title,
                     discountAmount: discount,
                   );

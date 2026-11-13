@@ -52,6 +52,10 @@ class _MissionMatrixScreenState extends State<MissionMatrixScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.organizerId == null || widget.organizerId!.isEmpty) {
+      _isLoading = false;
+      return;
+    }
     _loadEvents();
     _subscribeToLiveUpdates();
   }
@@ -393,14 +397,14 @@ class _MissionMatrixScreenState extends State<MissionMatrixScreen> {
           tooltip: 'BLACKLIST'.tr,
           icon: const Icon(Icons.security, color: Colors.white24, size: 20),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => BlacklistManagementScreen(clubId: widget.organizerId ?? supabase.auth.currentUser!.id)));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => BlacklistManagementScreen(clubId: widget.organizerId!)));
           },
         ),
         IconButton(
           tooltip: 'OPERATIONAL_LEDGER'.tr,
           icon: const Icon(Icons.history_edu_rounded, color: Colors.white24, size: 20),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => MasterOperationalLedgerScreen(organizerId: widget.organizerId ?? supabase.auth.currentUser!.id)));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => MasterOperationalLedgerScreen(organizerId: widget.organizerId!)));
           },
         ),
         IconButton(
@@ -1403,7 +1407,7 @@ class _MissionMatrixScreenState extends State<MissionMatrixScreen> {
               context,
               MaterialPageRoute(
                 builder: (_) => MasterOperationalLedgerScreen(
-                  organizerId: widget.organizerId ?? supabase.auth.currentUser!.id,
+                  organizerId: widget.organizerId!,
                 ),
               ),
             );
