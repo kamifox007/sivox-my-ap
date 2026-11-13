@@ -7,6 +7,7 @@ import 'package:my_app/services/config_service.dart';
 import 'package:my_app/screens/maintenance_screen.dart';
 import 'package:my_app/screens/organizer_main_wrapper.dart';
 import 'package:my_app/screens/staff_hub_screen.dart';
+import 'package:my_app/services/profile_service.dart';
 import 'dart:ui';
 
 class SplashScreen extends StatefulWidget {
@@ -65,6 +66,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     if (session != null) {
       final user = session.user;
+      // Ensure legacy Auth accounts receive a basic attendee profile without trusting metadata roles.
+      try {
+        await ProfileService().ensureProfile(user);
+      } catch (e) {
+        debugPrint('Could not ensure visitor profile: $e');
+      }
       // Resolve privileged access from database records, never editable Auth metadata.
       var role = 'attendee';
       try {
@@ -91,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           final owned = await client
               .from('organizer_profiles')
               .select('id')
-              .eq('owner_id', user.id)
+              .eq('user_id', user.id)
               .limit(1);
           if ((owned as List).isNotEmpty) {
             destination = const OrganizerMainWrapper();
