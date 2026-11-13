@@ -1,64 +1,28 @@
--- Preserve operational audit history. This migration is additive and must be
--- reviewed before being applied to any Supabase environment.
--- Ensure the role-specific streams expected by AuditService exist on a fresh install.
--- No user foreign keys are used here so account deletion cannot cascade into audit history.
-CREATE TABLE IF NOT EXISTS public.organizer_ledger (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID,
-  user_name TEXT,
-  role TEXT,
-  action_type TEXT,
-  description TEXT,
-  related_event_id UUID REFERENCES public.events(id) ON DELETE SET NULL,
-  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
-CREATE TABLE IF NOT EXISTS public.worker_logs (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID,
-  user_name TEXT,
-  role TEXT,
-  action_type TEXT,
-  description TEXT,
-  related_event_id UUID REFERENCES public.events(id) ON DELETE SET NULL,
-  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
-CREATE TABLE IF NOT EXISTS public.visitor_logs (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID,
-  user_name TEXT,
-  role TEXT,
-  action_type TEXT,
-  description TEXT,
-  related_event_id UUID REFERENCES public.events(id) ON DELETE SET NULL,
-  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
+-- SivoX migration 7: append-only audit streams.
+-- The four operational log tables and their metadata columns already exist.
+-- Keep existing ON DELETE SET NULL foreign keys so account/event deletion
+-- anonymizes references without deleting the historical audit row.
 
 CREATE OR REPLACE FUNCTION public.prevent_audit_log_mutation()
 RETURNS trigger
 LANGUAGE plpgsql
-SET search_path = public
+SET search_path = public, pg_temp
 AS $$
 BEGIN
-  -- Account deletion may null the actor foreign key. Permit only that
-  -- single-column anonymizing FK action; every other update/delete is blocked.
+  -- Permit only FK-driven anonymization of a single reference column.
   IF TG_OP = 'UPDATE' AND (
-       (
-         (to_jsonb(OLD) ->> 'user_id') IS NOT NULL
-         AND (to_jsonb(NEW) ->> 'user_id') IS NULL
-         AND (to_jsonb(NEW) - 'user_id') = (to_jsonb(OLD) - 'user_id')
-       )
-       OR
-       (
-         (to_jsonb(OLD) ->> 'related_event_id') IS NOT NULL
-         AND (to_jsonb(NEW) ->> 'related_event_id') IS NULL
-         AND (to_jsonb(NEW) - 'related_event_id') = (to_jsonb(OLD) - 'related_event_id')
-       )
-     ) THEN
+    (
+      OLD.user_id IS NOT NULL
+      AND NEW.user_id IS NULL
+      AND (to_jsonb(NEW) - 'user_id') = (to_jsonb(OLD) - 'user_id')
+    )
+    OR
+    (
+      OLD.related_event_id IS NOT NULL
+      AND NEW.related_event_id IS NULL
+      AND (to_jsonb(NEW) - 'related_event_id') = (to_jsonb(OLD) - 'related_event_id')
+    )
+  ) THEN
     RETURN NEW;
   END IF;
 
@@ -69,274 +33,192 @@ $$;
 
 DO $$
 DECLARE
-  table_name text;
+  table_name TEXT;
 BEGIN
   FOREACH table_name IN ARRAY ARRAY[
-    'staff_logs',
-    'organizer_ledger',
-    'worker_logs',
-    'visitor_logs'
+    'staff_logs', 'organizer_ledger', 'worker_logs', 'visitor_logs'
   ]
   LOOP
-    IF to_regclass(format('public.%I', table_name)) IS NOT NULL THEN
-      EXECUTE format(
-        'DROP TRIGGER IF EXISTS prevent_audit_log_mutation ON public.%I',
-        table_name
-      );
-      EXECUTE format(
-        'CREATE TRIGGER prevent_audit_log_mutation
-         BEFORE UPDATE OR DELETE ON public.%I
-         FOR EACH ROW EXECUTE FUNCTION public.prevent_audit_log_mutation()',
-        table_name
-      );
-    END IF;
+    EXECUTE format(
+      'DROP TRIGGER IF EXISTS prevent_audit_log_mutation ON public.%I',
+      table_name
+    );
+    EXECUTE format(
+      'CREATE TRIGGER prevent_audit_log_mutation
+       BEFORE UPDATE OR DELETE ON public.%I
+       FOR EACH ROW EXECUTE FUNCTION public.prevent_audit_log_mutation()',
+      table_name
+    );
   END LOOP;
 END;
 $$;
 
--- The application writes metadata with every audit entry. Add it to the legacy
--- central log and to optional role streams when those tables exist.
-ALTER TABLE public.staff_logs
-  ADD COLUMN IF NOT EXISTS metadata JSONB NOT NULL DEFAULT '{}'::jsonb;
-
-DO $$
-DECLARE
-  table_name text;
-BEGIN
-  FOREACH table_name IN ARRAY ARRAY['organizer_ledger', 'worker_logs', 'visitor_logs']
-  LOOP
-    IF to_regclass(format('public.%I', table_name)) IS NOT NULL THEN
-      EXECUTE format(
-        'ALTER TABLE public.%I ADD COLUMN IF NOT EXISTS metadata JSONB NOT NULL DEFAULT %L::jsonb',
-        table_name,
-        '{}'
-      );
-    END IF;
-  END LOOP;
-END;
-$$;
-
--- Apply least-privilege access to the central and role-specific audit streams.
 ALTER TABLE public.staff_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.organizer_ledger ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.worker_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.visitor_logs ENABLE ROW LEVEL SECURITY;
 
+-- Replace the legacy, overly broad policies.
+DROP POLICY IF EXISTS sl_delete ON public.staff_logs;
+DROP POLICY IF EXISTS sl_insert ON public.staff_logs;
+DROP POLICY IF EXISTS sl_select ON public.staff_logs;
 DROP POLICY IF EXISTS "Staff Logs Access" ON public.staff_logs;
 DROP POLICY IF EXISTS "Organizers can see logs for their events" ON public.staff_logs;
 DROP POLICY IF EXISTS "Sivox audit read own or authorized team" ON public.staff_logs;
-CREATE POLICY "Sivox audit read own or authorized team"
+DROP POLICY IF EXISTS "Sivox authenticated audit insert" ON public.staff_logs;
+
+DROP POLICY IF EXISTS ol_insert ON public.organizer_ledger;
+DROP POLICY IF EXISTS ol_select ON public.organizer_ledger;
+DROP POLICY IF EXISTS "Sivox organizer_ledger read own or event owner" ON public.organizer_ledger;
+DROP POLICY IF EXISTS "Sivox organizer_ledger insert own" ON public.organizer_ledger;
+
+DROP POLICY IF EXISTS wl_insert ON public.worker_logs;
+DROP POLICY IF EXISTS wl_select ON public.worker_logs;
+DROP POLICY IF EXISTS "Sivox worker_logs read own or event owner" ON public.worker_logs;
+DROP POLICY IF EXISTS "Sivox worker_logs insert own" ON public.worker_logs;
+
+DROP POLICY IF EXISTS vl_insert ON public.visitor_logs;
+DROP POLICY IF EXISTS vl_select ON public.visitor_logs;
+DROP POLICY IF EXISTS "Sivox visitor_logs read own or event owner" ON public.visitor_logs;
+DROP POLICY IF EXISTS "Sivox visitor_logs insert own" ON public.visitor_logs;
+
+CREATE POLICY staff_logs_select
 ON public.staff_logs
-FOR SELECT
-TO authenticated
+FOR SELECT TO authenticated
 USING (
-  user_id = auth.uid()
+  user_id = (SELECT auth.uid())
   OR EXISTS (
     SELECT 1
     FROM public.events e
     JOIN public.organizer_profiles op ON op.id = e.organizer_id
-    WHERE e.id = related_event_id AND op.owner_id = auth.uid()
+    WHERE e.id = related_event_id AND op.user_id = (SELECT auth.uid())
   )
   OR EXISTS (
-    SELECT 1
-    FROM public.staff_assignments sa
-    WHERE sa.staff_id = auth.uid()
+    SELECT 1 FROM public.staff_assignments sa
+    WHERE sa.staff_id = (SELECT auth.uid())
       AND sa.status = 'active'
       AND (sa.event_id = related_event_id OR sa.event_id IS NULL)
       AND COALESCE(sa.permissions ->> 'can_view_logs', 'false') = 'true'
   )
 );
 
-DROP POLICY IF EXISTS "Sivox authenticated audit insert" ON public.staff_logs;
-CREATE POLICY "Sivox authenticated audit insert"
+CREATE POLICY staff_logs_insert
 ON public.staff_logs
-FOR INSERT
-TO authenticated
-WITH CHECK (user_id = auth.uid());
+FOR INSERT TO authenticated
+WITH CHECK (user_id = (SELECT auth.uid()));
 
-DROP POLICY IF EXISTS "Sivox organizer_ledger read own or event owner" ON public.organizer_ledger;
-CREATE POLICY "Sivox organizer_ledger read own or event owner"
+CREATE POLICY organizer_ledger_select
 ON public.organizer_ledger
-FOR SELECT
-TO authenticated
+FOR SELECT TO authenticated
 USING (
-  user_id = auth.uid()
+  user_id = (SELECT auth.uid())
   OR EXISTS (
     SELECT 1
     FROM public.events e
     JOIN public.organizer_profiles op ON op.id = e.organizer_id
-    WHERE e.id = related_event_id AND op.owner_id = auth.uid()
+    WHERE e.id = related_event_id AND op.user_id = (SELECT auth.uid())
+  )
+  OR EXISTS (
+    SELECT 1 FROM public.staff_assignments sa
+    WHERE sa.staff_id = (SELECT auth.uid())
+      AND sa.status = 'active'
+      AND (sa.event_id = related_event_id OR sa.event_id IS NULL)
+      AND COALESCE(sa.permissions ->> 'can_view_logs', 'false') = 'true'
   )
 );
 
-DROP POLICY IF EXISTS "Sivox organizer_ledger insert own" ON public.organizer_ledger;
-CREATE POLICY "Sivox organizer_ledger insert own"
+CREATE POLICY organizer_ledger_insert
 ON public.organizer_ledger
-FOR INSERT
-TO authenticated
-WITH CHECK (user_id = auth.uid());
+FOR INSERT TO authenticated
+WITH CHECK (user_id = (SELECT auth.uid()));
 
-DROP POLICY IF EXISTS "Sivox worker_logs read own or event owner" ON public.worker_logs;
-CREATE POLICY "Sivox worker_logs read own or event owner"
+CREATE POLICY worker_logs_select
 ON public.worker_logs
-FOR SELECT
-TO authenticated
+FOR SELECT TO authenticated
 USING (
-  user_id = auth.uid()
+  user_id = (SELECT auth.uid())
   OR EXISTS (
     SELECT 1
     FROM public.events e
     JOIN public.organizer_profiles op ON op.id = e.organizer_id
-    WHERE e.id = related_event_id AND op.owner_id = auth.uid()
+    WHERE e.id = related_event_id AND op.user_id = (SELECT auth.uid())
+  )
+  OR EXISTS (
+    SELECT 1 FROM public.staff_assignments sa
+    WHERE sa.staff_id = (SELECT auth.uid())
+      AND sa.status = 'active'
+      AND (sa.event_id = related_event_id OR sa.event_id IS NULL)
+      AND COALESCE(sa.permissions ->> 'can_view_logs', 'false') = 'true'
   )
 );
 
-DROP POLICY IF EXISTS "Sivox worker_logs insert own" ON public.worker_logs;
-CREATE POLICY "Sivox worker_logs insert own"
+CREATE POLICY worker_logs_insert
 ON public.worker_logs
-FOR INSERT
-TO authenticated
-WITH CHECK (user_id = auth.uid());
+FOR INSERT TO authenticated
+WITH CHECK (user_id = (SELECT auth.uid()));
 
-DROP POLICY IF EXISTS "Sivox visitor_logs read own or event owner" ON public.visitor_logs;
-CREATE POLICY "Sivox visitor_logs read own or event owner"
+CREATE POLICY visitor_logs_select
 ON public.visitor_logs
-FOR SELECT
-TO authenticated
+FOR SELECT TO authenticated
 USING (
-  user_id = auth.uid()
+  user_id = (SELECT auth.uid())
   OR EXISTS (
     SELECT 1
     FROM public.events e
     JOIN public.organizer_profiles op ON op.id = e.organizer_id
-    WHERE e.id = related_event_id AND op.owner_id = auth.uid()
+    WHERE e.id = related_event_id AND op.user_id = (SELECT auth.uid())
   )
 );
 
-DROP POLICY IF EXISTS "Sivox visitor_logs insert own" ON public.visitor_logs;
-CREATE POLICY "Sivox visitor_logs insert own"
+CREATE POLICY visitor_logs_insert
 ON public.visitor_logs
-FOR INSERT
-TO authenticated
-WITH CHECK (user_id = auth.uid());
+FOR INSERT TO authenticated
+WITH CHECK (user_id = (SELECT auth.uid()));
 
--- Keep audit rows when an account is deleted. Null the actor FK rather than
--- cascading a DELETE into an append-only operational log.
-DO $$
+-- Client roles may append and read authorized entries only.
+REVOKE ALL ON public.staff_logs, public.organizer_ledger,
+  public.worker_logs, public.visitor_logs FROM PUBLIC, anon;
+REVOKE UPDATE, DELETE ON public.staff_logs, public.organizer_ledger,
+  public.worker_logs, public.visitor_logs FROM authenticated;
+GRANT SELECT, INSERT ON public.staff_logs, public.organizer_ledger,
+  public.worker_logs, public.visitor_logs TO authenticated;
+
+-- Preserve audit history when an account is deleted. The FK constraints
+-- already use ON DELETE SET NULL and the audit trigger permits that one change.
+CREATE OR REPLACE FUNCTION public.delete_user_account()
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth, pg_temp
+AS $$
 DECLARE
-  table_name text;
-  fk record;
-  replacement_definition text;
+  v_user_id UUID := auth.uid();
 BEGIN
-  FOREACH table_name IN ARRAY ARRAY[
-    'staff_logs',
-    'organizer_ledger',
-    'worker_logs',
-    'visitor_logs'
-  ]
-  LOOP
-    IF to_regclass(format('public.%I', table_name)) IS NOT NULL THEN
-      FOR fk IN
-        SELECT conname, pg_get_constraintdef(oid) AS definition
-        FROM pg_constraint
-        WHERE conrelid = to_regclass(format('public.%I', table_name))
-          AND contype = 'f'
-          AND pg_get_constraintdef(oid) ILIKE 'FOREIGN KEY (user_id)%'
-      LOOP
-        replacement_definition := regexp_replace(
-          fk.definition,
-          ' ON DELETE (CASCADE|RESTRICT|NO ACTION|SET DEFAULT|SET NULL)',
-          '',
-          'i'
-        ) || ' ON DELETE SET NULL';
-        IF replacement_definition IS DISTINCT FROM fk.definition THEN
-          EXECUTE format(
-            'ALTER TABLE public.%I ALTER COLUMN user_id DROP NOT NULL',
-            table_name
-          );
-          EXECUTE format(
-            'ALTER TABLE public.%I ALTER COLUMN related_event_id DROP NOT NULL',
-            table_name
-          );
-          EXECUTE format(
-            'ALTER TABLE public.%I DROP CONSTRAINT %I',
-            table_name,
-            fk.conname
-          );
-          EXECUTE format(
-            'ALTER TABLE public.%I ADD CONSTRAINT %I %s',
-            table_name,
-            fk.conname,
-            replacement_definition
-          );
-        END IF;
-      END LOOP;
-    END IF;
-  END LOOP;
-END;
-$$;
-
--- Event deletion should detach the reference, not delete or block audit history.
-DO $$
-DECLARE
-  table_name text;
-  fk record;
-  replacement_definition text;
-BEGIN
-  FOREACH table_name IN ARRAY ARRAY[
-    'organizer_ledger',
-    'worker_logs',
-    'visitor_logs'
-  ]
-  LOOP
-    IF to_regclass(format('public.%I', table_name)) IS NOT NULL THEN
-      FOR fk IN
-        SELECT conname, pg_get_constraintdef(oid) AS definition
-        FROM pg_constraint
-        WHERE conrelid = to_regclass(format('public.%I', table_name))
-          AND contype = 'f'
-          AND pg_get_constraintdef(oid) ILIKE 'FOREIGN KEY (related_event_id)%'
-      LOOP
-        replacement_definition := regexp_replace(
-          fk.definition,
-          ' ON DELETE (CASCADE|RESTRICT|NO ACTION|SET DEFAULT|SET NULL)',
-          '',
-          'i'
-        ) || ' ON DELETE SET NULL';
-        IF replacement_definition IS DISTINCT FROM fk.definition THEN
-          EXECUTE format(
-            'ALTER TABLE public.%I DROP CONSTRAINT %I',
-            table_name,
-            fk.conname
-          );
-          EXECUTE format(
-            'ALTER TABLE public.%I ADD CONSTRAINT %I %s',
-            table_name,
-            fk.conname,
-            replacement_definition
-          );
-        END IF;
-      END LOOP;
-    END IF;
-  END LOOP;
-END;
-$$;
-
--- PostgREST needs this relationship for visitor history's events(title, image_url) select.
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1
-    FROM pg_constraint
-    WHERE conrelid = 'public.visitor_logs'::regclass
-      AND contype = 'f'
-      AND pg_get_constraintdef(oid) ILIKE 'FOREIGN KEY (related_event_id)%'
-  ) THEN
-    ALTER TABLE public.visitor_logs
-      ADD CONSTRAINT visitor_logs_related_event_id_fkey
-      FOREIGN KEY (related_event_id)
-      REFERENCES public.events(id)
-      ON DELETE SET NULL;
+  IF v_user_id IS NULL THEN
+    RAISE EXCEPTION 'Not authenticated' USING ERRCODE = '42501';
   END IF;
+
+  DELETE FROM public.notifications WHERE user_id = v_user_id;
+  DELETE FROM public.follows WHERE user_id = v_user_id;
+  DELETE FROM public.favorites WHERE user_id = v_user_id;
+  DELETE FROM public.bookings WHERE user_id = v_user_id;
+  DELETE FROM public.staff_assignments WHERE staff_id = v_user_id;
+  DELETE FROM public.profiles WHERE id = v_user_id;
+  DELETE FROM auth.users WHERE id = v_user_id;
 END;
 $$;
+
+CREATE OR REPLACE FUNCTION public.delete_user()
+RETURNS void
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public, auth, pg_temp
+AS $$
+  DELETE FROM auth.users WHERE id = auth.uid();
+$$;
+
+REVOKE ALL ON FUNCTION public.prevent_audit_log_mutation() FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.delete_user_account() FROM PUBLIC, anon;
+REVOKE ALL ON FUNCTION public.delete_user() FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.delete_user_account() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.delete_user() TO authenticated;
