@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_app/theme/app_theme.dart';
 import 'package:my_app/services/translation_service.dart';
 import 'package:my_app/services/auth_service.dart';
+import 'package:my_app/services/profile_service.dart';
 import 'package:my_app/screens/home_feed.dart';
 import 'package:my_app/screens/organizer_main_wrapper.dart';
 import 'package:my_app/screens/staff_hub_screen.dart';
@@ -495,6 +496,7 @@ class _AuthScreenState extends State<AuthScreen>
 
     var role = 'attendee';
     try {
+      await ProfileService().ensureProfile(user);
       final profile = await Supabase.instance.client
           .from('profiles')
           .select('role')
@@ -506,7 +508,7 @@ class _AuthScreenState extends State<AuthScreen>
         final organizer = await Supabase.instance.client
             .from('organizer_profiles')
             .select('id')
-            .eq('owner_id', user.id)
+            .eq('user_id', user.id)
             .limit(1)
             .maybeSingle();
         if (organizer != null) {
