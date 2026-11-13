@@ -339,8 +339,8 @@ BEGIN
   IF NEW.num_guests IS DISTINCT FROM OLD.num_guests THEN
     IF OLD.user_id IS DISTINCT FROM auth.uid()
        OR OLD.payment_status NOT IN ('pending', 'pending_confirmation')
-       OR NEW.num_guests < 1 OR NEW.num_guests > 10
-       OR (to_jsonb(NEW) - 'num_guests') IS DISTINCT FROM (to_jsonb(OLD) - 'num_guests') THEN
+       OR NEW.num_guests IS NULL OR NEW.num_guests < 1 OR NEW.num_guests > 10
+       OR (to_jsonb(NEW) - ARRAY['num_guests', 'is_scanned']) IS DISTINCT FROM (to_jsonb(OLD) - ARRAY['num_guests', 'is_scanned']) THEN
       RAISE EXCEPTION 'BOOKING_GUEST_COUNT_UPDATE_FORBIDDEN' USING ERRCODE = '42501';
     END IF;
     RETURN NEW;
@@ -353,7 +353,7 @@ BEGIN
       OR public.has_event_staff_permission(OLD.event_id, 'can_confirm_payment')
     )
     OR OLD.payment_status NOT IN ('used', 'late_accepted')
-    OR (to_jsonb(NEW) - 'table_number') IS DISTINCT FROM (to_jsonb(OLD) - 'table_number') THEN
+    OR (to_jsonb(NEW) - ARRAY['table_number', 'is_scanned']) IS DISTINCT FROM (to_jsonb(OLD) - ARRAY['table_number', 'is_scanned']) THEN
       RAISE EXCEPTION 'BOOKING_TABLE_ASSIGNMENT_FORBIDDEN' USING ERRCODE = '42501';
     END IF;
     RETURN NEW;
@@ -364,9 +364,9 @@ BEGIN
      OR NEW.perk_granted_by IS DISTINCT FROM OLD.perk_granted_by THEN
     IF NOT public.has_event_staff_permission(OLD.event_id, 'can_manage_guests')
        OR (NEW.perk_granted_by IS NOT NULL AND NEW.perk_granted_by IS DISTINCT FROM auth.uid())
-       OR (to_jsonb(NEW) - ARRAY['applied_perk', 'perk_granted_by'])
+       OR (to_jsonb(NEW) - ARRAY['applied_perk', 'perk_granted_by', 'is_scanned'])
           IS DISTINCT FROM
-          (to_jsonb(OLD) - ARRAY['applied_perk', 'perk_granted_by']) THEN
+          (to_jsonb(OLD) - ARRAY['applied_perk', 'perk_granted_by', 'is_scanned']) THEN
       RAISE EXCEPTION 'BOOKING_PERK_UPDATE_FORBIDDEN' USING ERRCODE = '42501';
     END IF;
     IF NEW.perk_granted_by IS NULL THEN
@@ -381,7 +381,7 @@ BEGIN
     IF NOT v_privileged
        OR OLD.payment_status NOT IN ('pending', 'pending_confirmation')
        OR NOT public.has_event_staff_permission(OLD.event_id, 'can_confirm_booking')
-       OR (to_jsonb(NEW) - 'payment_status') IS DISTINCT FROM (to_jsonb(OLD) - 'payment_status') THEN
+       OR (to_jsonb(NEW) - ARRAY['payment_status', 'is_scanned']) IS DISTINCT FROM (to_jsonb(OLD) - ARRAY['payment_status', 'is_scanned']) THEN
       RAISE EXCEPTION 'BOOKING_APPROVAL_FORBIDDEN' USING ERRCODE = '42501';
     END IF;
     RETURN NEW;
@@ -394,9 +394,9 @@ BEGIN
        OR OLD.payment_status <> 'confirmed'
        OR COALESCE(OLD.security_cleared, FALSE)
        OR NOT public.has_event_staff_permission(OLD.event_id, 'can_scan')
-       OR (to_jsonb(NEW) - ARRAY['security_cleared', 'scanned_at_security'])
+       OR (to_jsonb(NEW) - ARRAY['security_cleared', 'scanned_at_security', 'is_scanned'])
           IS DISTINCT FROM
-          (to_jsonb(OLD) - ARRAY['security_cleared', 'scanned_at_security']) THEN
+          (to_jsonb(OLD) - ARRAY['security_cleared', 'scanned_at_security', 'is_scanned']) THEN
       RAISE EXCEPTION 'BOOKING_SECURITY_STAGE_FORBIDDEN' USING ERRCODE = '42501';
     END IF;
     RETURN NEW;
@@ -422,11 +422,11 @@ BEGIN
        )
        OR (to_jsonb(NEW) - ARRAY[
             'payment_status', 'payment_confirmed', 'confirmed_by_manager',
-            'scanned_at_payment', 'scanned_at'
+            'scanned_at_payment', 'scanned_at', 'is_scanned'
           ]) IS DISTINCT FROM
           (to_jsonb(OLD) - ARRAY[
             'payment_status', 'payment_confirmed', 'confirmed_by_manager',
-            'scanned_at_payment', 'scanned_at'
+            'scanned_at_payment', 'scanned_at', 'is_scanned'
           ]) THEN
       RAISE EXCEPTION 'BOOKING_PAYMENT_STAGE_FORBIDDEN' USING ERRCODE = '42501';
     END IF;
@@ -441,9 +441,9 @@ BEGIN
          OLD.user_id = auth.uid()
          OR public.has_event_staff_permission(OLD.event_id, 'can_cancel')
        )
-       OR (to_jsonb(NEW) - ARRAY['payment_status', 'cancellation_reason'])
+       OR (to_jsonb(NEW) - ARRAY['payment_status', 'cancellation_reason', 'is_scanned'])
           IS DISTINCT FROM
-          (to_jsonb(OLD) - ARRAY['payment_status', 'cancellation_reason']) THEN
+          (to_jsonb(OLD) - ARRAY['payment_status', 'cancellation_reason', 'is_scanned']) THEN
       RAISE EXCEPTION 'BOOKING_CANCELLATION_FORBIDDEN' USING ERRCODE = '42501';
     END IF;
     RETURN NEW;
@@ -473,6 +473,7 @@ FOR EACH ROW
 EXECUTE FUNCTION public.enforce_booking_stage_transitions();
 
 -- ---------------------------------------------------------------------------
+
 -- Atomic capacity validation. Lock the parent event row to serialize concurrent
 -- inserts/guest-count changes for the same event and avoid overselling capacity.
 -- ---------------------------------------------------------------------------
