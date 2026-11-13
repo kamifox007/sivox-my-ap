@@ -75,10 +75,36 @@ class EnforcementService {
     try {
       final response = await supabase
           .from('blacklist')
-          .select('*, profiles:user_id(full_name, avatar_url)')
+          .select()
           .eq('club_id', clubId)
           .order('created_at', ascending: false);
-      return List<Map<String, dynamic>>.from(response);
+
+      final entries = List<Map<String, dynamic>>.from(response);
+      final userIds = entries
+          .map((entry) => entry['user_id']?.toString())
+          .whereType<String>()
+          .where((id) => id.isNotEmpty)
+          .toSet()
+          .toList();
+
+      final profilesById = <String, Map<String, dynamic>>{};
+      if (userIds.isNotEmpty) {
+        final profileRows = await supabase
+            .from('profiles')
+            .select('id, full_name, avatar_url')
+            .inFilter('id', userIds);
+
+        for (final row in profileRows as List) {
+          final profile = Map<String, dynamic>.from(row);
+          profilesById[profile['id'].toString()] = profile;
+        }
+      }
+
+      for (final entry in entries) {
+        entry['profiles'] =
+            profilesById[entry['user_id']?.toString()] ?? <String, dynamic>{};
+      }
+      return entries;
     } catch (e) {
       return [];
     }
