@@ -325,7 +325,7 @@ BEGIN
        OR OLD.payment_status NOT IN ('pending', 'pending_confirmation', 'confirmed')
        OR COALESCE(OLD.security_cleared, FALSE)
        OR COALESCE(OLD.payment_confirmed, FALSE)
-       OR (to_jsonb(NEW) - 'user_id') IS DISTINCT FROM (to_jsonb(OLD) - 'user_id') THEN
+       OR (to_jsonb(NEW) - ARRAY['user_id', 'is_scanned']) IS DISTINCT FROM (to_jsonb(OLD) - ARRAY['user_id', 'is_scanned']) THEN
       RAISE EXCEPTION 'BOOKING_TRANSFER_FORBIDDEN' USING ERRCODE = '42501';
     END IF;
     RETURN NEW;
