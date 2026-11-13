@@ -118,15 +118,14 @@ class BookingService {
             'user_name': finalName,
             'ticket_type': 'Manual',
             'num_guests': numGuests,
-            'payment_status': 'confirmed',
+            'payment_status': 'pending',
             'qr_code': serial,
             'pass_id': serial,
             'guest_phone': finalPhone,
             'created_by': user.id,
             'is_walkin': true,
             'walkin_serial': serial,
-            'security_cleared': true,
-            'scanned_at_security': DateTime.now().toIso8601String(),
+            'security_cleared': false,
           })
           .select('*, events(*)')
           .single();
@@ -139,7 +138,7 @@ class BookingService {
         relatedEventId: eventId,
       );
 
-      await _scheduleEventReminders(result);
+      // Manual reservations remain pending; reminders are scheduled after approval.
       return result;
     } catch (e) {
       return null;
@@ -233,15 +232,11 @@ class BookingService {
       final serial = _generateTacticalSerial('RES');
       final userName = supabase.auth.currentUser?.userMetadata?['full_name'] ?? 'Attendee';
 
-      String finalStatus = paymentStatus;
-      if (event.requireCallConfirmation) {
-        finalStatus = 'pending_confirmation';
-      } else if (event.price > 0 && !event.payAtDoor) {
-        // 🔒 أمنياً: أي فعالية مدفوعة عبر الإنترنت يجب أن تبدأ بحالة 'pending' للتحقق من الدفع عبر الـ Webhook
-        finalStatus = 'pending';
-      } else if (event.payAtDoor || event.price == 0) {
-        finalStatus = 'confirmed';
-      }
+      // Every reservation remains pending until the organizer or an authorized
+      // delegate approves it. The call preference changes guest instructions,
+      // not the approval state.
+      final String finalStatus =
+          event.requireCallConfirmation ? 'pending_confirmation' : 'pending';
 
       final double totalOriginal = (event.price * numGuests);
       final double finalPrice = totalPricePaid ?? (totalOriginal - appliedDiscount).clamp(0, 999999).toDouble();
@@ -288,14 +283,17 @@ class BookingService {
 
       if (result.event?.organizerId != null) {
         final bool isPendingConf = result.paymentStatus == 'pending_confirmation';
-        await _notifications.sendNotificationToUser( 
-          userId: result.event!.organizerId!,
+        await _notifications.sendBookingStageNotification(
+          bookingId: result.id,
           title: isPendingConf ? 'BOOKING_ACTION_REQUIRED'.tr : 'New Booking!'.tr,
-          body: isPendingConf 
+          body: isPendingConf
               ? 'BOOKING_PENDING_CALL_BODY'.trArgs([result.userName])
               : '${result.userName} just booked for ${result.event?.title}'.tr,
           type: 'booking',
-          metadata: {'booking_id': result.id, 'event_id': eventId},
+          metadata: {'event_id': eventId},
+          notifyGuest: false,
+          notifyOrganizer: true,
+          notifyStaff: false,
         );
 
         // Motivational Milestone
@@ -303,11 +301,14 @@ class BookingService {
           final double ratio = (totalPersons + numGuests) / maxCapacity;
           final double oldRatio = totalPersons / maxCapacity;
           if ((ratio >= 0.5 && oldRatio < 0.5) || (ratio >= 0.9 && oldRatio < 0.9) || (ratio >= 1.0 && oldRatio < 1.0)) {
-            await _notifications.sendNotificationToUser(
-              userId: result.event!.organizerId!,
+            await _notifications.sendBookingStageNotification(
+              bookingId: result.id,
               title: 'EVENT_MILESTONE'.tr,
               body: 'MILESTONE_BODY'.trArgs([(ratio * 100).toInt().toString(), result.event!.title]),
               type: 'milestone',
+              notifyGuest: false,
+              notifyOrganizer: true,
+              notifyStaff: false,
             );
           }
         }
@@ -336,64 +337,86 @@ class BookingService {
 
       final targetUser = await supabase
           .from('profiles')
-          .select('id, full_name')
+          .select('id')
           .eq('phone', targetPhone.trim())
           .maybeSingle();
 
       if (targetUser == null || targetUser['id'] == fromUser.id) return false;
-      final String toId = targetUser['id'];
-      
-      final response = await supabase
-          .from('bookings')
-          .update({'user_id': toId, 'user_name': targetUser['full_name']})
-          .eq('id', bookingId)
-          .select('events(title)')
-          .single();
-      
-      final String eventTitle = response['events']?['title'] ?? 'Event';
+      final String targetId = targetUser['id'].toString();
 
-      await _notifications.sendNotificationToUser(
-        userId: toId,
-        title: 'TICKET_RECEIVED_TITLE'.tr,
-        body: 'TICKET_RECEIVED_BODY'.trArgs([eventTitle]),
-        type: 'booking',
+      final bookingInfo = await supabase
+          .from('bookings')
+          .select('events(title)')
+          .eq('id', bookingId)
+          .eq('user_id', fromUser.id)
+          .maybeSingle();
+      if (bookingInfo == null) return false;
+      final String eventTitle =
+          bookingInfo['events']?['title']?.toString() ?? 'Event';
+
+      final dynamic result = await supabase.rpc(
+        'transfer_booking_ticket',
+        params: {
+          'p_booking_id': bookingId,
+          'p_target_user_id': targetId,
+          'p_title': 'TICKET_RECEIVED_TITLE'.tr,
+          'p_body': 'TICKET_RECEIVED_BODY'.trArgs([eventTitle]),
+        },
       );
+
+      if (result is! List || result.isEmpty) return false;
+      final transferred = Map<String, dynamic>.from(result.first as Map);
+      final String? eventId = transferred['event_id']?.toString();
 
       await _audit.logAction(
         actionType: 'TICKET_TRANSFERRED',
-        description: 'Ticket $bookingId moved from ${fromUser.id} to $toId',
+        description: 'Ticket $bookingId moved from ${fromUser.id} to $targetId',
+        relatedEventId: eventId,
+        metadata: {
+          'booking_id': bookingId,
+          'target_user_id': targetId,
+        },
       );
-
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<bool> updateBookingStatus(String bookingId, String status, {String? staffId, String? eventId, String? reason}) async {
+  Future<bool> updateBookingStatus(
+    String bookingId,
+    String status, {
+    String? staffId,
+    String? eventId,
+    String? reason,
+  }) async {
+    // Critical booking transitions must use the permission-checked database
+    // functions; never perform these status changes with a direct client UPDATE.
+    if (status == 'confirmed') return approveBooking(bookingId);
+    if (status == 'used') return confirmManagerPayment(bookingId);
+    if (status == 'late_accepted') return markAsLate(bookingId);
+
     try {
-      final Map<String, dynamic> updateData = {
-        'payment_status': status,
-      };
+      final Map<String, dynamic> updateData = {'payment_status': status};
       if (reason != null) updateData['cancellation_reason'] = reason;
 
       final response = await supabase
           .from('bookings')
           .update(updateData)
           .eq('id', bookingId)
-          .select('user_id, user_name, events(title)')
+          .select('user_id, user_name, event_id, events(title)')
           .single();
 
-      final String guestId = response['user_id'];
+      final String guestId = response['user_id'].toString();
       final String guestName = response['user_name'] ?? 'Attendee';
       final String eventTitle = response['events']?['title'] ?? 'Event';
 
-      await _notifyBookingGuest(guestId, status, eventTitle);
-
+      await _notifyBookingGuest(bookingId, guestId, status, eventTitle);
       await _audit.logAction(
         actionType: 'STATUS_UPDATE',
         description: '$status confirmation for $guestName'.toUpperCase(),
-        relatedEventId: eventId,
+        relatedEventId: (eventId ?? response['event_id'])?.toString(),
+        metadata: {'booking_id': bookingId, 'staff_id': staffId},
       );
       return true;
     } catch (e) {
@@ -401,13 +424,12 @@ class BookingService {
     }
   }
 
-  Future<bool> approveRequest(String bookingId, {String? staffId, String? eventId}) async {
-    final success = await updateBookingStatus(bookingId, 'confirmed', staffId: staffId, eventId: eventId);
-    if (success) {
-      final b = await supabase.from('bookings').select('*, events(*)').eq('id', bookingId).single();
-      await _scheduleEventReminders(Booking.fromMap(b));
-    }
-    return success;
+  Future<bool> approveRequest(
+    String bookingId, {
+    String? staffId,
+    String? eventId,
+  }) async {
+    return approveBooking(bookingId);
   }
 
   Future<void> _scheduleEventReminders(Booking result) async {
@@ -445,14 +467,24 @@ class BookingService {
     return updateBookingStatus(bookingId, 'cancelled', staffId: staffId, eventId: eventId, reason: reason);
   }
 
-  Future<void> _notifyBookingGuest(String userId, String status, String eventTitle) async {
+  Future<void> _notifyBookingGuest(
+    String bookingId,
+    String userId,
+    String status,
+    String eventTitle,
+  ) async {
     String title = '';
     String body = '';
+    String notificationType = 'booking';
 
     try {
       String guestName = ' زائر ';
       if (status == 'used' || status == 'late_accepted') {
-        final userData = await supabase.from('profiles').select('full_name').eq('id', userId).maybeSingle();
+        final userData = await supabase
+            .from('profiles')
+            .select('full_name')
+            .eq('id', userId)
+            .maybeSingle();
         if (userData != null) guestName = userData['full_name'];
       }
 
@@ -468,251 +500,270 @@ class BookingService {
         case 'cancelled':
           title = 'TICKET_REJECTED'.tr;
           body = 'declined_notice_body'.trArgs([eventTitle]);
+          notificationType = 'booking_cancel';
           break;
         case 'used':
         case 'late_accepted':
           title = 'welcome_visitor_title'.trArgs([guestName]);
           body = 'welcome_visitor_body'.trArgs([eventTitle]);
+          notificationType =
+              status == 'late_accepted' ? 'late' : 'presence';
+          break;
+        case 'ejected':
+          title = 'TICKET_REJECTED'.tr;
+          body = 'Your ticket for $eventTitle has been revoked.'.tr;
+          notificationType = 'ejected';
           break;
       }
 
       if (title.isNotEmpty) {
-        await _notifications.sendNotificationToUser(
-          userId: userId,
+        await _notifications.sendBookingStageNotification(
+          bookingId: bookingId,
           title: title,
           body: body,
-          type: 'booking',
+          type: notificationType,
+          metadata: {'status': status},
+          notifyGuest: true,
+          notifyOrganizer: false,
+          notifyStaff: false,
         );
       }
     } catch (_) {}
   }
 
-  Future<void> _notifyOrganizerOfArrival(String organizerId, String guestName, String eventTitle, bool isFollower) async {
-    try {
-      final String prefix = isFollower ? '💎 VIP FOLLOWED' : '👤 VISITOR';
-      
-      // Notify Organizer
-      await _notifications.sendNotificationToUser(
-        userId: organizerId,
-        title: '$prefix ARRIVED'.tr,
-        body: '$guestName ${'has_arrived_at'.tr} $eventTitle',
-        type: 'presence',
-        metadata: {'guest_name': guestName, 'is_vip': isFollower},
-      );
-
-      // Notify Staff (Managers and Security)
-      final staffRes = await supabase
-          .from('staff_assignments')
-          .select('staff_id')
-          .eq('organizer_id', organizerId)
-          .eq('status', 'active')
-          .neq('staff_id', organizerId);
-      
-      final staffList = staffRes as List;
-      for (var staff in staffList) {
-        final String staffId = staff['staff_id'];
-        await _notifications.sendNotificationToUser(
-          userId: staffId,
-          title: '$prefix ARRIVED'.tr,
-          body: '$guestName ${'has_arrived_at'.tr} $eventTitle',
-          type: 'presence',
-          metadata: {'guest_name': guestName, 'is_vip': isFollower},
-        );
-      }
-    } catch (_) {}
+  Future<void> _notifyOrganizerOfArrival(
+    String bookingId,
+    String guestName,
+    String eventTitle,
+    bool isFollower,
+  ) async {
+    final String prefix = isFollower ? '💎 VIP FOLLOWED' : '👤 VISITOR';
+    await _notifications.sendBookingStageNotification(
+      bookingId: bookingId,
+      title: '$prefix ARRIVED'.tr,
+      body: '$guestName ${'has_arrived_at'.tr} $eventTitle',
+      type: 'presence',
+      metadata: {'guest_name': guestName, 'is_vip': isFollower},
+      notifyGuest: false,
+      notifyOrganizer: true,
+      notifyStaff: true,
+    );
   }
 
   Future<bool> markAsUsed(String bookingId, {String? tableNumber}) async {
+    final success = await confirmManagerPayment(bookingId);
+    if (!success || tableNumber == null) return success;
+
     try {
-      final response = await supabase
+      await supabase
           .from('bookings')
-          .update({
-            'payment_status': 'used',
-            'scanned_at': DateTime.now().toIso8601String(),
-            'table_number': tableNumber,
-          })
+          .update({'table_number': tableNumber})
           .eq('id', bookingId)
-          .select('user_id, events(title, organizer_id)')
-          .single();
-
-      final String guestId = response['user_id'];
-      final String eventTitle = response['events']?['title'] ?? 'Event';
-      final String? organizerId = response['events']?['organizer_id'];
-
-      await _notifyBookingGuest(guestId, 'used', eventTitle);
-
-      if (organizerId != null) {
-        final isFollower = await _followService.isFollowing(organizerId, userId: guestId);
-        final userData = await supabase.from('profiles').select('full_name').eq('id', guestId).maybeSingle();
-        final guestName = userData?['full_name'] ?? 'Visitor';
-        await _notifyOrganizerOfArrival(organizerId, guestName, eventTitle, isFollower);
-      }
-
-      await _audit.logAction(
-        actionType: 'TICKET_SCANNED',
-        description: 'Guest checked in successfully',
-        relatedEventId: response['events']?['id'],
-      );
-
-      return true;
-    } catch (e) {
-      return false;
+          .eq('payment_status', 'used');
+    } catch (_) {
+      // Entry has already been confirmed; a table assignment is optional metadata.
     }
+    return true;
   }
 
-  Future<bool> markAsLate(String bookingId) async {
+  Future<Map<String, dynamic>?> _callBookingStageRpc(
+    String functionName,
+    String bookingId,
+  ) async {
+    final dynamic result = await supabase.rpc(
+      functionName,
+      params: {'p_booking_id': bookingId},
+    );
+
+    if (result is List && result.isNotEmpty) {
+      return Map<String, dynamic>.from(result.first as Map);
+    }
+    if (result is Map) {
+      return Map<String, dynamic>.from(result);
+    }
+    return null;
+  }
+
+  Future<bool> markAsLate(String bookingId, {String? assignmentId}) async {
     try {
-      final response = await supabase
-          .from('bookings')
-          .update({
-            'payment_status': 'late_accepted',
-            'scanned_at': DateTime.now().toIso8601String(),
-          })
-          .eq('id', bookingId)
-          .select('user_id, events(title, organizer_id)')
-          .single();
+      final response = await _callBookingStageRpc(
+        'accept_booking_late_entry',
+        bookingId,
+      );
+      if (response == null) return false;
 
-      final String guestId = response['user_id'];
-      final String eventTitle = response['events']?['title'] ?? 'Event';
-      final String? organizerId = response['events']?['organizer_id'];
+      final String? guestId = response['user_id']?.toString();
+      if (guestId == null || guestId.isEmpty) return false;
+      final String eventTitle = response['event_title']?.toString() ?? 'Event';
+      final String? organizerId = response['organizer_id']?.toString();
 
-      await _notifyBookingGuest(guestId, 'late_accepted', eventTitle);
+      await _notifyBookingGuest(bookingId, guestId, 'late_accepted', eventTitle);
 
       if (organizerId != null) {
-        final isFollower = await _followService.isFollowing(organizerId, userId: guestId);
-        final userData = await supabase.from('profiles').select('full_name').eq('id', guestId).maybeSingle();
+        final isFollower = await _followService.isFollowing(
+          organizerId,
+          userId: guestId,
+        );
+        final userData = await supabase
+            .from('profiles')
+            .select('full_name')
+            .eq('id', guestId)
+            .maybeSingle();
         final guestName = userData?['full_name'] ?? 'Visitor';
-        await _notifyOrganizerOfArrival(organizerId, guestName, eventTitle, isFollower);
+        await _notifyOrganizerOfArrival(
+          bookingId,
+          guestName,
+          eventTitle,
+          isFollower,
+        );
       }
 
       await _audit.logAction(
         actionType: 'LATE_ENTRY_ACCEPTED',
         description: 'Late guest allowed by staff',
-        relatedEventId: response['events']?['id'],
+        relatedEventId: response['event_id']?.toString(),
+        metadata: {'booking_id': bookingId, 'payment_confirmed': true, 'assignment_id': assignmentId},
       );
-
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<bool> verifySecurityClearance(String bookingId) async {
+  Future<bool> verifySecurityClearance(String bookingId, {String? assignmentId}) async {
     try {
-      final response = await supabase
-          .from('bookings')
-          .update({
-            'security_cleared': true,
-            'scanned_at_security': DateTime.now().toIso8601String(),
-          })
-          .eq('id', bookingId)
-          .select('*, events(title, organizer_id)')
-          .single();
+      final response = await _callBookingStageRpc(
+        'verify_booking_security_clearance',
+        bookingId,
+      );
+      if (response == null) return false;
 
-      final String eventTitle = response['events']?['title'] ?? 'Event';
-      final String? orgId = response['events']?['organizer_id'];
+      final String? guestId = response['user_id']?.toString();
+      if (guestId == null || guestId.isEmpty) return false;
+      final String eventTitle = response['event_title']?.toString() ?? 'Event';
+      final String? eventId = response['event_id']?.toString();
+      final String guestName = response['user_name']?.toString() ?? 'Guest';
 
       await _audit.logAction(
         actionType: 'SECURITY_CLEARED',
         description: 'First-stage validation: Security passed for booking $bookingId',
-        relatedEventId: response['event_id'],
+        relatedEventId: eventId,
+        metadata: {'booking_id': bookingId, 'guest_id': guestId, 'assignment_id': assignmentId},
       );
 
-      // Notify Organizer and Staff
-      if (orgId != null) {
-        // Notify Organizer
-        await _notifications.sendNotificationToUser(
-          userId: orgId,
-          title: 'SECURITY_CHECK_PASSED'.tr,
-          body: 'SECURITY_CHECK_BODY'.trArgs([response['user_name'] ?? 'Guest', eventTitle]),
-          type: 'security',
-        );
+      await _notifications.sendBookingStageNotification(
+        bookingId: bookingId,
+        title: 'SECURITY_CHECK_PASSED'.tr,
+        body: 'Your ticket passed the security check for $eventTitle. Please proceed to the payment point.',
+        type: 'security',
+        metadata: {'guest_id': guestId},
+        notifyGuest: true,
+        notifyOrganizer: false,
+        notifyStaff: false,
+      );
 
-        // Notify Managers and Security Staff
-        final staffRes = await supabase
-            .from('staff_assignments')
-            .select('staff_id')
-            .eq('organizer_id', orgId)
-            .eq('status', 'active')
-            .neq('staff_id', orgId);
-        
-        final staffList = staffRes as List;
-        for (var staff in staffList) {
-          final String staffId = staff['staff_id'];
-          await _notifications.sendNotificationToUser(
-            userId: staffId,
-            title: 'SECURITY_CHECK_PASSED'.tr,
-            body: 'SECURITY_CHECK_BODY'.trArgs([response['user_name'] ?? 'Guest', eventTitle]),
-            type: 'security',
-          );
-        }
-      }
+      await _notifications.sendBookingStageNotification(
+        bookingId: bookingId,
+        title: 'SECURITY_CHECK_PASSED'.tr,
+        body: 'SECURITY_CHECK_BODY'.trArgs([guestName, eventTitle]),
+        type: 'security',
+        metadata: {'guest_id': guestId},
+        notifyGuest: false,
+        notifyOrganizer: true,
+        notifyStaff: true,
+      );
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<bool> confirmManagerPayment(String bookingId) async {
+  Future<bool> confirmManagerPayment(String bookingId, {String? assignmentId}) async {
     try {
       final managerId = supabase.auth.currentUser?.id;
-      final response = await supabase
-          .from('bookings')
-          .update({
-            'payment_confirmed': true,
-            'payment_status': 'used',
-            'scanned_at_payment': DateTime.now().toIso8601String(),
-            'scanned_at': DateTime.now().toIso8601String(),
-            'confirmed_by_manager': managerId,
-          })
-          .eq('id', bookingId)
-          .select('user_id, events(title, organizer_id)')
-          .single();
+      final response = await _callBookingStageRpc(
+        'confirm_booking_manager_payment',
+        bookingId,
+      );
+      if (response == null) return false;
 
-      final String guestId = response['user_id'];
-      final String eventTitle = response['events']?['title'] ?? 'Event';
-      final String? organizerId = response['events']?['organizer_id'];
+      final String? guestId = response['user_id']?.toString();
+      if (guestId == null || guestId.isEmpty) return false;
+      final String eventTitle = response['event_title']?.toString() ?? 'Event';
+      final String? organizerId = response['organizer_id']?.toString();
 
-      await _notifyBookingGuest(guestId, 'used', eventTitle);
+      await _notifyBookingGuest(bookingId, guestId, 'used', eventTitle);
 
       if (organizerId != null) {
-        final isFollower = await _followService.isFollowing(organizerId, userId: guestId);
-        final userData = await supabase.from('profiles').select('full_name').eq('id', guestId).maybeSingle();
+        final isFollower = await _followService.isFollowing(
+          organizerId,
+          userId: guestId,
+        );
+        final userData = await supabase
+            .from('profiles')
+            .select('full_name')
+            .eq('id', guestId)
+            .maybeSingle();
         final guestName = userData?['full_name'] ?? 'Visitor';
-        await _notifyOrganizerOfArrival(organizerId, guestName, eventTitle, isFollower);
+        await _notifyOrganizerOfArrival(
+          bookingId,
+          guestName,
+          eventTitle,
+          isFollower,
+        );
       }
 
       await _audit.logAction(
         actionType: 'FINAL_ENTRY_CONFIRMED',
         description: 'Payment verified and entry granted for booking $bookingId by Manager $managerId',
-        relatedEventId: response['events']?['id'] ?? response['event_id'],
+        relatedEventId: response['event_id']?.toString(),
+        metadata: {'booking_id': bookingId, 'payment_confirmed': true},
       );
-
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<bool> approveBooking(String bookingId) async {
+  Future<bool> approveBooking(String bookingId, {String? assignmentId}) async {
     try {
-      final response = await supabase
-          .from('bookings')
-          .update({'payment_status': 'confirmed'})
-          .eq('id', bookingId)
-          .select('user_id, events(title)')
-          .single();
+      final response = await _callBookingStageRpc(
+        'approve_event_booking',
+        bookingId,
+      );
+      if (response == null) return false;
 
-      final String guestId = response['user_id'];
-      final String eventTitle = response['events']?['title'] ?? 'Event';
+      final String? guestId = response['user_id']?.toString();
+      if (guestId == null || guestId.isEmpty) return false;
+      final String eventTitle = response['event_title']?.toString() ?? 'Event';
+      final String? eventId = response['event_id']?.toString();
 
-      await _notifications.sendNotificationToUser(
-        userId: guestId,
+      await _notifications.sendBookingStageNotification(
+        bookingId: bookingId,
         title: 'TICKET APPROVED'.tr,
         body: 'The organizer has approved your request for $eventTitle!'.tr,
         type: 'booking',
+        metadata: {'event_id': eventId},
+        notifyGuest: true,
+        notifyOrganizer: false,
+        notifyStaff: false,
       );
 
+      await _audit.logAction(
+        actionType: 'BOOKING_APPROVED',
+        description: 'Booking $bookingId approved for $eventTitle',
+        relatedEventId: eventId,
+        metadata: {'booking_id': bookingId, 'guest_id': guestId, 'assignment_id': assignmentId},
+      );
+
+      final bookingData = await supabase
+          .from('bookings')
+          .select('*, events(*)')
+          .eq('id', bookingId)
+          .maybeSingle();
+      if (bookingData != null) {
+        await _scheduleEventReminders(Booking.fromMap(bookingData));
+      }
       return true;
     } catch (e) {
       return false;
@@ -728,23 +779,28 @@ class BookingService {
             'cancellation_reason': reason ?? 'User requested',
           })
           .eq('id', bookingId)
-          .select('user_id, events(title)')
+          .select('user_id, event_id, events(title)')
           .single();
 
       final String guestId = response['user_id'];
       final String eventTitle = response['events']?['title'] ?? 'Event';
 
-      await _notifications.sendNotificationToUser(
-        userId: guestId,
+      await _notifications.sendBookingStageNotification(
+        bookingId: bookingId,
         title: 'TICKET CANCELLED'.tr,
         body: 'Your ticket for $eventTitle has been cancelled.'.tr,
-        type: 'booking',
+        type: 'booking_cancel',
+        metadata: {'reason': reason ?? 'User requested', 'guest_id': guestId},
+        notifyGuest: true,
+        notifyOrganizer: true,
+        notifyStaff: true,
       );
 
       await _audit.logAction(
         actionType: 'BOOKING_CANCELLED',
         description: 'Booking $bookingId cancelled. Reason: ${reason ?? "User requested"}',
-        relatedEventId: eventId,
+        relatedEventId: (eventId ?? response['event_id'])?.toString(),
+        metadata: {'booking_id': bookingId},
       );
 
       return true;

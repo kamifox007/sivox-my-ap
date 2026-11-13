@@ -131,12 +131,16 @@ class NotificationService {
   /// Marks a notification as read.
   Future<void> markAsRead(String notificationId) async {
     try {
-      await supabase
+      final updated = await supabase
           .from('notifications')
           .update({'is_read': true})
-          .eq('id', notificationId);
-          
-      if (unreadCount.value > 0) unreadCount.value--;
+          .eq('id', notificationId)
+          .eq('is_read', false)
+          .select('id');
+
+      if ((updated as List).isNotEmpty && unreadCount.value > 0) {
+        unreadCount.value--;
+      }
     } catch (e) {
       debugPrint('Error marking notification as read: $e');
     }
@@ -208,6 +212,33 @@ class NotificationService {
       });
     } catch (e) {
       debugPrint('Error sending staff notification: $e');
+    }
+  }
+
+  /// Sends booking-stage notifications through a permission-checked database RPC.
+  Future<void> sendBookingStageNotification({
+    required String bookingId,
+    required String title,
+    required String body,
+    required String type,
+    Map<String, dynamic>? metadata,
+    bool notifyGuest = true,
+    bool notifyOrganizer = true,
+    bool notifyStaff = false,
+  }) async {
+    try {
+      await supabase.rpc('send_booking_stage_notification', params: {
+        'p_booking_id': bookingId,
+        'p_title': title,
+        'p_body': body,
+        'p_type': type,
+        'p_metadata': metadata ?? <String, dynamic>{},
+        'p_notify_guest': notifyGuest,
+        'p_notify_organizer': notifyOrganizer,
+        'p_notify_staff': notifyStaff,
+      });
+    } catch (e) {
+      debugPrint('Error sending booking-stage notification: $e');
     }
   }
 

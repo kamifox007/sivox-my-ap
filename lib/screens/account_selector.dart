@@ -64,7 +64,7 @@ class _AccountSelectorScreenState extends State<AccountSelectorScreen> {
           .from('staff_assignments')
           .select('*, organizer_profiles(name, avatar_url, business_type, profiles(full_name, avatar_url))')
           .eq('staff_id', userId)
-          .or('status.eq.active,status.eq.pending');
+          .or('status.eq.active,status.eq.pending,status.eq.absent');
 
       List<Map<String, dynamic>> missions = [];
       for (var s in (staffRes as List)) {

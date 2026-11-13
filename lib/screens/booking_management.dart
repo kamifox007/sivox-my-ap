@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/theme/app_theme.dart';
 import 'package:my_app/services/translation_service.dart';
-import 'package:my_app/services/audit_service.dart';
 import 'package:my_app/services/booking_service.dart';
 import 'package:my_app/services/event_service.dart';
 import 'package:my_app/models/booking.dart';
@@ -10,7 +9,17 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class BookingManagementScreen extends StatefulWidget {
   final String? clubId;
   final String? eventId;
-  const BookingManagementScreen({super.key, this.clubId, this.eventId});
+  final bool allowCancellation;
+  final bool allowApproval;
+  final String? assignmentId;
+  const BookingManagementScreen({
+    super.key,
+    this.clubId,
+    this.eventId,
+    this.allowCancellation = true,
+    this.allowApproval = true,
+    this.assignmentId,
+  });
 
   @override
   State<BookingManagementScreen> createState() =>
@@ -20,10 +29,10 @@ class BookingManagementScreen extends StatefulWidget {
 class _BookingManagementScreenState extends State<BookingManagementScreen> {
   final _bookingService = BookingService();
   final _eventService = EventService();
-  final _auditService = AuditService();
   final supabase = Supabase.instance.client;
 
   bool _isLoading = true;
+  bool _isBulkApproving = false;
   List<Booking> _bookings = [];
   String _selectedFilter = 'pending';
 
@@ -63,21 +72,46 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
     }
   }
 
+  Future<void> _approveAllPending() async {
+    if (_isBulkApproving) return;
+    final pending = _bookings
+        .where((b) => b.paymentStatus == 'pending' ||
+            b.paymentStatus == 'pending_confirmation')
+        .toList();
+    if (pending.isEmpty) return;
+
+    setState(() => _isBulkApproving = true);
+    int approved = 0;
+    try {
+      for (final booking in pending) {
+        if (await _bookingService.approveBooking(booking.id, assignmentId: widget.assignmentId)) approved++;
+      }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$approved / ${pending.length} bookings approved'),
+            backgroundColor: AppTheme.primary,
+          ),
+        );
+        await _loadData();
+      }
+    } finally {
+      if (mounted) setState(() => _isBulkApproving = false);
+    }
+  }
+
   Future<void> _updateStatus(String id, String status) async {
+    if (status == 'confirmed' && !widget.allowApproval) return;
+    if (status == 'cancelled' && !widget.allowCancellation) return;
     if (status == 'cancelled') {
       _showCancelReasonDialog(id);
       return;
     }
 
-    final ok = await _bookingService.updateBookingStatus(id, status);
+    final ok = status == 'confirmed'
+        ? await _bookingService.approveBooking(id, assignmentId: widget.assignmentId)
+        : await _bookingService.updateBookingStatus(id, status);
     if (ok) {
-      final booking = _bookings.firstWhere((b) => b.id == id);
-      await _auditService.logAction(
-        actionType: 'CONFIRM_BOOKING',
-        description: 'Confirmed booking for ${booking.userName}',
-        relatedEventId: booking.eventId,
-      );
-
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -121,13 +155,6 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
                     reason: reason.tr,
                   );
                   if (ok) {
-                    final booking = _bookings.firstWhere((b) => b.id == id);
-                    await _auditService.logAction(
-                      actionType: 'CANCEL_BOOKING',
-                      description:
-                          'Cancelled: ${booking.userName} - Reason: ${reason.tr}',
-                      relatedEventId: booking.eventId,
-                    );
                     _loadData();
                   }
                 },
@@ -186,6 +213,19 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         actions: [
+          if (widget.allowApproval && _bookings.any((b) => b.paymentStatus == 'pending' ||
+              b.paymentStatus == 'pending_confirmation'))
+            IconButton(
+              tooltip: 'APPROVE_ALL'.tr,
+              icon: _isBulkApproving
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.done_all_rounded, color: AppTheme.primary),
+              onPressed: _isBulkApproving ? null : _approveAllPending,
+            ),
           IconButton(
             icon: const Icon(Icons.help_outline_rounded, color: Colors.white24, size: 20),
             onPressed: () => _showHelp(),
@@ -311,56 +351,39 @@ class _BookingManagementScreenState extends State<BookingManagementScreen> {
                       ],
                     ),
                   ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () => _updateStatus(b.id, 'confirmed'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.greenAccent,
-                          foregroundColor: Colors.black,
+                if (widget.allowApproval || widget.allowCancellation)
+                  Row(
+                    children: [
+                      if (widget.allowApproval)
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => _updateStatus(b.id, 'confirmed'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.greenAccent,
+                              foregroundColor: Colors.black,
+                            ),
+                            child: Text('confirm'.tr.toUpperCase()),
+                          ),
                         ),
-                        child: Text('confirm'.tr.toUpperCase()),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () => _updateStatus(b.id, 'cancelled'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.redAccent,
-                          foregroundColor: Colors.white,
+                      if (widget.allowApproval && widget.allowCancellation)
+                        const SizedBox(width: 12),
+                      if (widget.allowCancellation)
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => _updateStatus(b.id, 'cancelled'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.redAccent,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: Text('reject'.tr.toUpperCase()),
+                          ),
                         ),
-                        child: Text('reject'.tr.toUpperCase()),
-                      ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
               ],
             ),
           
-          if (b.paymentStatus == 'confirmed' && !b.paymentConfirmed)
-            Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    final ok = await _bookingService.confirmManagerPayment(b.id);
-                    if (ok) {
-                      _loadData();
-                    }
-                  },
-                  icon: const Icon(Icons.check_circle_outline, size: 16),
-                  label: Text('CONFIRM_PAYMENT'.tr.toUpperCase()),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.secondary.withValues(alpha: 0.15),
-                    foregroundColor: AppTheme.secondary,
-                    side: const BorderSide(color: AppTheme.secondary),
-                  ),
-                ),
-              ),
-            ),
+
         ],
       ),
     );

@@ -143,11 +143,20 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 top: 12, right: 12,
                 child: GestureDetector(
                   onTap: () async {
-                    // Optimistic Update!
+                    final originalIndex = _faveEvents.indexOf(e);
                     setState(() {
                       _faveEvents.remove(e);
                     });
-                    await _favoriteService.toggleFavorite(e);
+                    final removed = await _favoriteService.removeFavorite(eventId: e.id);
+                    if (!removed && mounted) {
+                      setState(() {
+                        final insertAt = originalIndex.clamp(0, _faveEvents.length).toInt();
+                        _faveEvents.insert(insertAt, e);
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('action_failed'.tr)),
+                      );
+                    }
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),

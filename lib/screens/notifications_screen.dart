@@ -1,9 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:my_app/theme/app_theme.dart';
 import 'package:my_app/services/translation_service.dart';
 import 'package:my_app/services/notification_service.dart';
 import 'package:my_app/services/staff_service.dart';
+import 'package:my_app/services/event_service.dart';
+import 'package:my_app/screens/event_details.dart';
+import 'package:my_app/screens/booking_management.dart';
 import 'package:intl/intl.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -75,7 +79,17 @@ class NotificationsScreen extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () => service.markAllAsRead(),
+          onPressed: () async {
+            try {
+              await service.markAllAsRead();
+            } catch (e) {
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Could not mark notifications as read: $e')),
+                );
+              }
+            }
+          },
           child: Text('mark_all_read'.tr, style: const TextStyle(color: AppTheme.primary, fontSize: 11)),
         ),
         const SizedBox(width: 16),
@@ -144,24 +158,78 @@ class _NotificationTileState extends State<_NotificationTile> {
         ));
         NotificationService().markAsRead(widget.notification.id);
       }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not process invitation: $e')),
+        );
+      }
     } finally {
       if (mounted) setState(() => _isProcessing = false);
     }
   }
 
+  Future<void> _openNotification() async {
+    final notif = widget.notification;
+    if (notif.type == 'staff_invitation') return;
+
+    await NotificationService().markAsRead(notif.id);
+    if (!mounted) return;
+
+    try {
+      final metadata = notif.metadata ?? {};
+      if (notif.type == 'booking_request') {
+        final bookingId = metadata['booking_id']?.toString();
+        if (bookingId == null || bookingId.isEmpty) return;
+        final booking = await Supabase.instance.client
+            .from('bookings')
+            .select('event_id')
+            .eq('id', bookingId)
+            .maybeSingle();
+        final eventId = booking?['event_id']?.toString();
+        if (eventId != null && mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BookingManagementScreen(eventId: eventId),
+            ),
+          );
+        }
+        return;
+      }
+
+      final eventId = metadata['event_id']?.toString();
+      if (eventId != null && eventId.isNotEmpty) {
+        final event = await EventService().getEventById(eventId);
+        if (event != null && mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => EventDetailsScreen(event: event)),
+          );
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('The linked event is no longer available.')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not open notification: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final service = NotificationService();
     final notif = widget.notification;
     final isInvite = notif.type == 'staff_invitation';
     
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
-        onTap: () {
-          service.markAsRead(notif.id);
-          // Handle navigation based on type if needed
-        },
+        onTap: _openNotification,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
           child: BackdropFilter(

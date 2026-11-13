@@ -22,14 +22,41 @@ class _EventLedgerDetailScreenState extends State<EventLedgerDetailScreen> {
   List<Booking> _generatedBookings = []; // NEW
   Map<String, int> _tacticalStats = {'ejections': 0, 'blocks': 0, 'refusals': 0};
   int _currentTab = 0; // 0: Timeline, 1: Generated
+  RealtimeChannel? _ledgerChannel;
 
   @override
   void initState() {
     super.initState();
     _loadTacticalData();
+    _subscribeToLedgerUpdates();
+  }
+
+  void _subscribeToLedgerUpdates() {
+    final supabase = Supabase.instance.client;
+    _ledgerChannel = supabase
+        .channel('event-ledger-${widget.event.id}')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.all,
+          schema: 'public',
+          table: 'staff_logs',
+          filter: PostgresChangeFilter(
+            type: PostgresChangeFilterType.eq,
+            column: 'related_event_id',
+            value: widget.event.id,
+          ),
+          callback: (_) => _loadTacticalData(),
+        )
+        .subscribe();
+  }
+
+  @override
+  void dispose() {
+    _ledgerChannel?.unsubscribe();
+    super.dispose();
   }
 
   Future<void> _loadTacticalData() async {
+    if (!mounted) return;
     setState(() => _isLoading = true);
     try {
       final logs = await _auditService.getLogs(eventId: widget.event.id);
@@ -42,6 +69,7 @@ class _EventLedgerDetailScreenState extends State<EventLedgerDetailScreen> {
           .eq('event_id', widget.event.id)
           .eq('is_walkin', true);
       
+      if (!mounted) return;
       setState(() {
         _logs = logs;
         _tacticalStats = stats;
@@ -147,8 +175,9 @@ class _EventLedgerDetailScreenState extends State<EventLedgerDetailScreen> {
           onPressed: () => _showHelp(),
         ),
         IconButton(
-          icon: const Icon(Icons.delete_sweep_outlined, color: Colors.redAccent),
-          onPressed: _confirmClearLedger,
+          icon: const Icon(Icons.refresh_rounded, color: Colors.white24),
+          tooltip: 'Refresh',
+          onPressed: _loadTacticalData,
         ),
       ],
     );
@@ -191,31 +220,6 @@ class _EventLedgerDetailScreenState extends State<EventLedgerDetailScreen> {
           Icon(Icons.history_outlined, size: 48, color: Colors.white.withValues(alpha: 0.05)),
           const SizedBox(height: 16),
           const Text('NO TACTICAL LOGS RECORDED', style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 2)),
-        ],
-      ),
-    );
-  }
-
-  void _confirmClearLedger() {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF141414),
-        title: Text('CLEAR_LOGS'.tr),
-        content: Text('Are you sure you want to permanently delete all records for this event? This action cannot be undone.'),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: Text('cancel'.tr, style: const TextStyle(color: Colors.white24))),
-          TextButton(
-            onPressed: () async {
-              final success = await _auditService.clearLogs(widget.event.id);
-              if (!mounted) return;
-              if (success && ctx.mounted) {
-                Navigator.pop(ctx);
-                _loadTacticalData();
-              }
-            },
-            child: Text('confirm'.tr, style: const TextStyle(color: Colors.redAccent)),
-          ),
         ],
       ),
     );

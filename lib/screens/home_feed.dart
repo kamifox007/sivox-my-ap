@@ -603,6 +603,13 @@ class _HomeFeedScreenState extends State<HomeFeedScreen> with SingleTickerProvid
           isHeaderVisible: _isHeaderVisible,
           currentIndex: _currentIndex,
           onTabSelected: (index) {
+            if (index == 2 && _supabase.auth.currentUser == null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AuthScreen()),
+              );
+              return;
+            }
             setState(() => _currentIndex = index);
             if (index == 0) _initSequence();
           },
@@ -1052,7 +1059,7 @@ class _HomeFeedScreenState extends State<HomeFeedScreen> with SingleTickerProvid
           final cat = _categories[index];
           final catId = cat['id'] as String;
           final catLabel = cat['label'] as String? ?? catId;
-          final catIcon = cat['icon'] as IconData?;
+          final catIcon = cat['icon'] as FaIconData?;
           final sel = _selectedCategory == catId;
           return GestureDetector(
             onTap: () async {
@@ -1185,8 +1192,12 @@ class _HomeFeedScreenState extends State<HomeFeedScreen> with SingleTickerProvid
                       top: 14, right: 14,
                       child: GestureDetector(
                         onTap: () async {
-                          await _favoriteService.toggleFavorite(e);
-                          if (mounted) {
+                          if (_supabase.auth.currentUser == null) {
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => const AuthScreen()));
+                            return;
+                          }
+                          final changed = await _favoriteService.toggleFavorite(e);
+                          if (changed && mounted) {
                             setState(() {
                               if (_faveIds.contains(e.id)) {
                                 _faveIds.remove(e.id);
@@ -1451,8 +1462,12 @@ class _HomeFeedScreenState extends State<HomeFeedScreen> with SingleTickerProvid
                         top: 14, right: 14,
                         child: GestureDetector(
                           onTap: () async {
-                            await _favoriteService.toggleFavorite(e);
-                            if (mounted) {
+                            if (_supabase.auth.currentUser == null) {
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => const AuthScreen()));
+                              return;
+                            }
+                            final changed = await _favoriteService.toggleFavorite(e);
+                            if (changed && mounted) {
                               setState(() {
                                 if (_faveIds.contains(e.id)) {
                                   _faveIds.remove(e.id);

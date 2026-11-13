@@ -4,6 +4,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:my_app/theme/app_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:my_app/screens/scan_entry.dart';
+import 'package:my_app/screens/booking_management.dart' show BookingManagementScreen;
 // ignore: unused_import
 import 'package:my_app/services/translation_service.dart';
 import 'package:my_app/screens/profile.dart';
@@ -53,7 +54,10 @@ class _StaffDashboardState extends State<StaffDashboard> {
 
   Future<void> _initShiftData() async {
     final shift = await _shiftService.getCurrentShift();
-    final assignment = await _staffService.getActiveAssignment();
+    final fetchedAssignment = await _staffService.getActiveAssignment();
+    final assignment = fetchedAssignment?['status'] == 'active'
+        ? fetchedAssignment
+        : null;
     if (mounted) {
       setState(() {
         _currentShift = shift;
@@ -178,15 +182,17 @@ class _StaffDashboardState extends State<StaffDashboard> {
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
                 children: [
-                  if (_activeAssignment?['permissions']?['can_scan'] != false)
+                  if (_activeAssignment?['permissions']?['can_scan'] == true ||
+                      _activeAssignment?['permissions']?['can_confirm_payment'] == true)
                     _buildToolCard(
                       context,
                       icon: Icons.qr_code_scanner_rounded,
                       label: 'QR_SCANNER'.tr,
                       color: AppTheme.primary,
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ScanEntryScreen(
-                        organizerId: widget.organizerId,
+                        organizerId: widget.organizerId ?? _activeAssignment?['organizer_id']?.toString(),
                         eventId: widget.currentEventId ?? _activeAssignment?['event_id']?.toString(),
+                        assignmentId: _activeAssignment?['id']?.toString(),
                       ))),
                     ),
                   if (_activeAssignment?['permissions']?['can_manage_guests'] == true)
@@ -199,6 +205,26 @@ class _StaffDashboardState extends State<StaffDashboard> {
                         organizerId: widget.organizerId,
                         eventId: widget.currentEventId ?? _activeAssignment?['event_id']?.toString(),
                       ))),
+                    ),
+                  if (_activeAssignment?['permissions']?['can_confirm_booking'] == true ||
+                      _activeAssignment?['permissions']?['can_cancel'] == true)
+                    _buildToolCard(
+                      context,
+                      icon: Icons.fact_check_outlined,
+                      label: 'BOOKING_APPROVAL'.tr,
+                      color: AppTheme.primary,
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookingManagementScreen(
+                            clubId: widget.organizerId ?? _activeAssignment?['organizer_id']?.toString(),
+                            eventId: widget.currentEventId ?? _activeAssignment?['event_id']?.toString(),
+                            allowCancellation: _activeAssignment?['permissions']?['can_cancel'] == true,
+                            allowApproval: _activeAssignment?['permissions']?['can_confirm_booking'] == true,
+                            assignmentId: _activeAssignment?['id']?.toString(),
+                          ),
+                        ),
+                      ),
                     ),
                   if (_activeAssignment?['permissions']?['can_view_logs'] == true)
                     _buildToolCard(
@@ -222,7 +248,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
                         eventId: widget.currentEventId ?? _activeAssignment?['event_id']?.toString(),
                       ))),
                     ),
-                  if (_activeAssignment?['role'] == 'role_manager' || _activeAssignment?['permissions']?['can_generate'] == true)
+                  if (_activeAssignment?['permissions']?['can_generate'] == true)
                     _buildToolCard(
                       context,
                       icon: Icons.qr_code_2_rounded,

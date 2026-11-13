@@ -95,16 +95,6 @@ class _StaffGuestListScreenState extends State<StaffGuestListScreen> {
     });
   }
 
-  Future<void> _manualCheckIn(Booking booking) async {
-    final success = await _bookingService.updateBookingStatus(booking.id, 'used');
-    if (success && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('checked_in_success'.tr), backgroundColor: AppTheme.primary),
-      );
-      _loadBookings();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -260,12 +250,16 @@ class _StaffGuestListScreenState extends State<StaffGuestListScreen> {
                   ),
                 ),
                 if (!used)
-                  GestureDetector(
-                    onTap: () => _manualCheckIn(booking),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(color: AppTheme.primary, borderRadius: BorderRadius.circular(12)),
-                      child: Text('check_in_manual'.tr, style: const TextStyle(color: Colors.black, fontSize: 10, fontWeight: FontWeight.bold)),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: AppTheme.secondary.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppTheme.secondary.withValues(alpha: 0.35)),
+                    ),
+                    child: Text(
+                      'QR SCAN REQUIRED',
+                      style: TextStyle(color: AppTheme.secondary, fontSize: 10, fontWeight: FontWeight.bold),
                     ),
                   )
                 else

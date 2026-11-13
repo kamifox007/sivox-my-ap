@@ -9,11 +9,15 @@ class EnforcementService {
     required String reason,
   }) async {
     try {
-      await supabase.from('bookings').update({
-        'payment_status': 'ejected',
-        'cancellation_reason': reason,
-      }).eq('id', bookingId);
-      return true;
+      final updated = await supabase
+          .from('bookings')
+          .update({
+            'payment_status': 'ejected',
+            'cancellation_reason': reason,
+          })
+          .eq('id', bookingId)
+          .select('id');
+      return (updated as List).isNotEmpty;
     } catch (e) {
       return false;
     }

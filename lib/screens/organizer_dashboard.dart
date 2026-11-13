@@ -18,7 +18,7 @@ import 'package:my_app/screens/club_profile.dart';
 import 'package:my_app/screens/notifications_screen.dart';
 import 'package:my_app/screens/club_management_hub.dart';
 import 'package:my_app/screens/organizer_main_wrapper.dart';
-import 'package:my_app/screens/booking_management.dart';
+import 'package:my_app/screens/booking_management.dart' show BookingManagementScreen;
 import 'package:my_app/screens/marketing_engine_screen.dart';
 import 'package:my_app/screens/broadcast_screen.dart';
 import 'package:my_app/screens/mission_matrix_screen.dart';
@@ -1153,6 +1153,29 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
                   Navigator.pop(context);
                   final userId = widget.clubId ?? supabase.auth.currentUser?.id;
                   if (userId != null) Navigator.push(context, MaterialPageRoute(builder: (_) => AudienceScreen(organizerId: userId)));
+                }),
+                _drawerTile(Icons.confirmation_number_outlined, 'BOOKINGS'.tr, () {
+                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => BookingManagementScreen(clubId: widget.clubId)));
+                }),
+                _drawerTile(Icons.security_rounded, 'VETTING_HUB'.tr, () {
+                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => VettingHubScreen(clubId: widget.clubId)));
+                }),
+                _drawerTile(Icons.campaign_rounded, 'MARKETING'.tr, () {
+                  Navigator.pop(context);
+                  final id = widget.clubId ?? supabase.auth.currentUser?.id;
+                  if (id != null) Navigator.push(context, MaterialPageRoute(builder: (_) => MarketingEngineScreen(clubId: id)));
+                }),
+                _drawerTile(Icons.podcasts_rounded, 'BROADCAST'.tr, () {
+                  Navigator.pop(context);
+                  final id = widget.clubId ?? supabase.auth.currentUser?.id;
+                  if (id != null) Navigator.push(context, MaterialPageRoute(builder: (_) => BroadcastScreen(organizerId: id)));
+                }),
+                _drawerTile(Icons.analytics_rounded, 'MATRIX'.tr, () {
+                  Navigator.pop(context);
+                  final id = widget.clubId ?? supabase.auth.currentUser?.id;
+                  if (id != null) Navigator.push(context, MaterialPageRoute(builder: (_) => MissionMatrixScreen(organizerId: id)));
                 }),
                 
                 const Padding(

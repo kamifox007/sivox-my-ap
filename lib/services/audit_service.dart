@@ -15,44 +15,44 @@ class AuditService {
     String? relatedEventId,
     Map<String, dynamic>? metadata,
   }) async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    final userName = user.userMetadata?['full_name'] ?? 'TERMINAL_OPERATOR';
+    final role = (user.userMetadata?['role']?.toString() ?? 'visitor').toLowerCase();
+
+    String targetTable = tableWorker;
+    if (role == 'organizer' || role == 'admin' || role == 'owner') {
+      targetTable = tableOrganizer;
+    } else if (role == 'visitor' || role == 'attendee') {
+      targetTable = tableVisitor;
+    }
+
+    final payload = <String, dynamic>{
+      'user_id': user.id,
+      'user_name': userName,
+      'role': role,
+      'action_type': actionType,
+      'description': description,
+      'related_event_id': relatedEventId,
+      'metadata': metadata ?? <String, dynamic>{},
+    };
+
+    // The central staff stream is written first so an optional role-specific
+    // table cannot prevent the main audit trail from being recorded.
     try {
-      final user = supabase.auth.currentUser;
-      if (user == null) return;
-      
-      final userName = user.userMetadata?['full_name'] ?? 'TERMINAL_OPERATOR';
-      final role = (user.userMetadata?['role']?.toString() ?? 'visitor').toLowerCase();
+      await supabase.from('staff_logs').insert(payload);
+    } catch (_) {
+      // Keep operational flows responsive; database policies still enforce access.
+      return;
+    }
 
-      // ROUTING LOGIC: Determine which "Private Database" to use
-      String targetTable = tableWorker; // Default
-      if (role == 'organizer' || role == 'admin' || role == 'owner') {
-        targetTable = tableOrganizer;
-      } else if (role == 'visitor' || role == 'attendee') {
-        targetTable = tableVisitor;
+    if (targetTable != 'staff_logs') {
+      try {
+        await supabase.from(targetTable).insert(payload);
+      } catch (_) {
+        // Role-specific streams are optional during the phased schema migration.
       }
-
-      await supabase.from(targetTable).insert({
-        'user_id': user.id,
-        'user_name': userName,
-        'role': role,
-        'action_type': actionType,
-        'description': description,
-        'related_event_id': relatedEventId,
-        'metadata': metadata ?? {},
-      });
-      
-      // Mirroring to legacy staff_logs for backward compatibility during phased migration
-      await supabase.from('staff_logs').insert({
-        'user_id': user.id,
-        'user_name': userName,
-        'role': role,
-        'action_type': actionType,
-        'description': description,
-        'related_event_id': relatedEventId,
-        'metadata': metadata ?? {},
-      });
-
-    } catch (e) {
-      // Slient failure for logs to prevent UI blocking
     }
   }
 
@@ -109,50 +109,21 @@ class AuditService {
 
   /// Ø­Ø°Ù  Ø³Ø¬Ù„ Ù…Ø¹ÙŠÙ† (ÙŠØ³ØªØ®Ø¯Ù… Ù„Ù„ØªÙ†Ø¸ÙŠÙ  Ø§Ù„Ø´Ø®ØµÙŠ)
   Future<bool> deleteLog(String logId) async {
-    try {
-      final user = supabase.auth.currentUser;
-      if (user == null) return false;
-
-      // Ø§Ù„ØªØ£ÙƒØ¯ Ù…Ù† Ø£Ù† Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙŠØ­Ø°Ù  Ø³Ø¬Ù„Ù‡ Ø§Ù„Ø®Ø§Øµ Ù Ù‚Ø· Ø¹Ø¨Ø± ÙƒÙˆØ¯ Ø§Ù„Ù€ RLS Ø£Ùˆ Ø§Ù„ØªØ­Ù‚Ù‚ Ù‡Ù†Ø§
-      await supabase.from('staff_logs').delete().eq('id', logId).eq('user_id', user.id);
-      return true;
-    } catch (e) {
-// print cleaned
-      return false;
-    }
+    // Audit history is append-only. Keep the method for compatibility,
+    // but never delete an operational record from the client.
+    return false;
   }
 
   /// ÙŠÙ…ÙƒÙ† Ù„Ù„Ù…Ø§Ù„Ùƒ Ø­Ø°Ù  Ø§Ù„Ø³Ø¬Ù„Ø§Øª Ù…ØªÙ‰ Ø£Ø±Ø§Ø¯ (ÙŠÙ Ø¶Ù„ ØªØ±ÙƒÙ‡Ø§ Ù„Ù„Ù†Ø²Ø§Ù‡Ø©)
   Future<bool> clearLogs(String eventId) async {
-    try {
-      await supabase.from('staff_logs').delete().eq('related_event_id', eventId); 
-      return true;
-    } catch (e) {
-// print cleaned
-      return false;
-    }
+    // Event audit history is append-only.
+    return false;
   }
 
   /// Bulk clearing of all tactical logs for an organizer
   Future<bool> clearAllOrganizerLogs(String organizerId) async {
-    try {
-      // 1. Get all events for this organizer
-      final events = await supabase.from('events').select('id').eq('organizer_id', organizerId);
-      final ids = (events as List).map((e) => e['id'].toString()).toList();
-      
-      if (ids.isEmpty) return true;
-
-      // 2. Delete from all tactical tables
-      await Future.wait([
-        supabase.from('staff_logs').delete().inFilter('related_event_id', ids),
-        supabase.from(tableOrganizer).delete().inFilter('related_event_id', ids),
-        supabase.from(tableWorker).delete().inFilter('related_event_id', ids),
-      ]);
-      
-      return true;
-    } catch (e) {
-      return false;
-    }
+    // Organizer-wide audit history is append-only.
+    return false;
   }
 
   /// PRO ANALYTICS: Get security counts

@@ -17,7 +17,13 @@ import 'package:my_app/screens/organizer_main_wrapper.dart';
 class ScanEntryScreen extends StatefulWidget {
   final String? organizerId;
   final String? eventId;
-  const ScanEntryScreen({super.key, this.organizerId, this.eventId});
+  final String? assignmentId;
+  const ScanEntryScreen({
+    super.key,
+    this.organizerId,
+    this.eventId,
+    this.assignmentId,
+  });
 
   @override
   State<ScanEntryScreen> createState() => _ScanEntryScreenState();
@@ -38,6 +44,8 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
 
   bool _isProcessing = false;
   bool _isActionProcessing = false; // For buttons in sheets
+  bool _permissionsLoaded = false;
+  bool _isVerifiedOrganizer = false;
   bool _torchOn = false;
   int _scannedToday = 0;
   int _totalCapacity = 0;
@@ -49,7 +57,9 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
   // Permissions State
   String _staffRole = 'role_security';
   Map<String, bool> _staffPerms = {
-    'can_scan': true,
+    'can_scan': false,
+    'can_confirm_payment': false,
+    'can_confirm_booking': false,
     'can_cancel': false,
     'can_generate': false,
   };
@@ -83,44 +93,127 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
     }
   }
 
+  Map<String, dynamic> _auditMetadata([
+    Map<String, dynamic> details = const {},
+  ]) {
+    return {
+      'assignment_id': widget.assignmentId,
+      ...details,
+    };
+  }
+
   Future<void> _loadPermissions() async {
     final user = supabase.auth.currentUser;
     if (user == null) {
+      if (mounted) setState(() => _permissionsLoaded = true);
       return;
     }
 
-    final role = (user.userMetadata?['role']?.toString() ?? 'attendee').toLowerCase();
-    if (role == 'staff') {
-      final response = await supabase
-          .from('staff_assignments')
-          .select('role, permissions')
-          .eq('staff_id', user.id)
-          .maybeSingle();
+    try {
+      // Organizer access is verified against event ownership, not merely a
+      // client-editable user metadata role.
+      bool isOwner = false;
+      String? organizerProfileId = widget.organizerId;
+      if (organizerProfileId != null) {
+        final organizerProfile = await supabase
+            .from('organizer_profiles')
+            .select('id')
+            .eq('id', organizerProfileId)
+            .eq('owner_id', user.id)
+            .maybeSingle();
+        isOwner = organizerProfile != null;
+      } else {
+        final ownedProfiles = await supabase
+            .from('organizer_profiles')
+            .select('id')
+            .eq('owner_id', user.id)
+            .limit(1);
+        if ((ownedProfiles as List).isNotEmpty) {
+          organizerProfileId = ownedProfiles.first['id']?.toString();
+          isOwner = organizerProfileId != null;
+        }
+      }
 
-      if (response != null && response['permissions'] != null) {
+      if (isOwner && widget.eventId != null) {
+        final ownedEvent = await supabase
+            .from('events')
+            .select('id')
+            .eq('id', widget.eventId!)
+            .eq('organizer_id', organizerProfileId!)
+            .maybeSingle();
+        isOwner = ownedEvent != null;
+      }
+
+      if (isOwner) {
+        if (!mounted) return;
         setState(() {
-          _staffRole = response['role'] ?? 'role_security';
-          _staffPerms = Map<String, bool>.from(response['permissions']);
+          _isVerifiedOrganizer = true;
+          _staffName = user.userMetadata?['full_name'] ?? 'Organizer';
+          _staffRole = 'role_manager';
+          _staffPerms = {
+            'can_scan': true,
+            'can_confirm_payment': true,
+            'can_confirm_booking': true,
+            'can_cancel': true,
+            'can_generate': true,
+            'can_view_stats': true,
+            'can_manage_guests': true,
+            'can_view_logs': true,
+            'can_block_guest': true,
+            'can_eject_guest': true,
+            'can_mark_late': true,
+          };
+        });
+        return;
+      }
+
+      // Resolve the active assignment for this organizer/event only. A staff
+      // member may have multiple assignments, so never use an unscoped
+      // maybeSingle() query.
+      var assignmentQuery = supabase
+          .from('staff_assignments')
+          .select('id, organizer_id, role, permissions, event_id')
+          .eq('staff_id', user.id)
+          .eq('status', 'active');
+      if (widget.assignmentId != null) {
+        assignmentQuery = assignmentQuery.eq('id', widget.assignmentId!);
+      }
+      if (widget.organizerId != null) {
+        assignmentQuery = assignmentQuery.eq('organizer_id', widget.organizerId!);
+      }
+
+      final assignments = await assignmentQuery.order(
+        'created_at',
+        ascending: false,
+      );
+      final eligibleAssignments = (assignments as List)
+          .where((item) =>
+              widget.eventId == null ||
+              item['event_id'] == null ||
+              item['event_id'].toString() == widget.eventId)
+          .toList()
+        ..sort((a, b) {
+          final aSpecific = a['event_id']?.toString() == widget.eventId;
+          final bSpecific = b['event_id']?.toString() == widget.eventId;
+          return (bSpecific ? 1 : 0).compareTo(aSpecific ? 1 : 0);
+        });
+
+      if (eligibleAssignments.isNotEmpty) {
+        final assignment = eligibleAssignments.first as Map<String, dynamic>;
+        final rawPermissions = assignment['permissions'] as Map? ?? {};
+        if (!mounted) return;
+        setState(() {
+          _staffRole = assignment['role']?.toString() ?? 'role_security';
+          _staffPerms = rawPermissions.map<String, bool>(
+            (key, value) => MapEntry(key.toString(), value == true),
+          );
           _staffName = user.userMetadata?['full_name'] ?? 'Staff';
         });
       }
-    } else {
-      // Organizers have all perms
-      setState(() {
-        _staffName = user.userMetadata?['full_name'] ?? 'Organizer';
-        _staffRole = 'role_manager';
-        _staffPerms = {
-          'can_scan': true,
-          'can_cancel': true,
-          'can_generate': true,
-          'can_view_stats': true,
-          'can_manage_guests': true,
-          'can_view_logs': true,
-          'can_block_guest': true,
-          'can_eject_guest': true,
-          'can_mark_late': true,
-        };
-      });
+    } catch (e) {
+      debugPrint('Permission loading failed: $e');
+    } finally {
+      if (mounted) setState(() => _permissionsLoaded = true);
     }
   }
 
@@ -199,12 +292,12 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
         _showResultSheet(icon: Icons.search_off, iconColor: Colors.orange, title: 'no_booking_found'.tr, subtitle: 'check_phone_again'.tr, isSuccess: false);
       } else {
         final booking = Booking.fromMap(response);
-        _processBookingResult(booking);
+        await _processBookingResult(booking);
       }
     } catch (e) {
       _showError(e.toString());
     } finally {
-      setState(() => _isProcessing = false);
+      if (mounted) setState(() => _isProcessing = false);
     }
   }
 
@@ -245,11 +338,43 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
     } catch (e) {
       _showError(e.toString());
     } finally {
-      setState(() => _isProcessing = false);
+      if (mounted) setState(() => _isProcessing = false);
     }
   }
 
   Future<void> _processBookingResult(Booking booking) async {
+    if (!_permissionsLoaded) {
+      _showResultSheet(
+        icon: Icons.lock_outline,
+        iconColor: Colors.orange,
+        title: 'PERMISSIONS_LOADING'.tr,
+        subtitle: 'Please wait while access is verified.'.tr,
+        isSuccess: false,
+      );
+      return;
+    }
+    final canUseMode = _isVerifiedOrganizer ||
+        (_currentMode == ScannerMode.security
+            ? _staffPerms['can_scan'] == true
+            : _staffPerms['can_confirm_payment'] == true);
+    if (!canUseMode) {
+      await _auditService.logAction(
+        actionType: 'SCANNER_ACCESS_DENIED',
+        description: 'Scanner access denied for mode $_currentMode',
+        relatedEventId: booking.eventId,
+        metadata: _auditMetadata({'booking_id': booking.id, 'mode': _currentMode.name}),
+      );
+      _showResultSheet(
+        icon: Icons.lock_outline,
+        iconColor: Colors.redAccent,
+        title: 'ACCESS_DENIED'.tr,
+        subtitle: 'You do not have permission for this scanner task.'.tr,
+        isSuccess: false,
+        booking: booking,
+      );
+      return;
+    }
+
     // 1. BLACKLIST CHECK
     final isBlocked = await _enforcementService.isBlacklisted(
       clubId: widget.organizerId ?? '', 
@@ -270,7 +395,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
     }
 
     // 2. STATUS CHECK
-    if (booking.paymentStatus == 'used') {
+    if (booking.paymentStatus == 'used' || booking.paymentStatus == 'late_accepted') {
       final scanTimeStr = booking.scannedAt ?? booking.scannedAtSecurity;
       final scanTime = scanTimeStr != null
           ? DateFormat('HH:mm').format(DateTime.parse(scanTimeStr))
@@ -296,6 +421,32 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
       return;
     }
 
+    // Pending bookings cannot pass either scanner stage.
+    if (booking.paymentStatus != 'confirmed') {
+      _showResultSheet(
+        icon: Icons.hourglass_empty,
+        iconColor: Colors.orange,
+        title: 'BOOKING_PENDING_APPROVAL'.tr,
+        subtitle: 'This booking must be approved before entry processing.'.tr,
+        isSuccess: false,
+        booking: booking,
+      );
+      return;
+    }
+
+    // Final payment/entry scan is valid only after security clearance.
+    if (_currentMode == ScannerMode.payment && !booking.securityCleared) {
+      _showResultSheet(
+        icon: Icons.security,
+        iconColor: Colors.redAccent,
+        title: 'SECURITY_PENDING_WARNING'.tr,
+        subtitle: 'ASK_GUEST_TO_GO_TO_SECURITY'.tr,
+        isSuccess: false,
+        booking: booking,
+      );
+      return;
+    }
+
     // 3. TIME CHECK (Lateness)
     final delayMinutes = _calculateLateness(booking.event?.dateTime);
     final isLate = delayMinutes > 15; // 15 mins grace period
@@ -305,14 +456,14 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
       bool success = true;
       Booking displayBooking = booking;
       if (!booking.securityCleared) {
-        success = await _bookingService.verifySecurityClearance(booking.id);
+        success = await _bookingService.verifySecurityClearance(booking.id, assignmentId: widget.assignmentId);
         if (success) {
           displayBooking = booking.copyWith(securityCleared: true);
           await _auditService.logAction(
             actionType: 'SECURITY_ENTRY',
             description: 'SEC_ENTRY (Auto) | Guest: ${booking.userName} | Guests: ${booking.numGuests}',
             relatedEventId: booking.eventId,
-            metadata: {'guest_id': booking.userId, 'num_guests': booking.numGuests}
+            metadata: _auditMetadata({'guest_id': booking.userId, 'num_guests': booking.numGuests})
           );
         }
       }
@@ -338,13 +489,13 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
         );
       } else {
         // Auto confirm if not late
-        bool success = await _bookingService.confirmManagerPayment(booking.id);
+        bool success = await _bookingService.confirmManagerPayment(booking.id, assignmentId: widget.assignmentId);
         if (success) {
           await _auditService.logAction(
             actionType: 'MANAGER_CHECKIN',
             description: 'MGR_CHECKIN (Auto) | Guest: ${booking.userName} | Guests: ${booking.numGuests}',
             relatedEventId: booking.eventId,
-            metadata: {'guest_id': booking.userId, 'num_guests': booking.numGuests}
+            metadata: _auditMetadata({'guest_id': booking.userId, 'num_guests': booking.numGuests})
           );
           if (mounted) {
             setState(() {
@@ -495,23 +646,23 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
                       try {
                         bool success = false;
                         if (_currentMode == ScannerMode.security) {
-                          success = await _bookingService.verifySecurityClearance(booking.id);
+                          success = await _bookingService.verifySecurityClearance(booking.id, assignmentId: widget.assignmentId);
                           if (success) {
                             await _auditService.logAction(
                               actionType: 'SECURITY_ENTRY',
                               description: 'SEC_ENTRY | Guest: ${booking.userName} | Guests: ${booking.numGuests}',
                               relatedEventId: booking.eventId,
-                              metadata: {'guest_id': booking.userId, 'num_guests': booking.numGuests}
+                              metadata: _auditMetadata({'guest_id': booking.userId, 'num_guests': booking.numGuests})
                             );
                           }
                         } else {
-                          success = await _bookingService.confirmManagerPayment(booking.id);
+                          success = await _bookingService.confirmManagerPayment(booking.id, assignmentId: widget.assignmentId);
                           if (success) {
                             await _auditService.logAction(
                               actionType: 'MANAGER_CHECKIN',
                               description: 'MGR_CHECKIN | Guest: ${booking.userName} | Guests: ${booking.numGuests}',
                               relatedEventId: booking.eventId,
-                              metadata: {'guest_id': booking.userId, 'num_guests': booking.numGuests}
+                              metadata: _auditMetadata({'guest_id': booking.userId, 'num_guests': booking.numGuests})
                             );
                           }
                         }
@@ -556,12 +707,13 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
                             onPressed: _isActionProcessing ? null : () async {
                               setState(() => _isActionProcessing = true);
                               try {
-                                final success = await _bookingService.markAsLate(booking.id);
+                                final success = await _bookingService.markAsLate(booking.id, assignmentId: widget.assignmentId);
                                 if (success && mounted) {
                                   await _auditService.logAction(
                                     actionType: 'LATE_ACCEPTED', 
                                     description: 'LATE_ACC | Guest: ${booking.userName}', 
-                                    relatedEventId: booking.eventId
+                                    relatedEventId: booking.eventId,
+                                    metadata: _auditMetadata({'booking_id': booking.id}),
                                   );
                                   setState(() => _scannedToday += booking.numGuests);
                                   if (ctx.mounted) Navigator.pop(ctx);
@@ -697,7 +849,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
     try {
       final ok = await _enforcementService.ejectGuest(bookingId: booking.id, reason: 'reason_security'.tr);
       if (ok && mounted) {
-        await _auditService.logAction(actionType: 'SECURITY_EJECT', description: 'User ${booking.userName} ejected from event.', relatedEventId: booking.eventId);
+        await _auditService.logAction(actionType: 'SECURITY_EJECT', description: 'User ${booking.userName} ejected from event.', relatedEventId: booking.eventId, metadata: _auditMetadata({'booking_id': booking.id}));
         if (ctx.mounted) Navigator.pop(ctx);
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -714,7 +866,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
     try {
       final ok = await _enforcementService.addToBlacklist(clubId: widget.organizerId ?? '', phone: booking.guestPhone, userId: booking.userId, reason: 'reason_security'.tr);
       if (ok && mounted) {
-        await _auditService.logAction(actionType: 'SECURITY_BLOCK', description: 'User ${booking.userName} added to permanent blacklist.', relatedEventId: booking.eventId);
+        await _auditService.logAction(actionType: 'SECURITY_BLOCK', description: 'User ${booking.userName} added to permanent blacklist.', relatedEventId: booking.eventId, metadata: _auditMetadata({'booking_id': booking.id}));
         if (ctx.mounted) Navigator.pop(ctx);
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -771,9 +923,9 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
     try {
       bool ok = false;
       if (_currentMode == ScannerMode.security) {
-        ok = await _bookingService.verifySecurityClearance(_foundBooking!.id);
+        ok = await _bookingService.verifySecurityClearance(_foundBooking!.id, assignmentId: widget.assignmentId);
       } else {
-        ok = await _bookingService.confirmManagerPayment(_foundBooking!.id);
+        ok = await _bookingService.confirmManagerPayment(_foundBooking!.id, assignmentId: widget.assignmentId);
       }
 
       if (ok) {
@@ -786,6 +938,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
                 ? 'Manual Pass | ID: $passId | Mode: $_currentMode'
                 : 'Phone Entry | ID: $passId | Mode: $_currentMode',
             relatedEventId: _lastEventId,
+            metadata: _auditMetadata({'pass_id': passId}),
           );
           
           if (!mounted) return;
@@ -855,14 +1008,14 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
 
   Widget _modeTab(ScannerMode mode, IconData icon, String label) {
     bool sel = _currentMode == mode;
-    final userRole = (supabase.auth.currentUser?.userMetadata?['role']?.toString() ?? '').toLowerCase();
-    final isOrganizer = userRole == 'organizer' || userRole == 'admin' || userRole == 'owner' || supabase.auth.currentUser?.id == widget.organizerId;
-    final isSecurity = _staffRole == 'role_security';
-    final isManager = _staffRole == 'role_manager' || isOrganizer;
-    
-    // TACTICAL LOCKING: Enforcement of roles
-    bool isLocked = (mode == ScannerMode.security && !isSecurity && !isManager) || 
-                    (mode == ScannerMode.payment && !isManager);
+    final isOrganizer = _isVerifiedOrganizer;
+    final canAccessMode = isOrganizer ||
+        (mode == ScannerMode.security
+            ? _staffPerms['can_scan'] == true
+            : _staffPerms['can_confirm_payment'] == true);
+
+    // Permission flags, not role labels, authorize the operational task.
+    final bool isLocked = !canAccessMode;
 
     return Expanded(
       child: GestureDetector(
@@ -1323,6 +1476,7 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
                         actionType: 'MANUAL_TICKET',
                         description: 'INSTANT TICKET | SN: ${booking.qrCode} | PASS: $passId | Guests: ${booking.numGuests}',
                         relatedEventId: _lastEventId,
+                        metadata: _auditMetadata({'booking_id': booking.id, 'pass_id': passId}),
                       );
                       
                       if (mounted) {
