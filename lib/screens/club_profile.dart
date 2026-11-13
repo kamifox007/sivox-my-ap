@@ -82,8 +82,9 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
 
   bool _previewAsVisitor = false;
 
+  bool _isActualOwner = false;
   bool get isOwner => _previewAsVisitor ? false : isActualOwner;
-  bool get isActualOwner => _supabase.auth.currentUser?.id == widget.organizerId;
+  bool get isActualOwner => _isActualOwner;
   String _searchQuery = "";
   final _searchController = TextEditingController();
   int _selectedTab = 0; // 0: Events Grid, 1: Gallery Grid
@@ -97,6 +98,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
     _tabController.addListener(() {
       if (mounted) setState(() => _selectedTab = _tabController.index);
     });
+    _loadOwnerStatus();
     _loadData();
   }
 
@@ -105,6 +107,24 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
     _tabController.dispose();
     _searchController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadOwnerStatus() async {
+    final user = _supabase.auth.currentUser;
+    if (user == null) return;
+
+    try {
+      final ownedProfile = await _supabase
+          .from('organizer_profiles')
+          .select('id')
+          .eq('id', widget.organizerId)
+          .eq('user_id', user.id)
+          .maybeSingle();
+      if (mounted) setState(() => _isActualOwner = ownedProfile != null);
+    } catch (e) {
+      debugPrint('Could not verify club profile ownership: $e');
+      if (mounted) setState(() => _isActualOwner = false);
+    }
   }
 
   Future<void> _loadData() async {

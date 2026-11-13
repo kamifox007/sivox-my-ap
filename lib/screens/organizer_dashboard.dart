@@ -80,7 +80,7 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
 
 
   Future<Map<String, dynamic>> _fetchStats() async {
-    final targetId = widget.clubId ?? supabase.auth.currentUser?.id;
+    final targetId = widget.clubId;
     if (targetId == null) return {};
 
     try {
@@ -309,7 +309,7 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
                       '$followerCount', 
                       'FOLLOWERS'.tr,
                       onTap: () {
-                        final userId = widget.clubId ?? supabase.auth.currentUser?.id;
+                        final userId = widget.clubId;
                         if (userId != null) Navigator.push(context, MaterialPageRoute(builder: (_) => AudienceScreen(organizerId: userId)));
                       },
                     ),
@@ -346,7 +346,7 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: _headerActionBtn('PUBLIC_PREVIEW'.tr, Icons.remove_red_eye_outlined, () {
-                   final userId = widget.clubId ?? supabase.auth.currentUser?.id;
+                   final userId = widget.clubId;
                    if (userId != null) Navigator.push(context, MaterialPageRoute(builder: (_) => ClubProfileScreen(organizerId: userId, organizerName: profile['full_name'] ?? 'Club')));
                 }),
               ),
@@ -447,17 +447,22 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
         const SizedBox(height: 12),
         Row(
           children: [
-            Expanded(child: _commandCard(label: 'MARKETING'.tr, subtitle: 'Campaigns', icon: Icons.campaign_rounded, color: Colors.purpleAccent, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => MarketingEngineScreen(clubId: widget.clubId ?? supabase.auth.currentUser!.id))))),
+            Expanded(child: _commandCard(label: 'MARKETING'.tr, subtitle: 'Campaigns', icon: Icons.campaign_rounded, color: Colors.purpleAccent, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => MarketingEngineScreen(clubId: widget.clubId))))),
             const SizedBox(width: 12),
-            Expanded(child: _commandCard(label: 'AUDIENCE'.tr, subtitle: 'Followers', icon: Icons.people_alt_rounded, color: Colors.orangeAccent, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AudienceScreen(organizerId: widget.clubId ?? supabase.auth.currentUser!.id))))),
+            Expanded(child: _commandCard(label: 'AUDIENCE'.tr, subtitle: 'Followers', icon: Icons.people_alt_rounded, color: Colors.orangeAccent, onTap: () {
+              final organizerId = widget.clubId;
+              if (organizerId != null && organizerId.isNotEmpty) {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => AudienceScreen(organizerId: organizerId)));
+              }
+            })),
           ],
         ),
         const SizedBox(height: 12),
         Row(
           children: [
-            Expanded(child: _commandCard(label: 'BROADCAST'.tr, subtitle: 'Messages', icon: Icons.podcasts_rounded, color: Colors.greenAccent, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => BroadcastScreen(organizerId: widget.clubId ?? supabase.auth.currentUser!.id))))),
+            Expanded(child: _commandCard(label: 'BROADCAST'.tr, subtitle: 'Messages', icon: Icons.podcasts_rounded, color: Colors.greenAccent, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => BroadcastScreen(organizerId: widget.clubId))))),
             const SizedBox(width: 12),
-            Expanded(child: _commandCard(label: 'MATRIX'.tr, subtitle: 'Analytics', icon: Icons.analytics_rounded, color: AppTheme.primary, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => MissionMatrixScreen(organizerId: widget.clubId ?? supabase.auth.currentUser!.id))))),
+            Expanded(child: _commandCard(label: 'MATRIX'.tr, subtitle: 'Analytics', icon: Icons.analytics_rounded, color: AppTheme.primary, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => MissionMatrixScreen(organizerId: widget.clubId))))),
           ],
         ),
       ],
@@ -1151,7 +1156,7 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
                 }),
                 _drawerTile(Icons.favorite_rounded, 'manage_fans'.tr, () {
                   Navigator.pop(context);
-                  final userId = widget.clubId ?? supabase.auth.currentUser?.id;
+                  final userId = widget.clubId;
                   if (userId != null) Navigator.push(context, MaterialPageRoute(builder: (_) => AudienceScreen(organizerId: userId)));
                 }),
                 _drawerTile(Icons.confirmation_number_outlined, 'BOOKINGS'.tr, () {
@@ -1164,17 +1169,17 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
                 }),
                 _drawerTile(Icons.campaign_rounded, 'MARKETING'.tr, () {
                   Navigator.pop(context);
-                  final id = widget.clubId ?? supabase.auth.currentUser?.id;
+                  final id = widget.clubId;
                   if (id != null) Navigator.push(context, MaterialPageRoute(builder: (_) => MarketingEngineScreen(clubId: id)));
                 }),
                 _drawerTile(Icons.podcasts_rounded, 'BROADCAST'.tr, () {
                   Navigator.pop(context);
-                  final id = widget.clubId ?? supabase.auth.currentUser?.id;
+                  final id = widget.clubId;
                   if (id != null) Navigator.push(context, MaterialPageRoute(builder: (_) => BroadcastScreen(organizerId: id)));
                 }),
                 _drawerTile(Icons.analytics_rounded, 'MATRIX'.tr, () {
                   Navigator.pop(context);
-                  final id = widget.clubId ?? supabase.auth.currentUser?.id;
+                  final id = widget.clubId;
                   if (id != null) Navigator.push(context, MaterialPageRoute(builder: (_) => MissionMatrixScreen(organizerId: id)));
                 }),
                 

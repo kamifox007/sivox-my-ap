@@ -25,39 +25,32 @@ class _AudienceScreenState extends State<AudienceScreen> {
   Future<void> _fetchFollowers() async {
     setState(() => _isLoading = true);
     try {
-      // Robust join logic
-      final response = await supabase
-          .from('follows')
-          .select('user_id, profiles!inner(full_name, avatar_url, phone_number)')
-          .eq('organizer_id', widget.organizerId);
-
+      // The RPC validates ownership and returns contact fields only to this organizer.
+      final response = await supabase.rpc(
+        'get_organizer_audience',
+        params: {'p_organizer_id': widget.organizerId},
+      );
       if (mounted) {
         setState(() {
-          _followers = (response as List).map((f) {
-            final p = f['profiles'] as Map<String, dynamic>?;
-            return {
-              'id': f['user_id'],
-              'name': p?['full_name'] ?? 'Visitor'.tr,
-              'avatar': p?['avatar_url'],
-              'phone': p?['phone_number'],
-            };
-          }).toList();
+          _followers = List<Map<String, dynamic>>.from(response as List)
+              .map((row) => {
+                    'id': row['user_id'],
+                    'name': row['full_name'] ?? 'Visitor'.tr,
+                    'avatar': row['avatar_url'],
+                    'phone': row['phone'],
+                  })
+              .toList();
           _isLoading = false;
         });
       }
     } catch (e) {
+      // Do not fall back to a direct follows query after an authorization error.
       debugPrint('Followers Fetch Error: $e');
-      // Fallback if profiles!inner fails due to missing profile
-      try {
-         final simpleRes = await supabase.from('follows').select('user_id').eq('organizer_id', widget.organizerId);
-         if (mounted) {
-           setState(() {
-             _followers = (simpleRes as List).map((f) => {'id': f['user_id'], 'name': 'Anonymous Member'.tr}).toList();
-             _isLoading = false;
-           });
-         }
-      } catch (_) {
-         if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() {
+          _followers = [];
+          _isLoading = false;
+        });
       }
     }
   }
