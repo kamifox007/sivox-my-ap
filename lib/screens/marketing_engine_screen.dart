@@ -33,8 +33,8 @@ class _MarketingEngineScreenState extends State<MarketingEngineScreen> {
   }
 
   Future<void> _fetchEventCount() async {
-    final userId = widget.clubId ?? Supabase.instance.client.auth.currentUser?.id;
-    if (userId == null) return;
+    final userId = widget.clubId;
+    if (userId == null || userId.isEmpty) return;
     try {
       final res = await Supabase.instance.client
           .from('events')
@@ -87,8 +87,8 @@ class _MarketingEngineScreenState extends State<MarketingEngineScreen> {
   }
 
   void _showMegaphoneDeployer() async {
-    final userId = widget.clubId ?? Supabase.instance.client.auth.currentUser?.id;
-    if (userId == null) return;
+    final userId = widget.clubId;
+    if (userId == null || userId.isEmpty) return;
 
     if (widget.initialEventId != null) {
       // Auto-fetch the event and deploy
@@ -226,8 +226,8 @@ class _MarketingEngineScreenState extends State<MarketingEngineScreen> {
   }
 
   void _showScarcityBooster() async {
-    final userId = widget.clubId ?? Supabase.instance.client.auth.currentUser?.id;
-    if (userId == null) return;
+    final userId = widget.clubId;
+    if (userId == null || userId.isEmpty) return;
 
     if (widget.initialEventId != null) {
       final eMap = await Supabase.instance.client.from('events').select().eq('id', widget.initialEventId!).single();
@@ -363,9 +363,8 @@ class _MarketingEngineScreenState extends State<MarketingEngineScreen> {
   }
 
   void _showPulseDeployer() async {
-    final userId =
-        widget.clubId ?? Supabase.instance.client.auth.currentUser?.id;
-    if (userId == null) return;
+    final userId = widget.clubId;
+    if (userId == null || userId.isEmpty) return;
 
     if (widget.initialEventId != null) {
       final eMap = await Supabase.instance.client.from('events').select('id, title').eq('id', widget.initialEventId!).single();
