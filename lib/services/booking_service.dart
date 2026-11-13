@@ -333,21 +333,9 @@ class BookingService {
   Future<bool> transferTicket(String bookingId, String targetPhone) async {
     try {
       final fromUser = supabase.auth.currentUser;
-      if (fromUser == null) return false;
+      if (fromUser == null || targetPhone.trim().isEmpty) return false;
 
-      final targetUserId = await supabase.rpc(
-        'resolve_ticket_transfer_target',
-        params: {
-          'p_booking_id': bookingId,
-          'p_phone': targetPhone.trim(),
-        },
-      );
-
-      if (targetUserId == null || targetUserId.toString() == fromUser.id) {
-        return false;
-      }
-      final String targetId = targetUserId.toString();
-
+      // Read only this caller's booking title to preserve the localized message.
       final bookingInfo = await supabase
           .from('bookings')
           .select('events(title)')
@@ -355,14 +343,16 @@ class BookingService {
           .eq('user_id', fromUser.id)
           .maybeSingle();
       if (bookingInfo == null) return false;
-      final String eventTitle =
-          bookingInfo['events']?['title']?.toString() ?? 'Event';
+      final eventTitle = bookingInfo['events']?['title']?.toString() ?? 'Event';
 
+      // Phone matching, booking ownership validation, transfer and recipient
+      // notification are performed atomically in the database. The target
+      // user's UUID is never returned to the client.
       final dynamic result = await supabase.rpc(
-        'transfer_booking_ticket',
+        'transfer_booking_ticket_by_phone',
         params: {
           'p_booking_id': bookingId,
-          'p_target_user_id': targetId,
+          'p_phone': targetPhone.trim(),
           'p_title': 'TICKET_RECEIVED_TITLE'.tr,
           'p_body': 'TICKET_RECEIVED_BODY'.trArgs([eventTitle]),
         },
@@ -374,19 +364,15 @@ class BookingService {
 
       await _audit.logAction(
         actionType: 'TICKET_TRANSFERRED',
-        description: 'Ticket $bookingId moved from ${fromUser.id} to $targetId',
+        description: 'Ticket ' + bookingId + ' transferred by its owner ' + fromUser.id,
         relatedEventId: eventId,
-        metadata: {
-          'booking_id': bookingId,
-          'target_user_id': targetId,
-        },
+        metadata: {'booking_id': bookingId},
       );
       return true;
     } catch (e) {
       return false;
     }
   }
-
   Future<bool> updateBookingStatus(
     String bookingId,
     String status, {
