@@ -299,6 +299,11 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
   }
 
   Future<void> _updateStaffRole(StaffMember staff, String newRole, Map<String, bool> newPerms) async {
+    final organizerId = widget.clubId;
+    if (organizerId == null || organizerId.isEmpty) {
+      _showMsg('Organizer profile not selected.'.tr, isError: true);
+      return;
+    }
     setState(() => _isLoading = true);
     try {
       await supabase.from('staff_assignments').update({
@@ -308,7 +313,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
 
       await NotificationService().sendStaffNotification(
         staffId: staff.userId,
-        organizerId: widget.clubId ?? supabase.auth.currentUser!.id,
+        organizerId: organizerId,
         title: 'ROLE_UPDATED_TITLE'.tr,
         body: 'ROLE_UPDATED_BODY'.trArgs([newRole.tr]),
         type: 'staff_guidance',
@@ -414,7 +419,14 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
           IconButton(
             icon: const Icon(Icons.verified_user_rounded, color: AppTheme.primary),
             tooltip: 'TACTICAL_VETTING'.tr,
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VettingHubScreen(clubId: widget.clubId ?? supabase.auth.currentUser!.id))),
+            onPressed: widget.clubId == null || widget.clubId!.isEmpty
+                ? null
+                : () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => VettingHubScreen(clubId: widget.clubId!),
+                      ),
+                    ),
           ),
         ],
       ),
@@ -1086,13 +1098,18 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
           ElevatedButton(
             onPressed: () async {
               final text = missionController.text.trim();
+              final organizerId = widget.clubId;
+              if (organizerId == null || organizerId.isEmpty) {
+                _showMsg('Organizer profile not selected.'.tr, isError: true);
+                return;
+              }
               if (text.isNotEmpty) {
                 Navigator.pop(ctx);
                 setState(() => _isLoading = true);
                 try {
                   await NotificationService().sendStaffMission(
                     staffId: staff.userId,
-                    organizerId: widget.clubId ?? supabase.auth.currentUser!.id,
+                    organizerId: organizerId,
                     clubName: widget.clubName ?? 'Club',
                     missionText: text,
                   );
@@ -1118,12 +1135,17 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
 
 
   Future<void> _sendCollectiveSummon(String text) async {
+    final organizerId = widget.clubId;
+    if (organizerId == null || organizerId.isEmpty) {
+      _showMsg('Organizer profile not selected.'.tr, isError: true);
+      return;
+    }
     setState(() => _isLoading = true);
     try {
       final staffQuery = await supabase
           .from('staff_assignments')
           .select('staff_id')
-          .eq('club_id', widget.clubId ?? '')
+          .eq('organizer_id', organizerId)
           .eq('status', 'active');
 
       final List<dynamic> staffList = staffQuery as List;
@@ -1139,7 +1161,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
         final String sId = s['staff_id'];
         await notifService.sendStaffMission(
           staffId: sId,
-          organizerId: widget.clubId ?? supabase.auth.currentUser!.id,
+          organizerId: organizerId,
           clubName: widget.clubName ?? 'Club',
           missionText: text,
         );
