@@ -37,7 +37,9 @@ class _StaffEventSelectorState extends State<StaffEventSelector> {
       var role = 'role_security';
       if (user != null) {
         role = await ProfileService().getTrustedRole(user);
-        if (role == 'staff') {
+        const privilegedOrganizerRoles = {'organizer', 'manager', 'owner', 'admin'};
+        if (!privilegedOrganizerRoles.contains(role)) {
+          // Staff permission comes from the active assignment, not the profile role.
           final eventAssignment = await client
               .from('staff_assignments')
               .select('role')
@@ -58,7 +60,10 @@ class _StaffEventSelectorState extends State<StaffEventSelector> {
                   .limit(1)
                   .maybeSingle()
               : null;
-          role = (eventAssignment?['role'] ?? generalAssignment?['role'] ?? 'role_security').toString();
+          role = (eventAssignment?['role'] ??
+                  generalAssignment?['role'] ??
+                  'role_security')
+              .toString();
         }
       }
       final pdfBytes = await _reporting.generateEventReport(

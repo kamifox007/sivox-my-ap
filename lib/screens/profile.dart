@@ -81,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final user = Supabase.instance.client.auth.currentUser;
     final name = user == null ? 'VISITOR' : (user.userMetadata?['full_name'] ?? 'User');
     final email = user?.email ?? 'GUEST MODE';
-    final phone = user?.userMetadata?['phone_number'] ?? '';
+    final phone = (user?.userMetadata?['phone_number'] ?? user?.phone ?? '').toString();
     final role = user == null ? 'attendee' : _trustedRole;
 
     return Scaffold(
