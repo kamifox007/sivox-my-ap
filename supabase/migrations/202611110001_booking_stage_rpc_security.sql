@@ -47,7 +47,7 @@ GRANT EXECUTE ON FUNCTION public.has_event_staff_permission(UUID, TEXT) TO authe
 CREATE TABLE IF NOT EXISTS public.blacklist (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   club_id UUID NOT NULL REFERENCES public.organizer_profiles(id) ON DELETE CASCADE,
-  user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   phone_number TEXT,
   reason TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
