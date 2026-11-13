@@ -484,7 +484,7 @@ class _AuthScreenState extends State<AuthScreen>
     if (res.session == null || !mounted) return;
 
     final user = res.session!.user;
-    final phone = user.userMetadata?['phone'] ?? user.phone ?? '';
+    final phone = user.phone ?? '';
 
     if (phone.isEmpty) {
       setState(() {

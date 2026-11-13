@@ -40,7 +40,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final user = Supabase.instance.client.auth.currentUser;
     if (user != null) {
       _nameController.text = user.userMetadata?['full_name'] ?? '';
-      _currentPhone = user.userMetadata?['phone_number'] ?? user.phone ?? '';
+      _currentPhone = user.phone ?? '';
       _currentAvatarUrl = user.userMetadata?['avatar_url'];
     }
   }
@@ -170,20 +170,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           setModalState(() => isLoading = false);
                           
                           if (success) {
-                              // We also update user metadata manually so we can fetch it easily later
                               final normalizedPhone = AuthService.normalizeAlgerianPhone(phoneC.text);
-                               final client = Supabase.instance.client;
-                               await client.auth.updateUser(UserAttributes(data: {'phone_number': normalizedPhone}));
-                               final currentUser = client.auth.currentUser;
-                               if (currentUser != null) {
-                                 await client.from('profiles').upsert({
-                                   'id': currentUser.id,
-                                   'phone': normalizedPhone,
-                                   'phone_number': normalizedPhone,
-                                 }, onConflict: 'id');
-                               }
+                              // Supabase Auth verified the OTP; its auth.users trigger synchronizes profiles.phone.
                               if (mounted) {
-                                setState(() => _currentPhone = AuthService.normalizeAlgerianPhone(phoneC.text));
+                                setState(() => _currentPhone = Supabase.instance.client.auth.currentUser?.phone ?? normalizedPhone);
                                 if (ctx.mounted) Navigator.pop(ctx);
                                 if (ctx.mounted) ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('PHONE_VERIFIED_SUCCESS'.tr), backgroundColor: AppTheme.secondary));
                               }

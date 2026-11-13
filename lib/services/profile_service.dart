@@ -38,12 +38,6 @@ class ProfileService {
       row['full_name'] = fullName.trim();
     }
 
-    final phoneValue = user.phone ?? metadata['phone_number'] ?? metadata['phone'];
-    if (phoneValue is String && phoneValue.trim().isNotEmpty) {
-      row['phone'] = phoneValue.trim();
-      row['phone_number'] = phoneValue.trim();
-    }
-
     final avatarUrl = metadata['avatar_url'];
     if (avatarUrl is String && avatarUrl.trim().isNotEmpty) {
       row['avatar_url'] = avatarUrl.trim();
