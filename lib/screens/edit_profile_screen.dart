@@ -62,7 +62,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           final uploadedUrl = await _storage.uploadImage(_imageFile!);
           if (uploadedUrl != null) newAvatarUrl = uploadedUrl;
         }
-        await Supabase.instance.client.auth.updateUser(UserAttributes(data: {'avatar_url': newAvatarUrl}));
+        final client = Supabase.instance.client;
+        await client.auth.updateUser(UserAttributes(data: {'avatar_url': newAvatarUrl}));
+        final currentUser = client.auth.currentUser;
+        if (currentUser != null) {
+          await client.from('profiles').upsert({'id': currentUser.id, 'avatar_url': newAvatarUrl}, onConflict: 'id');
+        }
         if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Avatar updated'.tr), backgroundColor: AppTheme.secondary));
       } catch (e) {
         if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating avatar: $e'), backgroundColor: Colors.redAccent));
@@ -80,9 +85,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       final currentUser = Supabase.instance.client.auth.currentUser;
       if (currentUser != null) {
-        await Supabase.instance.client.from('profiles').update({
+        await Supabase.instance.client.from('profiles').upsert({
+          'id': currentUser.id,
           'full_name': _nameController.text.trim(),
-        }).eq('id', currentUser.id);
+        }, onConflict: 'id');
       }
       
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Name updated successfully'.tr), backgroundColor: AppTheme.secondary));
@@ -165,7 +171,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           
                           if (success) {
                               // We also update user metadata manually so we can fetch it easily later
-                              await Supabase.instance.client.auth.updateUser(UserAttributes(data: {'phone_number': AuthService.normalizeAlgerianPhone(phoneC.text)}));
+                              final normalizedPhone = AuthService.normalizeAlgerianPhone(phoneC.text);
+                               final client = Supabase.instance.client;
+                               await client.auth.updateUser(UserAttributes(data: {'phone_number': normalizedPhone}));
+                               final currentUser = client.auth.currentUser;
+                               if (currentUser != null) {
+                                 await client.from('profiles').upsert({
+                                   'id': currentUser.id,
+                                   'phone': normalizedPhone,
+                                   'phone_number': normalizedPhone,
+                                 }, onConflict: 'id');
+                               }
                               if (mounted) {
                                 setState(() => _currentPhone = AuthService.normalizeAlgerianPhone(phoneC.text));
                                 if (ctx.mounted) Navigator.pop(ctx);
