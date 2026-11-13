@@ -10,6 +10,25 @@ class ProfileService {
   ProfileService({SupabaseClient? client})
       : _client = client ?? Supabase.instance.client;
 
+  Future<String> getTrustedRole(User user) async {
+    try {
+      await ensureProfile(user);
+      final result = await _client.rpc('get_my_profile_role');
+      final role = result?.toString().toLowerCase();
+      const allowedRoles = {
+        'attendee',
+        'organizer',
+        'staff',
+        'admin',
+        'manager',
+        'owner',
+      };
+      return role != null && allowedRoles.contains(role) ? role : 'attendee';
+    } catch (_) {
+      return 'attendee';
+    }
+  }
+
   Future<void> ensureProfile(User user) async {
     final metadata = user.userMetadata ?? const <String, dynamic>{};
     final row = <String, dynamic>{'id': user.id};

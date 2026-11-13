@@ -38,6 +38,7 @@ import 'package:my_app/services/social_service.dart';
 
 import 'package:my_app/screens/auth_screen.dart';
 import 'package:my_app/services/feed_cache_service.dart';
+import 'package:my_app/services/profile_service.dart';
 
 class HomeFeedScreen extends StatefulWidget {
   const HomeFeedScreen({super.key});
@@ -80,6 +81,7 @@ class _HomeFeedScreenState extends State<HomeFeedScreen> with SingleTickerProvid
   String _selectedCountryCode = 'DZ';
   List<Map<String, dynamic>> _myClubs = [];
   List<Map<String, dynamic>> _staffAssignments = [];
+  String _trustedRole = 'attendee';
   late AnimationController _pulseController;
   RealtimeChannel? _eventsSubscription;
   final List<Map<String, dynamic>> _categories = [
@@ -317,14 +319,26 @@ class _HomeFeedScreenState extends State<HomeFeedScreen> with SingleTickerProvid
           _isLoading = false;
         });
 
-        final uId = _supabase.auth.currentUser?.id;
-        if (uId != null) {
-          final myClubsRes = await _supabase.from('organizer_profiles').select().eq('owner_id', uId);
+        final currentUser = _supabase.auth.currentUser;
+        if (currentUser != null) {
+          final trustedRole = await ProfileService().getTrustedRole(currentUser);
+          if (mounted) setState(() => _trustedRole = trustedRole);
+
+          final myClubsRes = await _supabase
+              .from('organizer_profiles')
+              .select()
+              .eq('user_id', currentUser.id);
           if (mounted) {
             setState(() {
               _myClubs = List<Map<String, dynamic>>.from(myClubsRes);
             });
           }
+        } else if (mounted) {
+          setState(() {
+            _trustedRole = 'attendee';
+            _myClubs = [];
+            _staffAssignments = [];
+          });
         }
 
         final assignments = await StaffService().getActiveAssignments();
@@ -582,9 +596,7 @@ class _HomeFeedScreenState extends State<HomeFeedScreen> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    final user = Supabase.instance.client.auth.currentUser;
-    final role = (user?.userMetadata?['role']?.toString() ?? 'attendee').toLowerCase();
-    final isAuthorized = role == 'organizer' || role == 'manager' || role == 'owner' || role == 'admin' || role == 'staff' || _myClubs.isNotEmpty || _staffAssignments.isNotEmpty;
+    final isAuthorized = _trustedRole == 'organizer' || _trustedRole == 'manager' || _trustedRole == 'owner' || _trustedRole == 'admin' || _trustedRole == 'staff' || _myClubs.isNotEmpty || _staffAssignments.isNotEmpty;
     
     return PopScope(
       canPop: false,

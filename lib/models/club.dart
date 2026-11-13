@@ -30,15 +30,15 @@ class Club {
   factory Club.fromMap(Map<String, dynamic> map) {
     return Club(
       id: map['id']?.toString() ?? '',
-      ownerId: map['owner_id']?.toString() ?? '',
+      ownerId: (map['user_id'] ?? map['owner_id'])?.toString() ?? '',
       name: map['name'] ?? map['full_name'] ?? 'Elite Club',
       bio: map['bio'],
-      contactPhone: map['contact_phone'],
+      contactPhone: (map['phone'] ?? map['contact_phone'])?.toString(),
       latitude: map['latitude']?.toDouble(),
       longitude: map['longitude']?.toDouble(),
-      permanentGallery: List<String>.from(map['permanent_gallery'] ?? []),
+      permanentGallery: List<String>.from(map['gallery_images'] ?? map['permanent_gallery'] ?? []),
       createdAt: map['created_at'] != null ? DateTime.parse(map['created_at']) : null,
-      logoUrl: map['logo_url'],
+      logoUrl: (map['avatar_url'] ?? map['logo_url'])?.toString(),
       businessType: map['business_type']?.toString() ?? 'club',
     );
   }
@@ -46,14 +46,14 @@ class Club {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'owner_id': ownerId,
+      'user_id': ownerId,
       'name': name,
       'bio': bio,
-      'contact_phone': contactPhone,
+      'phone': contactPhone,
       'latitude': latitude,
       'longitude': longitude,
-      'permanent_gallery': permanentGallery,
-      'logo_url': logoUrl,
+      'gallery_images': permanentGallery,
+      'avatar_url': logoUrl,
       'business_type': businessType,
     };
   }

@@ -66,26 +66,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     if (session != null) {
       final user = session.user;
-      // Ensure legacy Auth accounts receive a basic attendee profile without trusting metadata roles.
-      try {
-        await ProfileService().ensureProfile(user);
-      } catch (e) {
-        debugPrint('Could not ensure visitor profile: $e');
-      }
-      // Resolve privileged access from database records, never editable Auth metadata.
+      // Resolve the role through a server-side function, never editable Auth metadata.
       var role = 'attendee';
       try {
-        final profile = await client
-            .from('profiles')
-            .select('role')
-            .eq('id', user.id)
-            .maybeSingle();
-        final databaseRole = profile?['role']?.toString().toLowerCase();
-        if (databaseRole != null && databaseRole.isNotEmpty) {
-          role = databaseRole;
-        }
+        role = await ProfileService().getTrustedRole(user);
       } catch (e) {
-        debugPrint('Could not resolve profile role: $e');
+        debugPrint('Could not resolve trusted profile role: $e');
       }
 
       if (role == 'staff') {

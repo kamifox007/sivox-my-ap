@@ -95,7 +95,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen>
       if (widget.event.organizerId == null) return;
       final profile = await Supabase.instance.client
           .from('organizer_profiles')
-          .select('latitude, longitude, location_address, contact_phone')
+          .select('latitude, longitude, location, phone')
           .eq('id', widget.event.organizerId!)
           .maybeSingle();
       
@@ -103,8 +103,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen>
         setState(() {
           fallbackLat = profile['latitude'];
           fallbackLng = profile['longitude'];
-          fallbackVenue = profile['location_address'];
-          fallbackPhone = profile['contact_phone'];
+          fallbackVenue = profile['location'];
+          fallbackPhone = profile['phone'];
           // Recalculate distance with fallback if needed
           if (widget.event.latitude == null && fallbackLat != null) {
             _initDistance();

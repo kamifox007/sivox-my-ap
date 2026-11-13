@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:my_app/services/profile_service.dart';
 
 class AuditService {
   final supabase = Supabase.instance.client;
@@ -19,7 +20,7 @@ class AuditService {
     if (user == null) return;
 
     final userName = user.userMetadata?['full_name'] ?? 'TERMINAL_OPERATOR';
-    final role = (user.userMetadata?['role']?.toString() ?? 'visitor').toLowerCase();
+    final role = await ProfileService().getTrustedRole(user);
 
     String targetTable = tableWorker;
     if (role == 'organizer' || role == 'admin' || role == 'owner') {

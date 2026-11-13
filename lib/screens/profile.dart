@@ -29,6 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int _bookingCount = 0;
   int _followingCount = 0;
   bool _showAccountSettings = false;
+  String _trustedRole = 'attendee';
 
   Future<void> _checkStats() async {
     final client = Supabase.instance.client;
@@ -38,15 +39,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
         setState(() {
           _bookingCount = 0;
           _followingCount = 0;
+          _trustedRole = 'attendee';
         });
       }
       return;
     }
 
     try {
-      await ProfileService().ensureProfile(user);
+      final trustedRole = await ProfileService().getTrustedRole(user);
+      if (mounted) setState(() => _trustedRole = trustedRole);
     } catch (e) {
-      debugPrint('Could not ensure visitor profile: $e');
+      debugPrint('Could not resolve trusted profile role: $e');
     }
 
     try {
@@ -79,8 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final name = user == null ? 'VISITOR' : (user.userMetadata?['full_name'] ?? 'User');
     final email = user?.email ?? 'GUEST MODE';
     final phone = user?.userMetadata?['phone_number'] ?? '';
-    final role = (user?.userMetadata?['role']?.toString() ?? 'attendee')
-        .toLowerCase();
+    final role = user == null ? 'attendee' : _trustedRole;
 
     return Scaffold(
       backgroundColor: AppTheme.background,

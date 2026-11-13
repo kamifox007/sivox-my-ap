@@ -256,16 +256,22 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       final user = Supabase.instance.client.auth.currentUser;
       if (user == null) return;
       
-      final profile = await Supabase.instance.client
+      final String? selectedClubId = widget.clubId ?? widget.event?.organizerId;
+      final profileQuery = Supabase.instance.client
           .from('organizer_profiles')
-          .select('id, name, avatar_url, latitude, longitude, location_address, country_code, business_type, follower_perk, amenities, contact_phone')
-          .eq('owner_id', user.id)
-          .maybeSingle();
+          .select('id, name, avatar_url, latitude, longitude, location, country_code, business_type, follower_perk, phone');
+      final profile = selectedClubId != null
+          ? await profileQuery.eq('id', selectedClubId).maybeSingle()
+          : await profileQuery
+              .eq('user_id', user.id)
+              .order('created_at', ascending: false)
+              .limit(1)
+              .maybeSingle();
       
       if (profile != null && mounted) {
         setState(() {
           _organizerId = profile['id'];
-          _phoneController.text = profile['contact_phone'] ?? '';
+          _phoneController.text = profile['phone'] ?? '';
           showContactInfo = _phoneController.text.isNotEmpty;
           
           // AUTO-FILL LOCATION FOR NEW EVENTS (Perfection Fix: using location_address)
@@ -274,11 +280,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             _lng = profile['longitude'];
             _latController.text = _lat?.toString() ?? '';
             _lngController.text = _lng?.toString() ?? '';
-            _locationController.text = profile['location_address'] ?? '';
+            _locationController.text = profile['location'] ?? '';
             selectedCountryCode = profile['country_code'] ?? 'DZ';
             selectedCategory = profile['business_type'] ?? 'club';
             _perkController.text = profile['follower_perk'] ?? '';
-            _amenitiesController.text = profile['amenities'] ?? '';
+            _amenitiesController.clear();
           }
         });
       }
@@ -331,6 +337,15 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       return;
     }
 
+    final resolvedOrganizerId = widget.clubId ?? widget.event?.organizerId ?? _organizerId;
+    if (widget.event == null &&
+        (resolvedOrganizerId == null || resolvedOrganizerId.isEmpty)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Organizer profile not found. Create or select your club first.'.tr)),
+      );
+      return;
+    }
+
     // Perfection Fix: Allow null/empty dates for a more flexible social experience
     final String displayDate = _dateController.text.isNotEmpty 
         ? '${_dateController.text} ${_timeController.text}'.trim()
@@ -357,7 +372,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
       final success = widget.event == null 
         ? await _eventService.createEvent(
-            organizerId: widget.clubId ?? _organizerId ?? Supabase.instance.client.auth.currentUser!.id,
+            organizerId: resolvedOrganizerId!,
             title: _nameController.text,
             category: selectedCategory,
             venue: _locationController.text,

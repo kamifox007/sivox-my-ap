@@ -496,13 +496,7 @@ class _AuthScreenState extends State<AuthScreen>
 
     var role = 'attendee';
     try {
-      await ProfileService().ensureProfile(user);
-      final profile = await Supabase.instance.client
-          .from('profiles')
-          .select('role')
-          .eq('id', user.id)
-          .maybeSingle();
-      role = (profile?['role']?.toString() ?? 'attendee').toLowerCase();
+      role = await ProfileService().getTrustedRole(user);
 
       if (role == 'attendee') {
         final organizer = await Supabase.instance.client

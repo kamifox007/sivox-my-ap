@@ -7,6 +7,7 @@ import 'package:my_app/screens/staff_dashboard_screen.dart';
 import 'package:my_app/services/reporting_service.dart';
 import 'package:printing/printing.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:my_app/services/profile_service.dart';
 
 class StaffEventSelector extends StatefulWidget {
   final String organizerId;
@@ -31,7 +32,35 @@ class _StaffEventSelectorState extends State<StaffEventSelector> {
   Future<void> _downloadReport(Event e) async {
     setState(() => _isLoading = true);
     try {
-      final role = Supabase.instance.client.auth.currentUser?.userMetadata?['role'] ?? 'role_security';
+      final client = Supabase.instance.client;
+      final user = client.auth.currentUser;
+      var role = 'role_security';
+      if (user != null) {
+        role = await ProfileService().getTrustedRole(user);
+        if (role == 'staff') {
+          final eventAssignment = await client
+              .from('staff_assignments')
+              .select('role')
+              .eq('staff_id', user.id)
+              .eq('organizer_id', widget.organizerId)
+              .eq('event_id', e.id)
+              .eq('status', 'active')
+              .limit(1)
+              .maybeSingle();
+          final generalAssignment = eventAssignment == null
+              ? await client
+                  .from('staff_assignments')
+                  .select('role')
+                  .eq('staff_id', user.id)
+                  .eq('organizer_id', widget.organizerId)
+                  .isFilter('event_id', null)
+                  .eq('status', 'active')
+                  .limit(1)
+                  .maybeSingle()
+              : null;
+          role = (eventAssignment?['role'] ?? generalAssignment?['role'] ?? 'role_security').toString();
+        }
+      }
       final pdfBytes = await _reporting.generateEventReport(
         eventId: e.id,
         userRole: role,

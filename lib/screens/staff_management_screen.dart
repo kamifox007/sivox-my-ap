@@ -87,15 +87,23 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
     
     setState(() => _isSearching = true);
     try {
-      final response = await supabase
-          .from('profiles')
-          .select('id, full_name, phone, avatar_url')
-          .or('phone.ilike.%$query%,full_name.ilike.%$query%')
-          .limit(5);
+      final organizerId = widget.clubId;
+      if (organizerId == null || organizerId.isEmpty) {
+        if (mounted) setState(() => _isSearching = false);
+        return;
+      }
+
+      final response = await supabase.rpc(
+        'search_staff_candidates',
+        params: {
+          'p_organizer_id': organizerId,
+          'p_query': query,
+        },
+      );
 
       if (mounted) {
         setState(() {
-          _searchResults = (response as List).cast<Map<String, dynamic>>();
+          _searchResults = List<Map<String, dynamic>>.from(response as List);
           _isSearching = false;
         });
       }
@@ -143,32 +151,29 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
     if (userId == null) return;
 
     try {
-      final query = supabase
-          .from('staff_assignments')
-          .select('*, profiles:staff_id(full_name, phone)');
-
       final organizerId = widget.clubId;
       if (organizerId == null || organizerId.isEmpty) {
         throw StateError('Missing organizer profile ID for staff management');
       }
-      query.eq('organizer_id', organizerId);
 
-      final response = await query;
+      final response = await supabase.rpc(
+        'get_organizer_staff_directory',
+        params: {'p_organizer_id': organizerId},
+      );
 
       setState(() {
-        final List<StaffMember> fetched = (response as List).map((s) {
-          final profile = s['profiles'] as Map<String, dynamic>?;
-          final fullName = profile?['full_name'] ?? profile?['phone'] ?? 'Assistant';
-          final phone = profile?['phone'];
-          
+        final List<StaffMember> fetched = (response as List).map((row) {
+          final s = Map<String, dynamic>.from(row as Map);
           return StaffMember(
-            s['id'],
-            s['staff_id'],
-            fullName,
-            s['role'] ?? 'Scanner',
-            s['status'] ?? 'pending',
-            phoneNumber: phone,
-            permissions: (s['permissions'] as Map<String, dynamic>?) ?? {},
+            s['assignment_id'].toString(),
+            s['staff_id'].toString(),
+            (s['full_name'] ?? s['phone'] ?? 'Assistant').toString(),
+            s['role']?.toString() ?? 'Scanner',
+            s['status']?.toString() ?? 'pending',
+            phoneNumber: s['phone']?.toString(),
+            permissions: s['permissions'] is Map
+                ? Map<String, dynamic>.from(s['permissions'] as Map)
+                : {},
           );
         }).toList();
 

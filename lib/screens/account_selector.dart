@@ -43,7 +43,7 @@ class _AccountSelectorScreenState extends State<AccountSelectorScreen> {
       final ownerRes = await _supabase
           .from('organizer_profiles')
           .select('*, profiles(full_name, avatar_url)')
-          .eq('owner_id', userId);
+          .eq('user_id', userId);
 
       List<Map<String, dynamic>> owned = [];
       for (var row in (ownerRes as List)) {

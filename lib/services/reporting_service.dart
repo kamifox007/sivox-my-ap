@@ -43,7 +43,29 @@ class ReportingService {
       try {
         final userId = Supabase.instance.client.auth.currentUser?.id;
         if (userId != null) {
-           organizerProfile = await supabase.from('organizer_profiles').select('*, profiles(full_name, avatar_url)').eq('id', userId).single();
+          if (eventId != null) {
+            final eventRow = await supabase
+                .from('events')
+                .select('organizer_id')
+                .eq('id', eventId)
+                .maybeSingle();
+            final organizerId = eventRow?['organizer_id']?.toString();
+            if (organizerId != null) {
+              organizerProfile = await supabase
+                  .from('organizer_profiles')
+                  .select('*, profiles(full_name, avatar_url)')
+                  .eq('id', organizerId)
+                  .maybeSingle();
+            }
+          } else {
+            organizerProfile = await supabase
+                .from('organizer_profiles')
+                .select('*, profiles(full_name, avatar_url)')
+                .eq('user_id', userId)
+                .order('created_at', ascending: false)
+                .limit(1)
+                .maybeSingle();
+          }
         }
       } catch (_) {}
     }

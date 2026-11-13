@@ -335,14 +335,18 @@ class BookingService {
       final fromUser = supabase.auth.currentUser;
       if (fromUser == null) return false;
 
-      final targetUser = await supabase
-          .from('profiles')
-          .select('id')
-          .eq('phone', targetPhone.trim())
-          .maybeSingle();
+      final targetUserId = await supabase.rpc(
+        'resolve_ticket_transfer_target',
+        params: {
+          'p_booking_id': bookingId,
+          'p_phone': targetPhone.trim(),
+        },
+      );
 
-      if (targetUser == null || targetUser['id'] == fromUser.id) return false;
-      final String targetId = targetUser['id'].toString();
+      if (targetUserId == null || targetUserId.toString() == fromUser.id) {
+        return false;
+      }
+      final String targetId = targetUserId.toString();
 
       final bookingInfo = await supabase
           .from('bookings')

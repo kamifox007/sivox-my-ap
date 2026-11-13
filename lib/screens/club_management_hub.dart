@@ -30,28 +30,39 @@ class _ClubManagementHubScreenState extends State<ClubManagementHubScreen> {
 
   Future<void> _loadHubData() async {
     setState(() => _isLoading = true);
-    final targetId = widget.clubId ?? _supabase.auth.currentUser?.id;
-    if (targetId == null) return;
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) return;
 
     try {
-      // 1. Fetch Club Data (from organizer_profiles)
-      final orgRes = await _supabase
-          .from('organizer_profiles')
-          .select('*, profiles(full_name)')
-          .eq('id', targetId)
-          .maybeSingle();
+      // 1. Fetch the selected club, or the latest owned club when no ID is supplied.
+      final orgRes = widget.clubId != null
+          ? await _supabase
+              .from('organizer_profiles')
+              .select('*, profiles(full_name)')
+              .eq('id', widget.clubId!)
+              .maybeSingle()
+          : await _supabase
+              .from('organizer_profiles')
+              .select('*, profiles(full_name)')
+              .eq('user_id', userId)
+              .order('created_at', ascending: false)
+              .limit(1)
+              .maybeSingle();
 
+      final targetId = orgRes?['id']?.toString();
       if (orgRes != null) {
         final mergedData = Map<String, dynamic>.from(orgRes);
         mergedData['name'] = orgRes['name'] ?? orgRes['profiles']?['full_name'] ?? 'Club';
         _club = Club.fromMap(mergedData);
       }
 
-      // 2. Fetch Staff Stats
-      final staffRes = await _supabase
-          .from('staff_assignments')
-          .select('role')
-          .eq('organizer_id', targetId);
+      // 2. Fetch Staff Stats only after resolving the actual organizer profile ID.
+      final staffRes = targetId == null
+          ? <Map<String, dynamic>>[]
+          : await _supabase
+              .from('staff_assignments')
+              .select('role')
+              .eq('organizer_id', targetId);
       final staffList = staffRes as List;
       _staffStats = {
         'managers': staffList.where((s) => s['role'] == 'role_manager').length,
@@ -94,7 +105,7 @@ class _ClubManagementHubScreenState extends State<ClubManagementHubScreen> {
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => ClubProfileEditorScreen(clubId: widget.clubId),
+                builder: (_) => ClubProfileEditorScreen(clubId: _club?.id ?? widget.clubId),
               ),
             ).then((_) => _loadHubData()),
           ),
@@ -272,7 +283,7 @@ class _ClubManagementHubScreenState extends State<ClubManagementHubScreen> {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => ClubProfileEditorScreen(clubId: widget.clubId),
+                    builder: (_) => ClubProfileEditorScreen(clubId: _club?.id ?? widget.clubId),
                   ),
                 ).then((_) => _loadHubData()),
                 icon: const Icon(Icons.map_rounded, size: 16),
@@ -311,7 +322,7 @@ class _ClubManagementHubScreenState extends State<ClubManagementHubScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => const StaffManagementScreen(),
+                  builder: (_) => StaffManagementScreen(clubId: _club?.id ?? widget.clubId),
                 ),
               ).then((_) => _loadHubData());
             },
@@ -328,7 +339,7 @@ class _ClubManagementHubScreenState extends State<ClubManagementHubScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => StaffManagementScreen(clubId: widget.clubId),
+                  builder: (_) => StaffManagementScreen(clubId: _club?.id ?? widget.clubId),
                 ),
               ).then((_) => _loadHubData());
             },

@@ -16,6 +16,7 @@ import 'package:my_app/services/reporting_service.dart';
 import 'package:my_app/services/notification_service.dart';
 import 'package:my_app/screens/marketing_engine_screen.dart';
 import 'package:my_app/screens/booking_management.dart';
+import 'package:my_app/services/profile_service.dart';
 
 class EventManageDetailsScreen extends StatefulWidget {
   final Event event;
@@ -33,6 +34,7 @@ class _EventManageDetailsScreenState extends State<EventManageDetailsScreen> {
   final _reporting = ReportingService();
   final _notificationService = NotificationService();
   bool _hasAutoTriggered = false;
+  String _trustedRole = 'attendee';
 
   Future<void> _exportReport() async {
     try {
@@ -115,6 +117,14 @@ class _EventManageDetailsScreenState extends State<EventManageDetailsScreen> {
   void initState() {
     super.initState();
     _initStream();
+    _loadTrustedRole();
+  }
+
+  Future<void> _loadTrustedRole() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+    final role = await ProfileService().getTrustedRole(user);
+    if (mounted) setState(() => _trustedRole = role);
   }
 
   void _initStream() {
@@ -150,8 +160,7 @@ class _EventManageDetailsScreenState extends State<EventManageDetailsScreen> {
         final capacity = widget.event.maxCapacity ?? 0;
         final progress = capacity > 0 ? totalGuests / capacity : 0.0;
         
-        final role = supabase.auth.currentUser?.userMetadata?['role'] ?? 'attendee';
-        final isAuthorized = role == 'owner' || role == 'manager' || role == 'admin' || role == 'organizer';
+        final isAuthorized = _trustedRole == 'owner' || _trustedRole == 'manager' || _trustedRole == 'admin' || _trustedRole == 'organizer';
 
         // Revenue Calculations
         final eventPrice = widget.event.price;

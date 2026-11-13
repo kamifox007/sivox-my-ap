@@ -114,7 +114,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
       final results = await Future.wait<dynamic>([
         _supabase
             .from('organizer_profiles')
-            .select('name, avatar_url, permanent_gallery, bio, latitude, longitude, business_type, profiles(avatar_url, full_name)')
+            .select('name, avatar_url, gallery_images, bio, latitude, longitude, business_type, profiles(avatar_url, full_name)')
             .eq('id', widget.organizerId)
             .maybeSingle(),
         _followService.getFollowerCount(widget.organizerId),
@@ -149,7 +149,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
         // Brand Identity Prioritization
         _avatarUrl = profileRes['avatar_url'] ?? profileRes['profiles']?['avatar_url'];
         
-        final gallery = profileRes['permanent_gallery'] as List?;
+        final gallery = profileRes['gallery_images'] as List?;
         if (gallery != null && gallery.isNotEmpty) {
           _permanentImages = List<String>.from(gallery);
           // Fallback if no dedicated avatar: use first gallery image
@@ -1965,7 +1965,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
 
   Future<bool> _updateGalleryData(List<String> newGallery) async {
     try {
-      await _supabase.from('organizer_profiles').update({'permanent_gallery': newGallery}).eq('id', widget.organizerId);
+      await _supabase.from('organizer_profiles').update({'gallery_images': newGallery}).eq('id', widget.organizerId);
       return true;
     } catch (e) {
       return false;

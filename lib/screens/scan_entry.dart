@@ -119,14 +119,14 @@ class _ScanEntryScreenState extends State<ScanEntryScreen> with WidgetsBindingOb
             .from('organizer_profiles')
             .select('id')
             .eq('id', organizerProfileId)
-            .eq('owner_id', user.id)
+            .eq('user_id', user.id)
             .maybeSingle();
         isOwner = organizerProfile != null;
       } else {
         final ownedProfiles = await supabase
             .from('organizer_profiles')
             .select('id')
-            .eq('owner_id', user.id)
+            .eq('user_id', user.id)
             .limit(1);
         if ((ownedProfiles as List).isNotEmpty) {
           organizerProfileId = ownedProfiles.first['id']?.toString();

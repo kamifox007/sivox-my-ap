@@ -59,7 +59,7 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
       final res = await supabase
           .from('organizer_profiles')
           .select('id, name, business_type, avatar_url')
-          .eq('owner_id', userId);
+          .eq('user_id', userId);
       
       if (mounted) {
         setState(() {

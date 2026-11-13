@@ -47,6 +47,7 @@ class _ClubProfileEditorScreenState extends State<ClubProfileEditorScreen> with 
   final List<File?> _newImages = List.generate(5, (_) => null);
   File? _logoFile;
   String? _currentLogoUrl;
+  String? _loadedClubId;
   
   bool _isLoading = true;
   bool _isSaving = false;
@@ -91,24 +92,27 @@ class _ClubProfileEditorScreenState extends State<ClubProfileEditorScreen> with 
     final userId = _supabase.auth.currentUser?.id;
     if (userId == null) return;
 
-    final targetId = widget.clubId ?? userId;
-
     try {
-      // 1. Load data from organizer_profiles (the club table)
-      final orgRes = await _supabase.from('organizer_profiles').select('*, profiles(full_name)').eq('id', targetId).maybeSingle();
+      // Load an explicit club, or the latest owned club when no ID is supplied.
+      final orgRes = widget.isNew && widget.clubId == null
+          ? null
+          : widget.clubId != null
+              ? await _supabase.from('organizer_profiles').select('*, profiles(full_name)').eq('id', widget.clubId!).maybeSingle()
+              : await _supabase.from('organizer_profiles').select('*, profiles(full_name)').eq('user_id', userId).order('created_at', ascending: false).limit(1).maybeSingle();
       
       if (orgRes != null) {
+        _loadedClubId = orgRes['id']?.toString();
         _nameController.text = orgRes['name'] ?? orgRes['profiles']?['full_name'] ?? '';
         _bioController.text = orgRes['bio'] ?? '';
-        _phoneController.text = orgRes['contact_phone'] ?? '';
-        _addressController.text = orgRes['location_address'] ?? '';
-        _currentGallery = List<String>.from(orgRes['permanent_gallery'] ?? []);
+        _phoneController.text = orgRes['phone'] ?? '';
+        _addressController.text = orgRes['location'] ?? '';
+        _currentGallery = List<String>.from(orgRes['gallery_images'] ?? []);
         _lat = orgRes['latitude'];
         _lng = orgRes['longitude'];
         _businessType = orgRes['business_type']?.toString() ?? 'club';
         _countryCode = orgRes['country_code']?.toString() ?? 'DZ';
         _perkController.text = orgRes['follower_perk'] ?? '';
-        _amenitiesController.text = orgRes['amenities'] ?? '';
+        _amenitiesController.clear();
         _currentLogoUrl = orgRes['avatar_url'];
       } else {
         // Fallback for new users/old structure: get personal name
@@ -187,20 +191,19 @@ class _ClubProfileEditorScreenState extends State<ClubProfileEditorScreen> with 
 
       // 2. Prepare Data for organizer_profiles
       final Map<String, dynamic> clubData = {
-        'owner_id': userId,
+        'user_id': userId,
         'name': _nameController.text,
         'avatar_url': logoUrl,
         'bio': _bioController.text,
-        'contact_phone': _phoneController.text,
-        'permanent_gallery': updatedGallery.take(5).toList(),
+        'phone': _phoneController.text,
+        'gallery_images': updatedGallery.take(5).toList(),
         'latitude': _lat,
         'longitude': _lng,
-        'location_address': _addressController.text,
+        'location': _addressController.text,
         'business_type': _businessType,
         'country_code': _countryCode,
         'follower_perk': _perkController.text,
         // 'amenities': _amenitiesController.text, // commented out to avoid postgres error
-        'updated_at': DateTime.now().toIso8601String(),
       };
 
       String? newClubId;
@@ -210,8 +213,11 @@ class _ClubProfileEditorScreenState extends State<ClubProfileEditorScreen> with 
         newClubId = res['id'] as String?;
       } else {
         // Update existing club
-        final targetId = widget.clubId ?? userId;
-        await _supabase.from('organizer_profiles').update(clubData).eq('id', targetId);
+        final targetClubId = widget.clubId ?? _loadedClubId;
+        if (targetClubId == null) {
+          throw StateError('No existing club profile was found. Create a club profile before editing.');
+        }
+        await _supabase.from('organizer_profiles').update(clubData).eq('id', targetClubId);
       }
 
       // 5. Log action
