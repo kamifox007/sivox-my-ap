@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:my_app/services/audit_service.dart';
+import 'package:my_app/services/auth_service.dart';
 import 'package:my_app/services/notification_service.dart';
 import 'package:my_app/services/event_service.dart';
 import 'package:my_app/services/follow_service.dart';
@@ -334,6 +335,9 @@ class BookingService {
     try {
       final fromUser = supabase.auth.currentUser;
       if (fromUser == null || targetPhone.trim().isEmpty) return false;
+      final normalizedTargetPhone =
+          AuthService.normalizeAlgerianPhone(targetPhone);
+      if (normalizedTargetPhone.isEmpty) return false;
 
       // Read only this caller's booking title to preserve the localized message.
       final bookingInfo = await supabase
@@ -352,7 +356,7 @@ class BookingService {
         'transfer_booking_ticket_by_phone',
         params: {
           'p_booking_id': bookingId,
-          'p_phone': targetPhone.trim(),
+          'p_phone': normalizedTargetPhone,
           'p_title': 'TICKET_RECEIVED_TITLE'.tr,
           'p_body': 'TICKET_RECEIVED_BODY'.trArgs([eventTitle]),
         },
