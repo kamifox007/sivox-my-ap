@@ -30,5 +30,33 @@ void main() {
         '+33123456789',
       );
     });
+
+    test('adds the plus sign to a 213-prefixed number', () {
+      expect(
+        AuthService.normalizeAlgerianPhone('213551234567'),
+        '+213551234567',
+      );
+    });
+
+    test('normalizes a 9-digit Algerian mobile number without the leading zero', () {
+      expect(
+        AuthService.normalizeAlgerianPhone('551234567'),
+        '+213551234567',
+      );
+    });
+
+    test('removes punctuation from an Algerian phone number', () {
+      expect(
+        AuthService.normalizeAlgerianPhone('(0551)-23-45-67'),
+        '+213551234567',
+      );
+    });
+
+    test('converts a generic 00 international prefix', () {
+      expect(
+        AuthService.normalizeAlgerianPhone('0033123456789'),
+        '+33123456789',
+      );
+    });
   });
 }
