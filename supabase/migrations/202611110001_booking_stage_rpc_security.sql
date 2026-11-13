@@ -454,9 +454,9 @@ BEGIN
      AND NEW.payment_status = 'ejected' THEN
     IF OLD.payment_status IN ('cancelled', 'ejected')
        OR NOT public.has_event_staff_permission(OLD.event_id, 'can_eject_guest')
-       OR (to_jsonb(NEW) - ARRAY['payment_status', 'cancellation_reason'])
+       OR (to_jsonb(NEW) - ARRAY['payment_status', 'cancellation_reason', 'is_scanned'])
           IS DISTINCT FROM
-          (to_jsonb(OLD) - ARRAY['payment_status', 'cancellation_reason']) THEN
+          (to_jsonb(OLD) - ARRAY['payment_status', 'cancellation_reason', 'is_scanned']) THEN
       RAISE EXCEPTION 'BOOKING_EJECTION_FORBIDDEN' USING ERRCODE = '42501';
     END IF;
     RETURN NEW;
