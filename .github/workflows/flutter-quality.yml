@@ -1,4 +1,4 @@
-name: Flutter quality checks
+name: Flutter quality checks and Android build
 
 on:
   push:
@@ -13,12 +13,20 @@ permissions:
   contents: read
 
 jobs:
-  analyze-and-test:
+  analyze-test-build:
+    name: Analyze, test and build Android APK
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -34,3 +42,14 @@ jobs:
 
       - name: Run Flutter tests
         run: flutter test --no-pub
+
+      - name: Build Android release APK
+        run: flutter build apk --release
+
+      - name: Upload Android APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sivox-android-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 14
