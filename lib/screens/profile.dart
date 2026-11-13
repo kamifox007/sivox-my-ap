@@ -13,6 +13,7 @@ import 'package:my_app/screens/favorites_screen.dart';
 import 'package:my_app/services/booking_service.dart';
 import 'package:my_app/screens/vault_screen.dart';
 import 'package:my_app/services/auth_service.dart';
+import 'package:my_app/services/profile_service.dart';
 import 'package:my_app/screens/tickets_list_screen.dart';
 
 
@@ -40,6 +41,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
       }
       return;
+    }
+
+    try {
+      await ProfileService().ensureProfile(user);
+    } catch (e) {
+      debugPrint('Could not ensure visitor profile: $e');
     }
 
     try {
